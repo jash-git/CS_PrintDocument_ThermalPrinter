@@ -61,7 +61,7 @@ class Program
 
             // 繪製方形區塊（模擬框）
             Pen pen = new Pen(Color.Black, 1);
-            Rectangle rect = new Rectangle(5, y, 200, 300);
+            Rectangle rect = new Rectangle(5, y, 200, 300);//3.937pixel≒1mm (200=50nn,300=76mm)
             g.DrawRectangle(pen, rect);
             g.DrawString("感謝您的購買！", font, brush, 10, y + 15);
 
