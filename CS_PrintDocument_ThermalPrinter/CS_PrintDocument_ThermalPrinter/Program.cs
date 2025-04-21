@@ -29,11 +29,11 @@ class Program
         }
 
         // 設定邊界為 0
-        printDoc.DefaultPageSettings.Margins = new Margins(70, 0, 0, 0);
+        printDoc.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
 
         // 自訂紙張大小：寬 80mm，高 100mm（1mm ≈ 3.937 尺寸單位）
         int width = (int)(80 * 3.937);  // 約 315
-        int height = 600;//(int)(100 * 3.937); // 約 394
+        int height = 1000;//(int)(100 * 3.937); // 約 394
 
         PaperSize paperSize = new PaperSize("Custom_80mm", width, height);
         printDoc.DefaultPageSettings.PaperSize = paperSize;
@@ -61,9 +61,12 @@ class Program
 
             // 繪製方形區塊（模擬框）
             Pen pen = new Pen(Color.Black, 1);
-            Rectangle rect = new Rectangle(5, y, 200, 300);//3.937pixel≒1mm (200=50nn,300=76mm)
+            Rectangle rect = new Rectangle(5, y, 270, 300);//3.937pixel≒1mm (200=50nn,300=76mm)
             g.DrawRectangle(pen, rect);
             g.DrawString("感謝您的購買！", font, brush, 10, y + 15);
+
+            Font font01 = new Font("Arial", 1);
+            g.DrawString("               .", font01, brush, 10, 500);//故意拉長紙張 (500-300-y)/3.937=25mm
 
             e.HasMorePages = false;
         };
