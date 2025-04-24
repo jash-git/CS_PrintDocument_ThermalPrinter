@@ -6,7 +6,7 @@ class Program
 {
     static void Main()
     {
-        string targetPrinterName = "POS-80C"; // 替換成你實際的熱感印表機名稱
+        string targetPrinterName = "80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
 
         PrintDocument printDoc = new PrintDocument();
 
@@ -30,13 +30,6 @@ class Program
 
         // 設定邊界為 0
         printDoc.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
-
-        // 自訂紙張大小：寬 80mm，高 100mm（1mm ≈ 3.937 尺寸單位）
-        int width = (int)(80 * 3.937);  // 約 315
-        int height = 1000;//(int)(100 * 3.937); // 約 394
-
-        PaperSize paperSize = new PaperSize("Custom_80mm", width, height);
-        printDoc.DefaultPageSettings.PaperSize = paperSize;
 
         // 加入列印事件
         printDoc.PrintPage += (sender, e) =>
@@ -66,10 +59,17 @@ class Program
             g.DrawString("感謝您的購買！", font, brush, 10, y + 15);
 
             Font font01 = new Font("Arial", 1);
-            g.DrawString("               .", font01, brush, 10, 500);//故意拉長紙張 (500-300-y)/3.937=25mm
+            g.DrawString("               .", font01, brush, 10, 1500);//故意拉長紙張 (500-300-y)/3.937=25mm
 
             e.HasMorePages = false;
         };
+
+        // 自訂紙張大小：寬 80mm，高 100mm（1mm ≈ 3.937 尺寸單位）
+        int width = (int)(80 * 3.937);  // 約 315
+        int height = 5000;//(int)(100 * 3.937); // 約 394
+
+        PaperSize paperSize = new PaperSize("Custom_80mm", width, height);
+        printDoc.DefaultPageSettings.PaperSize = paperSize;
 
         try
         {

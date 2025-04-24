@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4ClI7wJBWs4=",
+  "dgSpecHash": "bHM7iMnpMVo=",
   "success": true,
-  "projectFilePath": "C:\\Users\\jashv\\OneDrive\\桌面\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj",
+  "projectFilePath": "C:\\Users\\jashv\\OneDrive\\桌面\\GITHUB\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jashv\\.nuget\\packages\\microsoft.win32.systemevents\\9.0.4\\microsoft.win32.systemevents.9.0.4.nupkg.sha512",
     "C:\\Users\\jashv\\.nuget\\packages\\system.drawing.common\\9.0.4\\system.drawing.common.9.0.4.nupkg.sha512"
