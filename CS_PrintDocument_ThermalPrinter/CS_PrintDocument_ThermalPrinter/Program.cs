@@ -6,7 +6,7 @@ class Program
 {
     static void Main()
     {
-        string targetPrinterName = "80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+        string targetPrinterName = "POS80D";//"POS -80C";// "80mm Series Printer";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
 
         PrintDocument printDoc = new PrintDocument();
 
