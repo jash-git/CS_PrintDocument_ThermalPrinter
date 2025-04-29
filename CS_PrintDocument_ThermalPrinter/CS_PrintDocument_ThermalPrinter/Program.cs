@@ -23,7 +23,7 @@ class Program
         Bitmap barcodeBitmap = barcodeWriter.Write(StrData);
 
         // Save the barcode as a BMP file
-        barcodeBitmap.Save("qrcode.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+        //barcodeBitmap.Save("qrcode.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
         return barcodeBitmap;
     }
@@ -32,22 +32,22 @@ class Program
         // Create a BarcodeWriter instance
         var barcodeWriter = new BarcodeWriter();//ZXing.Windows.Compatibility
         barcodeWriter.Format = BarcodeFormat.CODE_128;
-        barcodeWriter.Options.Height = 150;
+        barcodeWriter.Options.Height = 100;
         barcodeWriter.Options.Width = 300;
 
         // Generate the barcode as a Bitmap
         Bitmap barcodeBitmap = barcodeWriter.Write(StrData);
 
         // Save the barcode as a BMP file
-        barcodeBitmap.Save("barcode.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+        //barcodeBitmap.Save("barcode.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
         return barcodeBitmap;
     }
     static void Main()
     {
-        QrCode("相關網站: https://github.com/micjahn/ZXing.Net/issues/458");
-        BarCode("1234567890");
-        string targetPrinterName = "POS80D";//"POS -80C";// "80mm Series Printer";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+        Bitmap bmp1 = QrCode("相關網站: https://github.com/micjahn/ZXing.Net/issues/458");
+        Bitmap bmp2 = BarCode("1234567890");
+        string targetPrinterName = "80mm Series Printer";//"POS80D";//"POS -80C";// "80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
 
         PrintDocument printDoc = new PrintDocument();
 
@@ -98,6 +98,12 @@ class Program
             Rectangle rect = new Rectangle(5, y, 270, 300);//3.937pixel≒1mm (200=50nn,300=76mm)
             g.DrawRectangle(pen, rect);
             g.DrawString("感謝您的購買！", font, brush, 10, y + 15);
+
+            RectangleF printArea2 = new RectangleF(5, 410, 150, 100);//new RectangleF(0, 0, e.PageBounds.Width, e.PageBounds.Height);
+            g.DrawImage(bmp2, printArea2);
+
+            RectangleF printArea1 = new RectangleF(5, 410+100, 200, 200);//new RectangleF(0, 0, e.PageBounds.Width, e.PageBounds.Height);
+            g.DrawImage(bmp1, printArea1);
 
             Font font01 = new Font("Arial", 1);
             g.DrawString("               .", font01, brush, 10, 1500);//故意拉長紙張 (500-300-y)/3.937=25mm

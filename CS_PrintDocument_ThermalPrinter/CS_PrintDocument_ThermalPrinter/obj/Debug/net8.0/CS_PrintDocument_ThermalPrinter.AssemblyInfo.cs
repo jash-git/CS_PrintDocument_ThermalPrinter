@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CS_PrintDocument_ThermalPrinter")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4b008873d213afbfc96257f007ff0abb073bfe46")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f98aa545f50b20ee8ae5916fd8b79949d2118e9f")]
 [assembly: System.Reflection.AssemblyProductAttribute("CS_PrintDocument_ThermalPrinter")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CS_PrintDocument_ThermalPrinter")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
