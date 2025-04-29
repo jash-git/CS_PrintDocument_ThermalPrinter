@@ -54,6 +54,14 @@
             "System.Drawing.Common": {
               "target": "Package",
               "version": "[9.0.4, )"
+            },
+            "ZXing.Net": {
+              "target": "Package",
+              "version": "[0.16.10, )"
+            },
+            "ZXing.Net.Bindings.Windows.Compatibility": {
+              "target": "Package",
+              "version": "[0.16.13, )"
             }
           },
           "imports": [

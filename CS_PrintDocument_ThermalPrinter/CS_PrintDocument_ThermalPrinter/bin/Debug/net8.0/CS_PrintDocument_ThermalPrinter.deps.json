@@ -8,7 +8,9 @@
     ".NETCoreApp,Version=v8.0": {
       "CS_PrintDocument_ThermalPrinter/1.0.0": {
         "dependencies": {
-          "System.Drawing.Common": "9.0.4"
+          "System.Drawing.Common": "9.0.4",
+          "ZXing.Net": "0.16.10",
+          "ZXing.Net.Bindings.Windows.Compatibility": "0.16.13"
         },
         "runtime": {
           "CS_PrintDocument_ThermalPrinter.dll": {}
@@ -44,6 +46,26 @@
             "fileVersion": "9.0.425.16312"
           }
         }
+      },
+      "ZXing.Net/0.16.10": {
+        "runtime": {
+          "lib/net8.0/zxing.dll": {
+            "assemblyVersion": "0.16.10.0",
+            "fileVersion": "0.16.10.0"
+          }
+        }
+      },
+      "ZXing.Net.Bindings.Windows.Compatibility/0.16.13": {
+        "dependencies": {
+          "System.Drawing.Common": "9.0.4",
+          "ZXing.Net": "0.16.10"
+        },
+        "runtime": {
+          "lib/net8.0/ZXing.Windows.Compatibility.dll": {
+            "assemblyVersion": "0.16.13.0",
+            "fileVersion": "0.16.13.0"
+          }
+        }
       }
     }
   },
@@ -66,6 +88,20 @@
       "sha512": "sha512-SbtusMUT1bCxZ14904ZPo2GZyelze0rwUni9wXrp8KX9Zlsda8idqpxra1RBvOA85WM0wW+fCI4GLrlCTYiE6A==",
       "path": "system.drawing.common/9.0.4",
       "hashPath": "system.drawing.common.9.0.4.nupkg.sha512"
+    },
+    "ZXing.Net/0.16.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9avtcn21T7Ndcl8PQ1LHR7/wEoCruX1QKKHvO6zBPTsDW9IdvR5vKOmd618AY+DtDWZz8NaFDTkpbZdgaF4l4w==",
+      "path": "zxing.net/0.16.10",
+      "hashPath": "zxing.net.0.16.10.nupkg.sha512"
+    },
+    "ZXing.Net.Bindings.Windows.Compatibility/0.16.13": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-x6WwaokAqBXhvX/FTYmE+kdKRSYuxCKSN608VbWWlawUq/rXYW/KoDfRpEkpUeYW6qU5hE3eFzWMuG20doLR9A==",
+      "path": "zxing.net.bindings.windows.compatibility/0.16.13",
+      "hashPath": "zxing.net.bindings.windows.compatibility.0.16.13.nupkg.sha512"
     }
   }
 }

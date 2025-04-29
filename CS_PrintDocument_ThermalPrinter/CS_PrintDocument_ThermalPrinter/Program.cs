@@ -1,11 +1,52 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Printing;
+using ZXing;
+using ZXing.Windows.Compatibility;// NET5之後CS3050(Error CS0305 Using generic type 'BarcodeWriter ' requires type 1) 解決方法 : https://github.com/micjahn/ZXing.Net/issues/458
+using ZXing.Common;
+using ZXing.QrCode;
 
 class Program
 {
+    static Bitmap QrCode(String StrData)
+    {
+        // Create a BarcodeWriter instance
+        var barcodeWriter = new BarcodeWriter();//ZXing.Windows.Compatibility
+        barcodeWriter.Format = BarcodeFormat.QR_CODE;
+        barcodeWriter.Options.Hints.Add(EncodeHintType.CHARACTER_SET, "UTF-8");  //編碼字元utf-8
+        barcodeWriter.Options.Hints.Add(EncodeHintType.ERROR_CORRECTION, ZXing.QrCode.Internal.ErrorCorrectionLevel.H); //錯誤校正等級
+        barcodeWriter.Options.Height = 300;
+        barcodeWriter.Options.Width = 300;
+        barcodeWriter.Options.Margin = 0; //外邊距
+
+        // Generate the barcode as a Bitmap
+        Bitmap barcodeBitmap = barcodeWriter.Write(StrData);
+
+        // Save the barcode as a BMP file
+        barcodeBitmap.Save("qrcode.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+
+        return barcodeBitmap;
+    }
+    static Bitmap BarCode(String StrData)
+    {
+        // Create a BarcodeWriter instance
+        var barcodeWriter = new BarcodeWriter();//ZXing.Windows.Compatibility
+        barcodeWriter.Format = BarcodeFormat.CODE_128;
+        barcodeWriter.Options.Height = 150;
+        barcodeWriter.Options.Width = 300;
+
+        // Generate the barcode as a Bitmap
+        Bitmap barcodeBitmap = barcodeWriter.Write(StrData);
+
+        // Save the barcode as a BMP file
+        barcodeBitmap.Save("barcode.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+
+        return barcodeBitmap;
+    }
     static void Main()
     {
+        QrCode("相關網站: https://github.com/micjahn/ZXing.Net/issues/458");
+        BarCode("1234567890");
         string targetPrinterName = "POS80D";//"POS -80C";// "80mm Series Printer";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
 
         PrintDocument printDoc = new PrintDocument();
