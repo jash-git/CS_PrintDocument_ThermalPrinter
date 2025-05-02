@@ -5,9 +5,39 @@ using ZXing;
 using ZXing.Windows.Compatibility;// NET5之後CS3050(Error CS0305 Using generic type 'BarcodeWriter ' requires type 1) 解決方法 : https://github.com/micjahn/ZXing.Net/issues/458
 using ZXing.Common;
 using ZXing.QrCode;
+using System.Runtime.Intrinsics.Arm;
 
 class Program
 {
+    //---
+    //DPI 相關函數
+    //https://blog.csdn.net/wangnaisheng/article/details/139059374
+    public static void GetScreenDpi(out float DpiX, out float DpiY)//系統DPI
+    {
+        //Dots Per Inch(每英寸點數): 意思是指每一英吋長度中，取樣或可顯示或輸出點的數目
+        using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
+        {
+            DpiX = g.DpiX;
+            DpiY = g.DpiY;
+        }
+    }
+    public static float PixelsToInches(int pixels, float dpi)//像素 -> 英吋
+    {
+        return pixels / dpi;
+    }
+    public static float PixelsToMillimeters(int pixels, float dpi)//像素 -> 毫米
+    {
+        float inches = PixelsToInches(pixels, dpi);
+        return inches * 25.4f;
+    }
+
+    public static int MillimetersToPixels(float millimeters, float dpi)//毫米 -> 像素
+    {
+        float inches = millimeters / 25.4f;
+        return (int)(inches * dpi + 0.5f); // 使用0.5f进行四舍五入处理
+    }
+    //---DPI 相關函數
+
     static Bitmap QrCode(String StrData)
     {
         // Create a BarcodeWriter instance
@@ -23,7 +53,7 @@ class Program
         Bitmap barcodeBitmap = barcodeWriter.Write(StrData);
 
         // Save the barcode as a BMP file
-        //barcodeBitmap.Save("qrcode.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+        barcodeBitmap.Save("qrcode.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
         return barcodeBitmap;
     }
@@ -39,15 +69,17 @@ class Program
         Bitmap barcodeBitmap = barcodeWriter.Write(StrData);
 
         // Save the barcode as a BMP file
-        //barcodeBitmap.Save("barcode.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+        barcodeBitmap.Save("barcode.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
 
         return barcodeBitmap;
     }
     static void Main()
     {
+        float SysDpiX, SysDpiY;
+        GetScreenDpi(out SysDpiX,out SysDpiY);
         Bitmap bmp1 = QrCode("相關網站: https://github.com/micjahn/ZXing.Net/issues/458");
         Bitmap bmp2 = BarCode("1234567890");
-        string targetPrinterName = "80mm Series Printer";//"POS80D";//"POS -80C";// "80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+        string targetPrinterName = "POS-80C";//"POS80D";//"80mm Series Printer";// "80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
 
         PrintDocument printDoc = new PrintDocument();
 
@@ -75,7 +107,39 @@ class Program
         // 加入列印事件
         printDoc.PrintPage += (sender, e) =>
         {
-            Graphics g = e.Graphics;
+            /*
+            //https://learn.microsoft.com/zh-tw/dotnet/api/system.drawing.graphicsunit?view=windowsdesktop-9.0&viewFallbackFrom=dotnet-plat-ext-8.0
+            Display	1	
+            指定顯示裝置的測量單位。 一般來說，視訊顯示會使用像素，而印表機會使用 1/100 英吋。
+
+            Document	5	
+            指定文件單位 (1/300 英吋) 做為測量單位。
+
+            Inch	4	
+            指定英吋做為測量單位。
+
+            Millimeter	6	
+            指定公釐做為測量單位。
+
+            Pixel	2	
+            指定裝置像素做為測量單位。
+
+            Point	3	
+            指定印表機的點 (1/72 英吋) 做為測量單位。
+
+            World	0	
+            指定全局座標系統的單位做為測量單位。            
+            */
+            //e.Graphics.PageUnit = GraphicsUnit.Document;//300DPI ~ https://radio-idea.blogspot.com/2016/09/c-printdocument.html#google_vignette
+            e.Graphics.PageUnit = GraphicsUnit.Pixel;//解析度 ~ https://radio-idea.blogspot.com/2016/09/c-printdocument.html#google_vignette
+
+            Graphics g = e.Graphics;//抓取印表機畫布
+            /*
+            Bitmap BitmapBuf = new Bitmap((int)(80 * 3.937),5000);//建立BMP記憶體空間
+            Graphics g = Graphics.FromImage(BitmapBuf);//從BMP記憶體自建畫布 ~ https://stackoverflow.com/questions/10868623/converting-print-page-graphics-to-bitmap-c-sharp
+            g.Clear(Color.White);//畫布指定底色
+            //*/
+
             Font font = new Font("Arial", 10);
             Brush brush = Brushes.Black;
 
@@ -83,30 +147,47 @@ class Program
 
             // 列印標題
             g.DrawString("收據列印示範", new Font("Arial", 12, FontStyle.Bold), brush, 0, y);
-            y += 30;
+            y += MillimetersToPixels(5, 203);//5=字高+1
 
             // 繪製文字
             g.DrawString("商品：測試產品", font, brush, 10, y);
-            y += 20;
+            y += MillimetersToPixels(4, 203);//4=字高+1
             g.DrawString("數量：2", font, brush, 10, y);
-            y += 20;
+            y += MillimetersToPixels(4, 203);//4=字高+1
             g.DrawString("總價：NT$200", font, brush, 10, y);
-            y += 30;
+            y += MillimetersToPixels(10, 203);
 
             // 繪製方形區塊（模擬框）
             Pen pen = new Pen(Color.Black, 1);
-            Rectangle rect = new Rectangle(5, y, 270, 300);//3.937pixel≒1mm (200=50nn,300=76mm)
+            Rectangle rect = new Rectangle(5, y, MillimetersToPixels(68, 203), MillimetersToPixels(68, 203));
             g.DrawRectangle(pen, rect);
             g.DrawString("感謝您的購買！", font, brush, 10, y + 15);
 
-            RectangleF printArea2 = new RectangleF(5, 410, 150, 100);//new RectangleF(0, 0, e.PageBounds.Width, e.PageBounds.Height);
+            Rectangle printArea2 = new Rectangle(5, y+MillimetersToPixels(70, 203), MillimetersToPixels(30 * 1.1f, 203), MillimetersToPixels(15 * 1.1f, 203));//new RectangleF(0, 0, e.PageBounds.Width, e.PageBounds.Height);//
             g.DrawImage(bmp2, printArea2);
 
-            RectangleF printArea1 = new RectangleF(5, 410+100, 200, 200);//new RectangleF(0, 0, e.PageBounds.Width, e.PageBounds.Height);
+            Rectangle printArea1 = new Rectangle(5, y+MillimetersToPixels(70, 203) + MillimetersToPixels(17 * 1.1f, 203), MillimetersToPixels(40*1.1f, 203), MillimetersToPixels(40 * 1.1f, 203));//new RectangleF(0, 0, e.PageBounds.Width, e.PageBounds.Height);//
             g.DrawImage(bmp1, printArea1);
+
+            //---
+            //測試大圖
+            /*
+            y = 410 + 100 + 200 + 20;
+            for (int i=0;i<100;i++)
+            {
+                g.DrawString(i+":", font, brush, 10, y);
+                y += 20;
+            }
+            */
+            //---測試大圖
 
             Font font01 = new Font("Arial", 1);
             g.DrawString("               .", font01, brush, 10, 1500);//故意拉長紙張 (500-300-y)/3.937=25mm
+
+            /*
+            BitmapBuf.Save("printer.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+            e.Graphics.DrawImage(BitmapBuf, 0, 0);//由於從BMP記憶體自建畫布，所以列印時就要從BMP記憶體進行
+            //*/
 
             e.HasMorePages = false;
         };
