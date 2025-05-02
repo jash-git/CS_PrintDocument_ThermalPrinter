@@ -79,7 +79,7 @@ class Program
         GetScreenDpi(out SysDpiX,out SysDpiY);
         Bitmap bmp1 = QrCode("相關網站: https://github.com/micjahn/ZXing.Net/issues/458");
         Bitmap bmp2 = BarCode("1234567890");
-        string targetPrinterName = "POS-80C";//"POS80D";//"80mm Series Printer";// "80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+        string targetPrinterName = "POS-80C";//"POS80D";//"80mm Series Printer";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
 
         PrintDocument printDoc = new PrintDocument();
 
@@ -145,6 +145,18 @@ class Program
 
             int y = 10;
 
+            /*
+             熱敏印表機實驗取得數據:
+                78mm : 78-3*2(設備邊界) = 72mm
+                56mm : 56-3*2(設備邊界) = 50mm
+                大小紙張可列印之差: (72-50)=22mm
+            */
+            g.DrawString("文字致中測試", new Font("Arial", 12, FontStyle.Bold), brush, MillimetersToPixels(((78-12) / 2 - (4*3)), 203), y);//紙張寬度((78-12)/2)-3個字寬(4*3)
+            y += MillimetersToPixels(5, 203);//5=字高+1
+
+            g.DrawString("文字致中測試", font, brush, MillimetersToPixels(((78 - 12) / 2 - (3 * 3)), 203), y);//紙張寬度((78-12)/2)-3個字寬(3*3)
+            y += MillimetersToPixels(4, 203);//4=字高+1
+
             // 列印標題
             g.DrawString("收據列印示範", new Font("Arial", 12, FontStyle.Bold), brush, 0, y);
             y += MillimetersToPixels(5, 203);//5=字高+1
@@ -159,7 +171,7 @@ class Program
 
             // 繪製方形區塊（模擬框）
             Pen pen = new Pen(Color.Black, 1);
-            Rectangle rect = new Rectangle(5, y, MillimetersToPixels(68, 203), MillimetersToPixels(68, 203));
+            Rectangle rect = new Rectangle(0, y, MillimetersToPixels(68, 203), MillimetersToPixels(68, 203));
             g.DrawRectangle(pen, rect);
             g.DrawString("感謝您的購買！", font, brush, 10, y + 15);
 
