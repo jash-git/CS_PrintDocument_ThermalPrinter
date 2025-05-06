@@ -30,7 +30,6 @@ class Program
         float inches = PixelsToInches(pixels, dpi);
         return inches * 25.4f;
     }
-
     public static int MillimetersToPixels(float millimeters, float dpi)//毫米 -> 像素
     {
         float inches = millimeters / 25.4f;
@@ -79,7 +78,7 @@ class Program
         GetScreenDpi(out SysDpiX,out SysDpiY);
         Bitmap bmp1 = QrCode("相關網站: https://github.com/micjahn/ZXing.Net/issues/458");
         Bitmap bmp2 = BarCode("1234567890");
-        string targetPrinterName = "POS-80C";//"POS80D";//"80mm Series Printer";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+        string targetPrinterName = "POS80D";//"POS-80C";//"80mm Series Printer";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
 
         PrintDocument printDoc = new PrintDocument();
 
@@ -140,7 +139,7 @@ class Program
             g.Clear(Color.White);//畫布指定底色
             //*/
 
-            Font font = new Font("Arial", 10);
+            Font font = new Font("新細明體", 9);
             Brush brush = Brushes.Black;
 
             int y = 10;
@@ -151,14 +150,38 @@ class Program
                 56mm : 56-3*2(設備邊界) = 50mm
                 大小紙張可列印之差: (72-50)=22mm
             */
-            g.DrawString("文字致中測試", new Font("Arial", 12, FontStyle.Bold), brush, MillimetersToPixels(((78-12) / 2 - (4*3)), 203), y);//紙張寬度((78-12)/2)-3個字寬(4*3)
-            y += MillimetersToPixels(5, 203);//5=字高+1
+            g.DrawString("050", new Font("新細明體", 40, FontStyle.Bold), brush, 0, y);
+            y += MillimetersToPixels(14, 203);//14=字高+1
 
-            g.DrawString("文字致中測試", font, brush, MillimetersToPixels(((78 - 12) / 2 - (3 * 3)), 203), y);//紙張寬度((78-12)/2)-3個字寬(3*3)
+            g.DrawString("外帶", new Font("新細明體", 28, FontStyle.Bold), brush, 0, y);
+            y += MillimetersToPixels(12, 203);//12=字高+1
+
+            g.DrawString("電子發票證明聯", new Font("新細明體", 16), brush, 0, y);
+            y += MillimetersToPixels(7, 203);//7=字高+1
+
+            g.DrawString("114年5-6月", new Font("新細明體", 16), brush, 0, y);
+            y += MillimetersToPixels(7, 203);//7=字高+1
+
+            g.DrawString("AA-67241100(測)", new Font("新細明體", 16), brush, 0, y);
+            y += MillimetersToPixels(7, 203);//7=字高+1
+
+            g.DrawString("2025-05-05 09:27:15", font, brush, 10, y);
             y += MillimetersToPixels(4, 203);//4=字高+1
 
+            g.DrawString("隨機碼:7207        總計:160", font, brush, 10, y);
+            y += MillimetersToPixels(4, 203);//4=字高+1
+
+            g.DrawString("文字置中測試", new Font("新細明體", 13, FontStyle.Bold), brush, MillimetersToPixels(((78-12) / 2 - (5*3)), 203), y);//紙張寬度((78-12)/2)-3個字寬(4*3)
+            y += MillimetersToPixels(6, 203);//6=字高+1
+
+            g.DrawString("文字置中測試", new Font("新細明體", 13), brush, MillimetersToPixels(((78 - 12) / 2 - (5*3)), 203), y);//紙張寬度((78-12)/2)-3個字寬(3*3)
+            y += MillimetersToPixels(6, 203);//5=字高+1
+
             // 列印標題
-            g.DrawString("收據列印示範", new Font("Arial", 12, FontStyle.Bold), brush, 0, y);
+            g.DrawString("收據列印示範(粗體)", new Font("新細明體", 12, FontStyle.Bold), brush, 0, y);
+            y += MillimetersToPixels(5, 203);//5=字高+1
+
+            g.DrawString("收據列印示範", new Font("新細明體", 12), brush, 0, y);
             y += MillimetersToPixels(5, 203);//5=字高+1
 
             // 繪製文字
@@ -193,7 +216,7 @@ class Program
             */
             //---測試大圖
 
-            Font font01 = new Font("Arial", 1);
+            Font font01 = new Font("新細明體", 1);
             g.DrawString("               .", font01, brush, 10, 1500);//故意拉長紙張 (500-300-y)/3.937=25mm
 
             /*
