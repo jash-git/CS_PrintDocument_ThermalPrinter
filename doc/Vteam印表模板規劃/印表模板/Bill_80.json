@@ -14,12 +14,111 @@
 	"ChildElements":
 	[
 		{
-			"ElementType":"Label",
+			"ElementType":"Image",
 			"X":0,
 			"Y":0,
-			"Width":80,
-			"Height":0,
-			"Content":""	
+			"Width":264,
+			"Height":88,
+			"Content":"Bese64........",
+			"Rotation":0
+		},	
+		{
+			"ElementType":"Text",
+			"X":-1,
+			"Y":-1,
+			"Width":-1,
+			"Height":-1,
+			"Content":"",
+			"VerticalContentAlig":"Center",
+			"HorizontalContentAlig":"Center",
+			"ContentSize":40,
+			"ContentBold":"Y",
+			"VerticalSpacing":1,
+			"VariableName":"call_num",
+			"Rotation":0
+		},
+		{
+			"ElementType":"Text",
+			"X":-1,
+			"Y":-1,
+			"Width":-1,
+			"Height":-1,
+			"Content":"",
+			"VerticalContentAlig":"Center",
+			"HorizontalContentAlig":"Center",
+			"ContentSize":28,
+			"ContentBold":"Y",
+			"VerticalSpacing":1,
+			"VariableName":"order_type_name",
+			"Rotation":0		
+		},
+		{
+			"ElementType":"BarCode",
+			"X":-1,
+			"Y":-1,
+			"Width":264,
+			"Height":88,
+			"Content":"",
+			"Rotation":0,
+			"VariableName":"order_no",
+			"Format":"CODE_39"
+		},
+		{
+			"ElementType":"Label",
+			"X":0,
+			"Y":-1,
+			"Width":88,
+			"Height":40,
+			"Content":"單號:",
+			"VerticalContentAlig":"Center",
+			"HorizontalContentAlig":"Left",
+			"ContentSize":13,
+			"ContentBold":"N",
+			"Rotation":0
+		},
+		{
+			"ElementType":"Text",
+			"X":96,
+			"Y":-2,
+			"Width":88,
+			"Height":40,
+			"Content":"",
+			"VerticalContentAlig":"Center",
+			"HorizontalContentAlig":"Left",
+			"ContentSize":13,
+			"ContentBold":"N",
+			"VerticalSpacing":1,
+			"VariableName": "call_num",
+			"Rotation":0
+		},
+		{
+			"ElementType":"Label",
+			"X":344,
+			"Y":-2,
+			"Width":120,
+			"Height":40,
+			"Content":"訂單類型:",
+			"VerticalContentAlig":"Center",
+			"HorizontalContentAlig":"Left",
+			"ContentSize":13,
+			"ContentBold":"N",
+			"Rotation":0
+		},
+		{
+			"ElementType":"Text",
+			"X":464,
+			"Y":-2,
+			"Width":120,
+			"Height":40,
+			"Content":"",
+			"VerticalContentAlig":"Center",
+			"HorizontalContentAlig":"Left",
+			"ContentSize":13,
+			"ContentBold":"N",
+			"VerticalSpacing":1,
+			"VariableName": "order_type_name",
+			"Rotation":0
 		}
+		
 	]
 }
