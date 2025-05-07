@@ -1,0 +1,25 @@
+{
+	"Content":"",
+	"ElementType":"Page",
+	"X":0,
+	"Y":0,
+	"Width":640,
+	"Height":-1,
+	"Spacing": 0,
+	"Rotation": 0,
+	"ZoomRatio": 1,
+	"FontName":"新細明體",
+	"StartBuzzer":"N",
+	"ExternalBuzzer":"N",
+	"ChildElements":
+	[
+		{
+			"ElementType":"Label",
+			"X":0,
+			"Y":0,
+			"Width":80,
+			"Height":0,
+			"Content":""	
+		}
+	]
+}
