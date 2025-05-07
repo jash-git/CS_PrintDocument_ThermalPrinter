@@ -1,0 +1,44 @@
+{
+    "DataSet":{
+        "Global":
+            [
+                {
+                 "ShowText": "訂單編號",
+                 "VariableName":"OrderNo"
+                },
+                {
+                "ShowText": "目前時間",
+                 "VariableName":"CurrentTime"            
+                }
+            ],
+        "DBTable":
+        [
+            {
+                "Table":"OOOO",
+                "Fields":[
+                    {
+                     "ShowText": "V1",
+                     "VariableName":"V01"
+                    },
+                    {
+                     "ShowText": "V2",
+                     "VariableName":"V02"        
+                    }                    
+                ]
+            },
+            {
+                "Table":"XXXX",
+                "Fields":[
+                    {
+                     "ShowText": "V1",
+                     "VariableName":"V01"
+                    },
+                    {
+                     "ShowText": "V2",
+                     "VariableName":"V02"        
+                    }                    
+                ]
+            }            
+        ]    
+    }
+}
