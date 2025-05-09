@@ -349,7 +349,8 @@
 			"RootName":"order_items",
 			"RowSpacing":1,
 			"DividerPosition":"End",
-			"ChildElements":[
+			"TitleElements":[],
+			"DataElements":[
 				{
 					"ElementType":"Text",
 					"X":0,
@@ -369,7 +370,7 @@
 				},
 				{
 					"ElementType":"Text",
-					"X":0,
+					"X":376,
 					"Y":0,
 					"X_Alignment":"X",
 					"Y_Alignment":"Element",
@@ -386,7 +387,7 @@
 				},
 				{
 					"ElementType":"Text",
-					"X":0,
+					"X":456,
 					"Y":0,
 					"X_Alignment":"X",
 					"Y_Alignment":"Element",
@@ -402,6 +403,126 @@
 					"Rotation":0					
 				}
 			]
+		},
+		{
+			"ElementType":"Label",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Increment",				
+			"Width":456,
+			"Height":24,
+			"Content":"商品總數:",
+			"VerticalContentAlig":"Center",
+			"HorizontalContentAlig":"Left",
+			"ContentSize":9,
+			"ContentBold":"N",
+			"Rotation":0
+		},
+		{
+			"ElementType":"Text",
+			"X":456,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Element",
+			"Width":80,
+			"Height":24,
+			"Content":"",
+			"VerticalContentAlig":"Center",
+			"HorizontalContentAlig":"Left",
+			"ContentSize":9,
+			"ContentBold":"N",
+			"VerticalSpacing":1,
+			"VariableName": "item_count",
+			"Rotation":0				
+		},
+		{
+			"ElementType":"Label",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Increment",				
+			"Width":456,
+			"Height":24,
+			"Content":"小計金額:",
+			"VerticalContentAlig":"Center",
+			"HorizontalContentAlig":"Left",
+			"ContentSize":9,
+			"ContentBold":"N",
+			"Rotation":0
+		},
+		{
+			"ElementType":"Text",
+			"X":456,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Element",
+			"Width":80,
+			"Height":24,
+			"Content":"",
+			"VerticalContentAlig":"Center",
+			"HorizontalContentAlig":"Left",
+			"ContentSize":9,
+			"ContentBold":"N",
+			"VerticalSpacing":1,
+			"VariableName": "subtotal",
+			"Rotation":0				
+		},
+		{
+			"ElementType":"Line",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Increment",				
+			"Width":576,
+			"Height":8,
+			"Content":"",
+			"Direction":"X",
+			"Rotation":0
+		},
+		{
+			"ElementType":"Label",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Increment",				
+			"Width":456,
+			"Height":40,
+			"Content":"總計:",
+			"VerticalContentAlig":"Center",
+			"HorizontalContentAlig":"Left",
+			"ContentSize":13,
+			"ContentBold":"N",
+			"Rotation":0
+		},
+		{
+			"ElementType":"Text",
+			"X":456,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Element",
+			"Width":80,
+			"Height":40,
+			"Content":"",
+			"VerticalContentAlig":"Center",
+			"HorizontalContentAlig":"Left",
+			"ContentSize":13,
+			"ContentBold":"N",
+			"VerticalSpacing":1,
+			"VariableName": "amount",
+			"Rotation":0				
+		},
+		{
+			"ElementType":"Line",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Increment",				
+			"Width":576,
+			"Height":8,
+			"Content":"",
+			"Direction":"X",
+			"Rotation":0
 		}
 	]
 }
