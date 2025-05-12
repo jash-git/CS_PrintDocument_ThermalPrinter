@@ -1,0 +1,5 @@
+系統運算全域變數
+	Last_X
+	Last_Y
+	Last_Width
+	Last_Height

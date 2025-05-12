@@ -60,6 +60,8 @@
 			"ContentSize":28,
 			"ContentBold":"Y",
 			"VerticalSpacing":1,
+			"PrefixSymbols":"",
+			"PrefixSymbols":"",
 			"VariableName":"order_type_name",
 			"Rotation":0		
 		},
@@ -73,6 +75,7 @@
 			"Height":88,
 			"Content":"",
 			"Rotation":0,
+			"PrefixSymbols":"",
 			"VariableName":"order_no",
 			"Format":"CODE_39"
 		},
@@ -105,6 +108,7 @@
 			"ContentSize":13,
 			"ContentBold":"N",
 			"VerticalSpacing":1,
+			"PrefixSymbols":"",
 			"VariableName": "call_num",
 			"Rotation":0
 		},
@@ -137,6 +141,7 @@
 			"ContentSize":13,
 			"ContentBold":"N",
 			"VerticalSpacing":1,
+			"PrefixSymbols":"",
 			"VariableName": "order_type_name",
 			"Rotation":0
 		},
@@ -169,6 +174,7 @@
 			"ContentSize":9,
 			"ContentBold":"N",
 			"VerticalSpacing":1,
+			"PrefixSymbols":"",
 			"VariableName": "now_date",
 			"Rotation":0
 		},
@@ -201,6 +207,7 @@
 			"ContentSize":9,
 			"ContentBold":"N",
 			"VerticalSpacing":1,
+			"PrefixSymbols":"",
 			"VariableName": "now_time",
 			"Rotation":0
 		},
@@ -233,6 +240,7 @@
 			"ContentSize":9,
 			"ContentBold":"N",
 			"VerticalSpacing":1,
+			"PrefixSymbols":"",
 			"VariableName": "order_no",
 			"Rotation":0
 		},
@@ -265,6 +273,7 @@
 			"ContentSize":9,
 			"ContentBold":"N",
 			"VerticalSpacing":1,
+			"PrefixSymbols":"",
 			"VariableName": "inv_no",
 			"Rotation":0
 		},
@@ -350,6 +359,7 @@
 			"RowSpacing":1,
 			"DividerPosition":"End",
 			"TitleElements":[],
+			"AlwaysPrintTitle":"N",
 			"DataElements":[
 				{
 					"ElementType":"Text",
@@ -365,6 +375,7 @@
 					"ContentSize":13,
 					"ContentBold":"N",
 					"VerticalSpacing":1,
+					"PrefixSymbols":"",
 					"VariableName": "product_name",
 					"Rotation":0					
 				},
@@ -382,6 +393,7 @@
 					"ContentSize":13,
 					"ContentBold":"N",
 					"VerticalSpacing":1,
+					"PrefixSymbols":"X",
 					"VariableName": "count",
 					"Rotation":0					
 				},
@@ -399,6 +411,7 @@
 					"ContentSize":13,
 					"ContentBold":"N",
 					"VerticalSpacing":1,
+					"PrefixSymbols":"",
 					"VariableName": "subtotal",
 					"Rotation":0					
 				}
@@ -433,6 +446,7 @@
 			"ContentSize":9,
 			"ContentBold":"N",
 			"VerticalSpacing":1,
+			"PrefixSymbols":"",
 			"VariableName": "item_count",
 			"Rotation":0				
 		},
@@ -465,9 +479,61 @@
 			"ContentSize":9,
 			"ContentBold":"N",
 			"VerticalSpacing":1,
+			"PrefixSymbols":"",
 			"VariableName": "subtotal",
 			"Rotation":0				
 		},
+		{
+			"ElementType":"DataRows",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Element",			
+			"Width":640,
+			"Height":-1,
+			"Content":"",
+			"RootName":"",
+			"RowSpacing":1,
+			"DividerPosition":"End",
+			"TitleElements":[
+				{
+					"ElementType":"Label",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",				
+					"Width":456,
+					"Height":40,
+					"Content":"點數折抵金額: ",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":13,
+					"ContentBold":"N",
+					"Rotation":0
+				}		
+			],
+			"AlwaysPrintTitle":"N",
+			"DataElements":[
+				{
+					"ElementType":"Text",
+					"X":456,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Element",
+					"Width":80,
+					"Height":40,
+					"Content":"",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":13,
+					"ContentBold":"N",
+					"VerticalSpacing":1,
+					"PrefixSymbols":"",
+					"VariableName": "point_discount",
+					"Rotation":0				
+				}			
+			]
+		},		
 		{
 			"ElementType":"Line",
 			"X":0,
@@ -509,6 +575,7 @@
 			"ContentSize":13,
 			"ContentBold":"N",
 			"VerticalSpacing":1,
+			"PrefixSymbols":"",
 			"VariableName": "amount",
 			"Rotation":0				
 		},
@@ -523,6 +590,144 @@
 			"Content":"",
 			"Direction":"X",
 			"Rotation":0
-		}
+		},
+		{
+			"ElementType":"DataRows",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Element",			
+			"Width":640,
+			"Height":-1,
+			"Content":"",
+			"RootName":"tablewares",
+			"RowSpacing":1,
+			"DividerPosition":"Top",
+			"TitleElements":[
+				{
+					"ElementType":"Label",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",				
+					"Width":456,
+					"Height":40,
+					"Content":"【餐具】",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":13,
+					"ContentBold":"N",
+					"Rotation":0
+				}		
+			],
+			"AlwaysPrintTitle":"N",
+			"DataElements":[
+				{
+					"ElementType":"Text",
+					"X":24,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Width":456,
+					"Height":24,
+					"Content":"",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":9,
+					"ContentBold":"N",
+					"VerticalSpacing":1,
+					"PrefixSymbols":"",
+					"VariableName": "name",
+					"Rotation":0				
+				},
+				{
+					"ElementType":"Text",
+					"X":456,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Element",
+					"Width":88,
+					"Height":24,
+					"Content":"",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":9,
+					"ContentBold":"N",
+					"VerticalSpacing":1,
+					"PrefixSymbols":"x",
+					"VariableName": "quantity",
+					"Rotation":0				
+				}				
+			]
+		},
+		{
+			"ElementType":"DataRows",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Element",			
+			"Width":640,
+			"Height":-1,
+			"Content":"",
+			"RootName":"payments",
+			"RowSpacing":1,
+			"DividerPosition":"Top",
+			"TitleElements":[
+				{
+					"ElementType":"Label",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",				
+					"Width":456,
+					"Height":40,
+					"Content":"【支付方式】",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":13,
+					"ContentBold":"N",
+					"Rotation":0
+				}		
+			],
+			"AlwaysPrintTitle":"N",
+			"DataElements":[
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Width":456,
+					"Height":40,
+					"Content":"",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":13,
+					"ContentBold":"N",
+					"VerticalSpacing":1,
+					"PrefixSymbols":"",
+					"VariableName": "payment_name",
+					"Rotation":0				
+				},
+				{
+					"ElementType":"Text",
+					"X":480,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Element",
+					"Width":88,
+					"Height":40,
+					"Content":"",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":13,
+					"ContentBold":"N",
+					"VerticalSpacing":1,
+					"PrefixSymbols":"",
+					"VariableName": "payment_amount",
+					"Rotation":0				
+				}				
+			]
+		}		
 	]
 }
