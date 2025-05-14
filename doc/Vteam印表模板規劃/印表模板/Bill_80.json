@@ -1,6 +1,7 @@
 {
 	"Content":"",
 	"ElementType":"Page",
+	"ElementMode":"Normal",
 	"X":0,
 	"Y":0,
 	"X_Alignment":"X",
@@ -16,10 +17,10 @@
 	"ExternalBuzzer":"N",
 	"BuzzerCmd":"",
 	"ExtBuzzerCmd":"",
-	"ChildElements":
-	[
+	"ChildElements":[
 		{
 			"ElementType":"Image",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -32,6 +33,7 @@
 		},	
 		{
 			"ElementType":"Text",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"Center",
@@ -50,6 +52,7 @@
 		},
 		{
 			"ElementType":"Text",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"Center",
@@ -70,6 +73,7 @@
 		},
 		{
 			"ElementType":"BarCode",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"Center",
@@ -85,6 +89,7 @@
 		},
 		{
 			"ElementType":"Label",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -101,6 +106,7 @@
 		},
 		{
 			"ElementType":"Text",
+			"ElementMode":"Normal",
 			"X":96,
 			"Y":0,
 			"X_Alignment":"X",
@@ -120,6 +126,7 @@
 		},
 		{
 			"ElementType":"Label",
+			"ElementMode":"Normal",
 			"X":344,
 			"Y":0,
 			"X_Alignment":"X",
@@ -136,6 +143,7 @@
 		},
 		{
 			"ElementType":"Text",
+			"ElementMode":"Normal",
 			"X":464,
 			"Y":0,
 			"X_Alignment":"X",
@@ -155,6 +163,7 @@
 		},
 		{
 			"ElementType":"Label",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -171,6 +180,7 @@
 		},
 		{
 			"ElementType":"Text",
+			"ElementMode":"Normal",
 			"X":128,
 			"Y":0,
 			"X_Alignment":"X",
@@ -190,6 +200,7 @@
 		},
 		{
 			"ElementType":"Label",
+			"ElementMode":"Normal",
 			"X":288,
 			"Y":0,
 			"X_Alignment":"X",
@@ -206,6 +217,7 @@
 		},
 		{
 			"ElementType":"Text",
+			"ElementMode":"Normal",
 			"X":408,
 			"Y":0,
 			"X_Alignment":"X",
@@ -225,6 +237,7 @@
 		},
 		{
 			"ElementType":"Label",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -241,6 +254,7 @@
 		},
 		{
 			"ElementType":"Text",
+			"ElementMode":"Normal",
 			"X":128,
 			"Y":0,
 			"X_Alignment":"X",
@@ -260,6 +274,7 @@
 		},
 		{
 			"ElementType":"Label",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -276,6 +291,7 @@
 		},
 		{
 			"ElementType":"Text",
+			"ElementMode":"Normal",
 			"X":128,
 			"Y":0,
 			"X_Alignment":"X",
@@ -295,6 +311,7 @@
 		},
 		{
 			"ElementType":"Line",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -309,6 +326,7 @@
 		},
 		{
 			"ElementType":"Label",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -325,6 +343,7 @@
 		},
 		{
 			"ElementType":"Label",
+			"ElementMode":"Normal",
 			"X":394,
 			"Y":0,
 			"X_Alignment":"X",
@@ -341,6 +360,7 @@
 		},
 		{
 			"ElementType":"Label",
+			"ElementMode":"Normal",
 			"X":482,
 			"Y":0,
 			"X_Alignment":"X",
@@ -357,6 +377,7 @@
 		},
 		{
 			"ElementType":"Line",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -371,6 +392,7 @@
 		},
 		{
 			"ElementType":"DataRows",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -381,11 +403,11 @@
 			"Content":"",
 			"RootName":"order_items",
 			"RowSpacing":1,
-			"TitleElements":[],
 			"AlwaysPrint":"N",
-			"DataElements":[
+			"ChildElements":[
 				{
 					"ElementType":"Text",
+					"ElementMode":"Loop",
 					"X":0,
 					"Y":0,
 					"X_Alignment":"X",
@@ -405,6 +427,7 @@
 				},
 				{
 					"ElementType":"Text",
+					"ElementMode":"Loop",
 					"X":376,
 					"Y":0,
 					"X_Alignment":"X",
@@ -424,6 +447,7 @@
 				},
 				{
 					"ElementType":"Text",
+					"ElementMode":"Loop",
 					"X":456,
 					"Y":0,
 					"X_Alignment":"X",
@@ -440,28 +464,28 @@
 					"PrefixSymbols":"",
 					"VariableName": "subtotal",
 					"Rotation":0					
-				}
-			],
-			"FooterElements":[
+				},
 				{
 					"ElementType":"Line",
+					"ElementMode":"Normal",
 					"X":0,
 					"Y":0,
 					"X_Alignment":"X",
 					"Y_Alignment":"Increment",
-					"Index":0,				
+					"Index":3,				
 					"Width":576,
 					"Height":8,
 					"Content":"",
 					"Direction":"X",
 					"LineSymbol":"-",
 					"Rotation":0
-				}			
+				}				
 			]
 			
 		},
 		{
 			"ElementType":"Label",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -478,6 +502,7 @@
 		},
 		{
 			"ElementType":"Text",
+			"ElementMode":"Normal",
 			"X":456,
 			"Y":0,
 			"X_Alignment":"X",
@@ -497,6 +522,7 @@
 		},
 		{
 			"ElementType":"Label",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -513,6 +539,7 @@
 		},
 		{
 			"ElementType":"Text",
+			"ElementMode":"Normal",
 			"X":456,
 			"Y":0,
 			"X_Alignment":"X",
@@ -532,6 +559,7 @@
 		},
 		{
 			"ElementType":"DataRows",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -542,13 +570,16 @@
 			"Content":"",
 			"RootName":"",
 			"RowSpacing":1,
-			"TitleElements":[
+			"AlwaysPrint":"N",
+			"ChildElements":[
 				{
 					"ElementType":"Label",
+					"ElementMode":"Normal",
 					"X":0,
 					"Y":0,
 					"X_Alignment":"X",
-					"Y_Alignment":"Increment",				
+					"Y_Alignment":"Increment",	
+					"Index":0,					
 					"Width":456,
 					"Height":40,
 					"Content":"點數折抵金額: ",
@@ -557,17 +588,15 @@
 					"ContentSize":13,
 					"ContentBold":"N",
 					"Rotation":0
-				}		
-			],
-			"AlwaysPrint":"N",
-			"DataElements":[
+				},			
 				{
 					"ElementType":"Text",
+					"ElementMode":"Loop",
 					"X":456,
 					"Y":0,
 					"X_Alignment":"X",
 					"Y_Alignment":"Element",
-					"Index":0,
+					"Index":1,
 					"Width":80,
 					"Height":40,
 					"Content":"",
@@ -579,27 +608,27 @@
 					"PrefixSymbols":"",
 					"VariableName": "point_discount",
 					"Rotation":0				
-				}			
-			],
-			"FooterElements":[
+				},
 				{
 					"ElementType":"Line",
+					"ElementMode":"Normal",
 					"X":0,
 					"Y":0,
 					"X_Alignment":"X",
 					"Y_Alignment":"Increment",
-					"Index":0,				
+					"Index":2,				
 					"Width":576,
 					"Height":8,
 					"Content":"",
 					"Direction":"X",
 					"LineSymbol":"-",
 					"Rotation":0
-				}			
+				}				
 			]
 		},		
 		{
 			"ElementType":"Line",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -614,6 +643,7 @@
 		},
 		{
 			"ElementType":"Label",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -630,6 +660,7 @@
 		},
 		{
 			"ElementType":"Text",
+			"ElementMode":"Normal",
 			"X":456,
 			"Y":0,
 			"X_Alignment":"X",
@@ -649,6 +680,7 @@
 		},
 		{
 			"ElementType":"Line",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -663,6 +695,7 @@
 		},
 		{
 			"ElementType":"DataRows",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -673,9 +706,11 @@
 			"Content":"",
 			"RootName":"tablewares",
 			"RowSpacing":1,
-			"TitleElements":[
+			"AlwaysPrint":"N",
+			"ChildElements":[
 				{
 					"ElementType":"Line",
+					"ElementMode":"Normal",
 					"X":0,
 					"Y":0,
 					"X_Alignment":"X",
@@ -690,6 +725,7 @@
 				},		
 				{
 					"ElementType":"Label",
+					"ElementMode":"Normal",
 					"X":0,
 					"Y":0,
 					"X_Alignment":"X",
@@ -703,17 +739,15 @@
 					"ContentSize":13,
 					"ContentBold":"N",
 					"Rotation":0
-				}		
-			],
-			"AlwaysPrint":"N",
-			"DataElements":[
+				},			
 				{
 					"ElementType":"Text",
+					"ElementMode":"Loop",
 					"X":24,
 					"Y":0,
 					"X_Alignment":"X",
 					"Y_Alignment":"Increment",
-					"Index":0,
+					"Index":2,
 					"Width":456,
 					"Height":24,
 					"Content":"",
@@ -728,11 +762,12 @@
 				},
 				{
 					"ElementType":"Text",
+					"ElementMode":"Normal",
 					"X":456,
 					"Y":0,
 					"X_Alignment":"X",
 					"Y_Alignment":"Element",
-					"Index":1,
+					"Index":3,
 					"Width":88,
 					"Height":24,
 					"Content":"",
@@ -745,11 +780,11 @@
 					"VariableName": "quantity",
 					"Rotation":0				
 				}				
-			],
-			"FooterElements":[]
+			]
 		},
 		{
 			"ElementType":"DataRows",
+			"ElementMode":"Normal",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
@@ -760,9 +795,11 @@
 			"Content":"",
 			"RootName":"payments",
 			"RowSpacing":1,
-			"TitleElements":[
+			"AlwaysPrint":"N",
+			"ChildElements":[
 				{
 					"ElementType":"Line",
+					"ElementMode":"Normal",
 					"X":0,
 					"Y":0,
 					"X_Alignment":"X",
@@ -777,6 +814,7 @@
 				},			
 				{
 					"ElementType":"Label",
+					"ElementMode":"Normal",
 					"X":0,
 					"Y":0,
 					"X_Alignment":"X",
@@ -790,17 +828,15 @@
 					"ContentSize":13,
 					"ContentBold":"N",
 					"Rotation":0
-				}		
-			],
-			"AlwaysPrint":"N",
-			"DataElements":[
+				},			
 				{
 					"ElementType":"Text",
+					"ElementMode":"Loop",
 					"X":0,
 					"Y":0,
 					"X_Alignment":"X",
 					"Y_Alignment":"Increment",
-					"Index":0,
+					"Index":2,
 					"Width":456,
 					"Height":40,
 					"Content":"",
@@ -815,11 +851,12 @@
 				},
 				{
 					"ElementType":"Text",
+					"ElementMode":"Loop",
 					"X":480,
 					"Y":0,
 					"X_Alignment":"X",
 					"Y_Alignment":"Element",
-					"Index":1,
+					"Index":3,
 					"Width":88,
 					"Height":40,
 					"Content":"",
@@ -832,8 +869,7 @@
 					"VariableName": "payment_amount",
 					"Rotation":0				
 				}				
-			],
-			"FooterElements":[]
+			]
 		}		
 	]
 }
