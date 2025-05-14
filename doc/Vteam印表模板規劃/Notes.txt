@@ -1,5 +1,25 @@
-系統運算全域變數
-	Last_X
-	Last_Y
-	Last_Width
-	Last_Height
+系統運算全域變數:
+	Max_Height (同一列，Y值未變化時持續紀錄)
+	Last_Height = Max_Height (不同列時，運算用)
+	
+	EX: Last_Heigh=Max_Height=00
+		═ ═ ═ Last_Heigh=00/Max_Height=10 (i=0)
+		═ ╦ ═ Last_Heigh=10/Max_Height=20 (i=1)
+		═ ═ ═ Last_Heigh=20/Max_Height=10 (i=2)
+		═ ═ ═ Last_Heigh=10/Max_Height=10 (i=3)
+	
+
+系統常數:
+	四倍字 : new Font("新細明體",40) ; Height(Width) = 13mm
+	雙倍字 : new Font("新細明體",28) ; Height(Width) = 11mm
+	單倍字 : new Font("新細明體", 13) ; Height(Width) = 5mm
+	一般字 : new Font("新細明體", 9) ; Height(Width) = 3mm
+	電子發票標題 : new Font("新細明體", 16) ; Height(Width) = 6mm
+
+	
+相關公式整理:
+	文字太長自動換行後的Height : N*字高 + (N-1)*VerticalSpacing ;其中 N=((int)(Width/字寬))+(Width%字寬)
+	文字置中文字起始X座標計算 : (起始X + Width/2) - (總字數*字寬/2)
+	文字靠右文字起始X座標計算 : (起始X + Width) - (總字數*字寬)
+
+	

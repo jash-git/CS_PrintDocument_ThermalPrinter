@@ -39,14 +39,14 @@
 			"X_Alignment":"Center",
 			"Y_Alignment":"Increment",
 			"Index":2,			
-			"Width":-1,
-			"Height":-1,
+			"Width":576,
+			"Height":104,
 			"Content":"",
 			"VerticalContentAlig":"Center",
 			"HorizontalContentAlig":"Center",
 			"ContentSize":40,
 			"ContentBold":"Y",
-			"VerticalSpacing":1,
+			"VerticalSpacing":8,
 			"VariableName":"call_num",
 			"Rotation":0
 		},
@@ -58,14 +58,14 @@
 			"X_Alignment":"Center",
 			"Y_Alignment":"Increment",		
 			"Index":3,				
-			"Width":-1,
-			"Height":-1,
+			"Width":576,
+			"Height":88,
 			"Content":"",
 			"VerticalContentAlig":"Center",
 			"HorizontalContentAlig":"Center",
 			"ContentSize":28,
 			"ContentBold":"Y",
-			"VerticalSpacing":1,
+			"VerticalSpacing":8,
 			"PrefixSymbols":"",
 			"PrefixSymbols":"",
 			"VariableName":"order_type_name",
@@ -119,7 +119,7 @@
 			"HorizontalContentAlig":"Left",
 			"ContentSize":13,
 			"ContentBold":"N",
-			"VerticalSpacing":1,
+			"VerticalSpacing":8,
 			"PrefixSymbols":"",
 			"VariableName": "call_num",
 			"Rotation":0
@@ -156,7 +156,7 @@
 			"HorizontalContentAlig":"Left",
 			"ContentSize":13,
 			"ContentBold":"N",
-			"VerticalSpacing":1,
+			"VerticalSpacing":8,
 			"PrefixSymbols":"",
 			"VariableName": "order_type_name",
 			"Rotation":0
@@ -193,7 +193,7 @@
 			"HorizontalContentAlig":"Left",
 			"ContentSize":9,
 			"ContentBold":"N",
-			"VerticalSpacing":1,
+			"VerticalSpacing":8,
 			"PrefixSymbols":"",
 			"VariableName": "now_date",
 			"Rotation":0
@@ -230,7 +230,7 @@
 			"HorizontalContentAlig":"Left",
 			"ContentSize":9,
 			"ContentBold":"N",
-			"VerticalSpacing":1,
+			"VerticalSpacing":8,
 			"PrefixSymbols":"",
 			"VariableName": "now_time",
 			"Rotation":0
@@ -267,7 +267,7 @@
 			"HorizontalContentAlig":"Left",
 			"ContentSize":9,
 			"ContentBold":"N",
-			"VerticalSpacing":1,
+			"VerticalSpacing":8,
 			"PrefixSymbols":"",
 			"VariableName": "order_no",
 			"Rotation":0
@@ -304,7 +304,7 @@
 			"HorizontalContentAlig":"Left",
 			"ContentSize":9,
 			"ContentBold":"N",
-			"VerticalSpacing":1,
+			"VerticalSpacing":8,
 			"PrefixSymbols":"",
 			"VariableName": "inv_no",
 			"Rotation":0
@@ -420,7 +420,7 @@
 					"HorizontalContentAlig":"Left",
 					"ContentSize":13,
 					"ContentBold":"N",
-					"VerticalSpacing":1,
+					"VerticalSpacing":8,
 					"PrefixSymbols":"",
 					"VariableName": "product_name",
 					"Rotation":0					
@@ -440,7 +440,7 @@
 					"HorizontalContentAlig":"Left",
 					"ContentSize":13,
 					"ContentBold":"N",
-					"VerticalSpacing":1,
+					"VerticalSpacing":8,
 					"PrefixSymbols":"X",
 					"VariableName": "count",
 					"Rotation":0					
@@ -460,7 +460,7 @@
 					"HorizontalContentAlig":"Left",
 					"ContentSize":13,
 					"ContentBold":"N",
-					"VerticalSpacing":1,
+					"VerticalSpacing":8,
 					"PrefixSymbols":"",
 					"VariableName": "subtotal",
 					"Rotation":0					
@@ -515,7 +515,7 @@
 			"HorizontalContentAlig":"Left",
 			"ContentSize":9,
 			"ContentBold":"N",
-			"VerticalSpacing":1,
+			"VerticalSpacing":8,
 			"PrefixSymbols":"",
 			"VariableName": "item_count",
 			"Rotation":0				
@@ -552,7 +552,7 @@
 			"HorizontalContentAlig":"Left",
 			"ContentSize":9,
 			"ContentBold":"N",
-			"VerticalSpacing":1,
+			"VerticalSpacing":8,
 			"PrefixSymbols":"",
 			"VariableName": "subtotal",
 			"Rotation":0				
@@ -604,7 +604,7 @@
 					"HorizontalContentAlig":"Left",
 					"ContentSize":13,
 					"ContentBold":"N",
-					"VerticalSpacing":1,
+					"VerticalSpacing":8,
 					"PrefixSymbols":"",
 					"VariableName": "point_discount",
 					"Rotation":0				
@@ -673,7 +673,7 @@
 			"HorizontalContentAlig":"Left",
 			"ContentSize":13,
 			"ContentBold":"N",
-			"VerticalSpacing":1,
+			"VerticalSpacing":8,
 			"PrefixSymbols":"",
 			"VariableName": "amount",
 			"Rotation":0				
@@ -755,7 +755,7 @@
 					"HorizontalContentAlig":"Left",
 					"ContentSize":9,
 					"ContentBold":"N",
-					"VerticalSpacing":1,
+					"VerticalSpacing":8,
 					"PrefixSymbols":"",
 					"VariableName": "name",
 					"Rotation":0				
@@ -775,7 +775,7 @@
 					"HorizontalContentAlig":"Left",
 					"ContentSize":9,
 					"ContentBold":"N",
-					"VerticalSpacing":1,
+					"VerticalSpacing":8,
 					"PrefixSymbols":"x",
 					"VariableName": "quantity",
 					"Rotation":0				
@@ -844,7 +844,7 @@
 					"HorizontalContentAlig":"Left",
 					"ContentSize":13,
 					"ContentBold":"N",
-					"VerticalSpacing":1,
+					"VerticalSpacing":8,
 					"PrefixSymbols":"",
 					"VariableName": "payment_name",
 					"Rotation":0				
@@ -864,7 +864,7 @@
 					"HorizontalContentAlig":"Left",
 					"ContentSize":13,
 					"ContentBold":"N",
-					"VerticalSpacing":1,
+					"VerticalSpacing":8,
 					"PrefixSymbols":"",
 					"VariableName": "payment_amount",
 					"Rotation":0				
