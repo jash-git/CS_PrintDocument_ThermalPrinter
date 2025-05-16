@@ -1,0 +1,78 @@
+元件絕對位置表示法
+{
+	"ChildElements":[
+		{
+			"ElementType":"Label",
+			"X":10,
+			"Y":10,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",			
+			"Width":40,
+			"Height":10
+		},
+		{		
+			"ElementType":"Label",
+			"X":10,
+			"Y":21,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",			
+			"Width":40,
+			"Height":10
+		},
+		{		
+			"ElementType":"Label",
+			"X":51,
+			"Y":21,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",			
+			"Width":40,
+			"Height":10
+		}
+	]
+}
+
+=================
+
+元件相對位置表示法
+{
+	"ChildElements":[
+		{
+			"ElementType":"Label",
+			"X":10,
+			"Y":10,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",			
+			"Width":40,
+			"Height":10
+		},
+		{		
+			"ElementType":"Label",
+			"X":10,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Increment ",			
+			"Width":40,
+			"Height":10
+		},
+		{		
+			"ElementType":"Label",
+			"X":51,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Element",			
+			"Width":40,
+			"Height":10
+		}
+	]
+}
+
+/*
+元件01 ~ 換列(同行)
+x=10 [前一元件X]
+y=10+10+1 [前一元件Y + 前一元件Height + 1]
+*/
+/*
+元件02 ~ 同列(換行)
+x=10+40+1 [前一元件X + 前一元件Width + 1]
+y=21 [前一元件Y]
+*/	
