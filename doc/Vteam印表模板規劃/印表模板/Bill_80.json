@@ -369,22 +369,29 @@
 			"Rotation":0
 		},
 		{
-			"ElementType":"DataRows",
+			"ElementType":"Table",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
-			"Y_Alignment":"Element",
+			"Y_Alignment":"Increment",
 			"Index":22,				
 			"Width":640,
-			"Height":-1,
+			"Height":0,
 			"Content":"",
 			"RowSpacing":1,
 			"AlwaysPrint":"N",
 			"ChildElements":[
 				{
-					"ElementType":"BlockElements",
+					"ElementType":"Rows",				
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,			
+					"Width":640,
+					"Height":0,
+					"Content":"",				
 					"RootName":"order_items",
-					"Times":"Loop",
 					"ChildElements":[
 						{
 							"ElementType":"Text",
@@ -446,9 +453,16 @@
 					]
 				},
 				{
-					"ElementType":"BlockElements",
+					"ElementType":"Block",				
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":1,			
+					"Width":640,
+					"Height":0,
+					"Content":"",				
 					"RootName":"",
-					"Times":"",
 					"ChildElements":[
 						{
 							"ElementType":"Line",
@@ -539,22 +553,29 @@
 			"Rotation":0				
 		},
 		{
-			"ElementType":"DataRows",
+			"ElementType":"Table",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
-			"Y_Alignment":"Element",
+			"Y_Alignment":"Increment",
 			"Index":27,				
 			"Width":640,
-			"Height":-1,
+			"Height":0,
 			"Content":"",
 			"RowSpacing":1,
 			"AlwaysPrint":"N",
 			"ChildElements":[
 				{
-					"ElementType":"BlockElements",
+					"ElementType":"Block",				
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,			
+					"Width":640,
+					"Height":0,
+					"Content":"",				
 					"RootName":"",
-					"Times":"",
 					"ChildElements":[
 						{
 							"ElementType":"Label",
@@ -673,23 +694,29 @@
 			"Rotation":0
 		},
 		{
-			"ElementType":"DataRows",
+			"ElementType":"Table",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
-			"Y_Alignment":"Element",
+			"Y_Alignment":"Increment",
 			"Index":32,			
 			"Width":640,
-			"Height":-1,
+			"Height":0,
 			"Content":"",
-			"RootName":"tablewares",
 			"RowSpacing":1,
 			"AlwaysPrint":"N",
 			"ChildElements":[
 				{
-					"ElementType":"BlockElements",
+					"ElementType":"Block",				
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,			
+					"Width":640,
+					"Height":0,
+					"Content":"",				
 					"RootName":"",
-					"Times":"",
 					"ChildElements":[
 						{
 							"ElementType":"Line",
@@ -724,9 +751,16 @@
 					]
 				},
 				{
-					"ElementType":"BlockElements",
+					"ElementType":"Rows",				
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":1,			
+					"Width":640,
+					"Height":0,
+					"Content":"",				
 					"RootName":"tablewares",
-					"Times":"Loop",
 					"ChildElements":[
 					{
 						"ElementType":"Text",
@@ -771,22 +805,29 @@
 			]
 		},
 		{
-			"ElementType":"DataRows",
+			"ElementType":"Table",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
-			"Y_Alignment":"Element",
+			"Y_Alignment":"Increment",
 			"Index":33,			
 			"Width":640,
-			"Height":-1,
+			"Height":0,
 			"Content":"",
 			"RowSpacing":1,
 			"AlwaysPrint":"N",
 			"ChildElements":[
 				{
-					"ElementType":"BlockElements",
+					"ElementType":"Block",				
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,			
+					"Width":640,
+					"Height":0,
+					"Content":"",				
 					"RootName":"",
-					"Times":"",
 					"ChildElements":[
 						{
 							"ElementType":"Line",
@@ -821,9 +862,16 @@
 					]
 				},
 				{
-					"ElementType":"BlockElements",
+					"ElementType":"Rows",				
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":1,			
+					"Width":640,
+					"Height":0,
+					"Content":"",				
 					"RootName":"payments",
-					"Times":"Loop",
 					"ChildElements":[
 						{
 							"ElementType":"Text",
