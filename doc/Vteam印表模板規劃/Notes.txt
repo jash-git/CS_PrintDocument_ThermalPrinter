@@ -1,4 +1,7 @@
 系統運算全域變數:
+	ObjectStack(Page/Table/Block/Rows)
+	Last_X
+	Last_Y
 	Max_Height (同一列，Y值未變化時持續紀錄)
 	Last_Height = Max_Height (不同列時，運算用)
 	
@@ -23,6 +26,13 @@
 	文字寬度靠右文字起始X座標計算 : (起始X + Width) - (總字數*字寬)
 	文字高度置中文字起始Y座標計算 : (起始Y + Height/2) - (N*字高/2)
 	文字高度靠下文字起始Y座標計算 : (起始Y + Height) - (N*字高)
+
+	子元件的第一個[Y_Alignment = "Y"] Y計算 : (前一元件Y + 現在Y)
+	子元件的第一個[Y_Alignment = "Element"] Y計算 : (前一元件Y)
+	子元件的第一個[Y_Alignment = "Increment"] : 
+		Loop(i=0) Y計算 : (前一元件Y + 現在Y)
+		Loop(i≠0) Y計算 : (前一元件Y + 前一元件Height + 1)
+	子元件結束後 透過取出 ObjectStack 判斷是否為Block進行 Last_X、Last_Y、Max_Height值的對應修正
 	
 	判斷換列:前後元件X相同 [Y_Alignment = "Increment"]
 	判斷換行:前後元件Y相同 [Y_Alignment = "Element"]
@@ -30,6 +40,6 @@
 	元件同列 X計算 : (前一元件X + 前一元件Width + 1)
 	元件同列 Y計算 : (前一元件Y) [固定 "Element"]
 	元件換列 X計算 : (前一元件X)
-	元件換列 Y計算 : (前一元件Y + 前一元件Height + 1) [固定 "Increment"]
+	元件換列 Y計算 : [前一元件Y + 前一元件Height + 1] [固定 "Increment"]
 
 	

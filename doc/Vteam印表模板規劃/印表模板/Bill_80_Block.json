@@ -1,0 +1,79 @@
+{
+	"Content": "",
+	"ElementType": "Page",
+	"X": 0,
+	"Y": 0,
+	"X_Alignment": "X",
+	"Y_Alignment": "Y",
+	"Index": 0,
+	"Width": 640,
+	"Height": -1,
+	"Spacing": 0,
+	"Rotation": 0,
+	"ZoomRatio": 1,
+	"FontName": "新細明體",
+	"StartBuzzer": "N",
+	"ExternalBuzzer": "N",
+	"BuzzerCmd": "",
+	"ExtBuzzerCmd": "",
+	"ChildElements": [
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 0,
+			"Width": 640,
+			"Height": 100,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType": "Image",
+					"X": 0,
+					"Y": 0,
+					"X_Alignment": "X",
+					"Y_Alignment": "Y",
+					"Index": 0,
+					"Width": 264,
+					"Height": 88,
+					"Content": "Bese64........",
+					"Rotation": 0
+				}
+			]
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Increment",
+			"Index": 1,
+			"Width": 640,
+			"Height": 104,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"Center",
+					"Y_Alignment":"Y",
+					"Index":0,			
+					"Width":576,
+					"Height":104,
+					"Content":"",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Center",
+					"ContentSize":40,
+					"ContentBold":"Y",
+					"VerticalSpacing":8,
+					"VariableName":"call_num",
+					"Rotation":0
+				}
+			]
+		}
+	]
+}
