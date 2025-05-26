@@ -7,7 +7,7 @@ using ZXing.Common;
 using ZXing.QrCode;
 using System.Runtime.Intrinsics.Arm;
 
-class Program
+public class DPI_Funs
 {
     //---
     //DPI 相關函數
@@ -36,8 +36,19 @@ class Program
         return (int)(inches * dpi + 0.5f); // 使用0.5f进行四舍五入处理
     }
     //---DPI 相關函數
+}
 
-    static Bitmap QrCode(String StrData)
+public class Barcode_Funs
+{
+    //1D條碼 和 2D條碼 產生器
+    /*
+    using ZXing;
+    using ZXing.Windows.Compatibility;// NET5之後CS3050(Error CS0305 Using generic type 'BarcodeWriter ' requires type 1) 解決方法 : https://github.com/micjahn/ZXing.Net/issues/458
+    using ZXing.Common;
+    using ZXing.QrCode;  
+    */
+
+    public static Bitmap QrCode(String StrData)
     {
         // Create a BarcodeWriter instance
         var barcodeWriter = new BarcodeWriter();//ZXing.Windows.Compatibility
@@ -56,7 +67,7 @@ class Program
 
         return barcodeBitmap;
     }
-    static Bitmap BarCode(String StrData)
+    public static Bitmap BarCode(String StrData)
     {
         // Create a BarcodeWriter instance
         var barcodeWriter = new BarcodeWriter();//ZXing.Windows.Compatibility
@@ -72,12 +83,56 @@ class Program
 
         return barcodeBitmap;
     }
+
+}
+
+public class PrintTemplate_Fun
+{
+
+}
+public class PrintTemplate
+{
+    protected string m_strPrinterName;
+    protected PrintDocument m_PrintDocument;
+    public PrintTemplate() 
+    {
+        m_PrintDocument = new PrintDocument();
+        m_PrintDocument.PrintPage += new PrintPageEventHandler(PrintPage);
+    }
+    private void PrintPage(object sender, PrintPageEventArgs e)
+    {
+    }
+}
+class Program
+{
     static void Main()
     {
+        string targetPrinterName = "POS80D";//"POS-80C";//"80mm Series Printer";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+        PrintDocument printDoc = new PrintDocument();
+        // 指定印表機
+        bool found = false;
+        foreach (string printer in PrinterSettings.InstalledPrinters)
+        {
+            if (printer.Equals(targetPrinterName, StringComparison.OrdinalIgnoreCase))
+            {
+                printDoc.PrinterSettings.PrinterName = printer;
+                found = true;
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            Console.WriteLine($"找不到印表機：{targetPrinterName}");
+            return;
+        }
+    }
+    static void Main_V0()
+    {
         float SysDpiX, SysDpiY;
-        GetScreenDpi(out SysDpiX,out SysDpiY);
-        Bitmap bmp1 = QrCode("相關網站: https://github.com/micjahn/ZXing.Net/issues/458");
-        Bitmap bmp2 = BarCode("1234567890");
+        DPI_Funs.GetScreenDpi(out SysDpiX,out SysDpiY);
+        Bitmap bmp1 = Barcode_Funs.QrCode("相關網站: https://github.com/micjahn/ZXing.Net/issues/458");
+        Bitmap bmp2 = Barcode_Funs.BarCode("1234567890");
         string targetPrinterName = "POS80D";//"POS-80C";//"80mm Series Printer";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
 
         PrintDocument printDoc = new PrintDocument();
@@ -151,57 +206,57 @@ class Program
                 大小紙張可列印之差: (72-50)=22mm
             */
             g.DrawString("050", new Font("新細明體", 40, FontStyle.Bold), brush, 0, y);
-            y += MillimetersToPixels(14, 203);//14=字高+1
+            y += DPI_Funs.MillimetersToPixels(14, 203);//14=字高+1
 
             g.DrawString("外帶", new Font("新細明體", 28, FontStyle.Bold), brush, 0, y);
-            y += MillimetersToPixels(12, 203);//12=字高+1
+            y += DPI_Funs.MillimetersToPixels(12, 203);//12=字高+1
 
             g.DrawString("電子發票證明聯", new Font("新細明體", 16), brush, 0, y);
-            y += MillimetersToPixels(7, 203);//7=字高+1
+            y += DPI_Funs.MillimetersToPixels(7, 203);//7=字高+1
 
             g.DrawString("114年5-6月", new Font("新細明體", 16), brush, 0, y);
-            y += MillimetersToPixels(7, 203);//7=字高+1
+            y += DPI_Funs.MillimetersToPixels(7, 203);//7=字高+1
 
             g.DrawString("AA-67241100(測)", new Font("新細明體", 16), brush, 0, y);
-            y += MillimetersToPixels(7, 203);//7=字高+1
+            y += DPI_Funs.MillimetersToPixels(7, 203);//7=字高+1
 
             g.DrawString("2025-05-05 09:27:15", font, brush, 10, y);
-            y += MillimetersToPixels(4, 203);//4=字高+1
+            y += DPI_Funs.MillimetersToPixels(4, 203);//4=字高+1
 
             g.DrawString("隨機碼:7207        總計:160", font, brush, 10, y);
-            y += MillimetersToPixels(4, 203);//4=字高+1
+            y += DPI_Funs.MillimetersToPixels(4, 203);//4=字高+1
 
-            g.DrawString("文字置中測試", new Font("新細明體", 13, FontStyle.Bold), brush, MillimetersToPixels(((78-12) / 2 - (5*3)), 203), y);//紙張寬度((78-12)/2)-3個字寬(4*3)
-            y += MillimetersToPixels(6, 203);//6=字高+1
+            g.DrawString("文字置中測試", new Font("新細明體", 13, FontStyle.Bold), brush, DPI_Funs.MillimetersToPixels(((78-12) / 2 - (5*3)), 203), y);//紙張寬度((78-12)/2)-3個字寬(4*3)
+            y += DPI_Funs.MillimetersToPixels(6, 203);//6=字高+1
 
-            g.DrawString("文字置中測試", new Font("新細明體", 13), brush, MillimetersToPixels(((78 - 12) / 2 - (5*3)), 203), y);//紙張寬度((78-12)/2)-3個字寬(3*3)
-            y += MillimetersToPixels(6, 203);//5=字高+1
+            g.DrawString("文字置中測試", new Font("新細明體", 13), brush, DPI_Funs.MillimetersToPixels(((78 - 12) / 2 - (5*3)), 203), y);//紙張寬度((78-12)/2)-3個字寬(3*3)
+            y += DPI_Funs.MillimetersToPixels(6, 203);//5=字高+1
 
             // 列印標題
             g.DrawString("收據列印示範(粗體)", new Font("新細明體", 12, FontStyle.Bold), brush, 0, y);
-            y += MillimetersToPixels(5, 203);//5=字高+1
+            y += DPI_Funs.MillimetersToPixels(5, 203);//5=字高+1
 
             g.DrawString("收據列印示範", new Font("新細明體", 12), brush, 0, y);
-            y += MillimetersToPixels(5, 203);//5=字高+1
+            y += DPI_Funs.MillimetersToPixels(5, 203);//5=字高+1
 
             // 繪製文字
             g.DrawString("商品：測試產品", font, brush, 10, y);
-            y += MillimetersToPixels(4, 203);//4=字高+1
+            y += DPI_Funs.MillimetersToPixels(4, 203);//4=字高+1
             g.DrawString("數量：2", font, brush, 10, y);
-            y += MillimetersToPixels(4, 203);//4=字高+1
+            y += DPI_Funs.MillimetersToPixels(4, 203);//4=字高+1
             g.DrawString("總價：NT$200", font, brush, 10, y);
-            y += MillimetersToPixels(10, 203);
+            y += DPI_Funs.MillimetersToPixels(10, 203);
 
             // 繪製方形區塊（模擬框）
             Pen pen = new Pen(Color.Black, 1);
-            Rectangle rect = new Rectangle(0, y, MillimetersToPixels(68, 203), MillimetersToPixels(68, 203));
+            Rectangle rect = new Rectangle(0, y, DPI_Funs.MillimetersToPixels(68, 203), DPI_Funs.MillimetersToPixels(68, 203));
             g.DrawRectangle(pen, rect);
             g.DrawString("感謝您的購買！", font, brush, 10, y + 15);
 
-            Rectangle printArea2 = new Rectangle(5, y+MillimetersToPixels(70, 203), MillimetersToPixels(30 * 1.1f, 203), MillimetersToPixels(15 * 1.1f, 203));//new RectangleF(0, 0, e.PageBounds.Width, e.PageBounds.Height);//
+            Rectangle printArea2 = new Rectangle(5, y+DPI_Funs.MillimetersToPixels(70, 203), DPI_Funs.MillimetersToPixels(30 * 1.1f, 203), DPI_Funs.MillimetersToPixels(15 * 1.1f, 203));//new RectangleF(0, 0, e.PageBounds.Width, e.PageBounds.Height);//
             g.DrawImage(bmp2, printArea2);
 
-            Rectangle printArea1 = new Rectangle(5, y+MillimetersToPixels(70, 203) + MillimetersToPixels(17 * 1.1f, 203), MillimetersToPixels(40*1.1f, 203), MillimetersToPixels(40 * 1.1f, 203));//new RectangleF(0, 0, e.PageBounds.Width, e.PageBounds.Height);//
+            Rectangle printArea1 = new Rectangle(5, y+DPI_Funs.MillimetersToPixels(70, 203) + DPI_Funs.MillimetersToPixels(17 * 1.1f, 203), DPI_Funs.MillimetersToPixels(40*1.1f, 203), DPI_Funs.MillimetersToPixels(40 * 1.1f, 203));//new RectangleF(0, 0, e.PageBounds.Width, e.PageBounds.Height);//
             g.DrawImage(bmp1, printArea1);
 
             //---

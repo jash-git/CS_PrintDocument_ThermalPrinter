@@ -72,7 +72,6 @@
 					"VerticalSpacing":8,
 					"IntervalSymbols":"",
 					"AutoWrap":"Y",							
-					"AutoFill":"N",
 					"Rotation":0
 				}
 			]
@@ -98,7 +97,7 @@
 					"Index":0,				
 					"Width":576,
 					"Height":8,
-					"Content":"-",
+					"Content":"--------------------------------------------",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
 					"ContentSize":8,
@@ -106,7 +105,6 @@
 					"VerticalSpacing":8,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",
-					"AutoFill":"Y",
 					"Rotation":0
 				}
 			]
@@ -139,7 +137,6 @@
 					"VerticalSpacing":8,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",
-					"AutoFill":"N",
 					"ContentBold":"N",
 					"Rotation":0
 				},
@@ -159,7 +156,6 @@
 					"VerticalSpacing":8,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",
-					"AutoFill":"N",
 					"ContentBold":"N",
 					"Rotation":0
 				},
@@ -179,7 +175,6 @@
 					"VerticalSpacing":8,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",
-					"AutoFill":"N",
 					"ContentBold":"N",
 					"Rotation":0
 				}
@@ -206,7 +201,7 @@
 					"Index":0,				
 					"Width":576,
 					"Height":8,
-					"Content":"-",
+					"Content":"------------------------------------------------------------",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
 					"ContentSize":8,
@@ -214,7 +209,6 @@
 					"VerticalSpacing":8,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",
-					"AutoFill":"Y",
 					"Rotation":0
 				}
 			]
@@ -278,17 +272,14 @@
 											"Index":0,
 											"Width":376,
 											"Height":40,
-											"Content":"",
+											"Content":"{$product_name}",
 											"VerticalContentAlig":"Center",
 											"HorizontalContentAlig":"Left",
 											"ContentSize":13,
 											"ContentBold":"N",
 											"VerticalSpacing":8,
-											"PrefixSymbols":"",
-											"SuffixSymbols":"",
 											"IntervalSymbols":"",
 											"AutoWrap":"Y",									
-											"VariableName": "product_name",
 											"Rotation":0					
 										},
 										{
@@ -300,17 +291,14 @@
 											"Index":1,
 											"Width":80,
 											"Height":40,
-											"Content":"",
+											"Content":"{$count}",
 											"VerticalContentAlig":"Center",
 											"HorizontalContentAlig":"Left",
 											"ContentSize":13,
 											"ContentBold":"N",
 											"VerticalSpacing":8,
-											"PrefixSymbols":"X",
-											"SuffixSymbols":"",
 											"IntervalSymbols":"",
 											"AutoWrap":"Y",									
-											"VariableName": "count",
 											"Rotation":0					
 										},
 										{
@@ -322,17 +310,14 @@
 											"Index":2,
 											"Width":80,
 											"Height":40,
-											"Content":"",
+											"Content":"{$subtotal}",
 											"VerticalContentAlig":"Center",
 											"HorizontalContentAlig":"Left",
 											"ContentSize":13,
 											"ContentBold":"N",
 											"VerticalSpacing":8,
-											"PrefixSymbols":"",
-											"SuffixSymbols":"",
 											"IntervalSymbols":"",
 											"AutoWrap":"Y",									
-											"VariableName": "subtotal",
 											"Rotation":0					
 										}							
 									]
@@ -380,7 +365,6 @@
 													"VerticalSpacing":8,
 													"IntervalSymbols":",",
 													"AutoWrap":"Y",
-													"AutoFill": "N",
 													"Rotation":0					
 												}									
 											]	
@@ -429,7 +413,6 @@
 													"VerticalSpacing":8,
 													"IntervalSymbols":"",
 													"AutoWrap":"Y",									
-													"AutoFill":"N",
 													"Rotation":0					
 												},
 												{
@@ -449,7 +432,6 @@
 													"VerticalSpacing":8,
 													"IntervalSymbols":"",
 													"AutoWrap":"Y",									
-													"AutoFill":"N",
 													"Rotation":0					
 												},
 												{
@@ -469,7 +451,6 @@
 													"VerticalSpacing":8,
 													"IntervalSymbols":"",
 													"AutoWrap":"Y",									
-													"AutoFill": "N",
 													"Rotation":0					
 												}							
 											]
@@ -517,7 +498,6 @@
 															"VerticalSpacing":8,
 															"IntervalSymbols":",",
 															"AutoWrap":"Y",
-															"AutoFill": "N",
 															"Rotation":0					
 														}									
 													]	
@@ -549,15 +529,14 @@
 									"Index":0,				
 									"Width":576,
 									"Height":8,
-									"Content":"-",
+									"Content":"-------------------------------------------------",
 									"VerticalContentAlig":"Center",
 									"HorizontalContentAlig":"Left",
 									"ContentSize":9,
 									"ContentBold":"N",
-									"VerticalSpacing":"8",
+									"VerticalSpacing":8,
 									"IntervalSymbols":",",
 									"AutoWrap":"N",
-									"AutoFill":"Y",
 									"Rotation":0
 								}						
 							]
