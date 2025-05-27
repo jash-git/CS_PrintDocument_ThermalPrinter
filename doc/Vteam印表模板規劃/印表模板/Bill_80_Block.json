@@ -249,6 +249,7 @@
 							"Height":-1,
 							"Content":"",				
 							"RootName":"order_items",
+							"DisplayMode":"Single",
 							"ChildElements":[
 								{
 									"ElementType":"Block",				
@@ -261,7 +262,6 @@
 									"Height":-1,
 									"Content":"",				
 									"RootName":"",
-									"MergeVariables":"N",
 									"ChildElements":[
 										{
 											"ElementType":"Text",
@@ -333,7 +333,7 @@
 									"Height":-1,
 									"Content":"",				
 									"RootName":"condiments",
-									"MergeVariables":"Y",
+									"DisplayMode":"Merge",
 									"ChildElements":[
 										{
 											"ElementType":"Block",				
@@ -346,7 +346,6 @@
 											"Height":-1,
 											"Content":"",				
 											"RootName":"",
-											"MergeVariables":"N",
 											"ChildElements":[
 												{
 													"ElementType":"Text",
@@ -382,6 +381,7 @@
 									"Height":-1,
 									"Content":"",				
 									"RootName":"set_meals",
+									"DisplayMode":"Single",
 									"ChildElements":[
 										{
 											"ElementType":"Block",				
@@ -394,7 +394,6 @@
 											"Height":-1,
 											"Content":"",				
 											"RootName":"",
-											"MergeVariables":"N",
 											"ChildElements":[
 												{
 													"ElementType":"Text",
@@ -466,7 +465,7 @@
 											"Height":-1,
 											"Content":"",				
 											"RootName":"condiments",
-											"MergeVariables":"Y",
+											"DisplayMode":"Merge",
 											"ChildElements":[
 												{
 													"ElementType":"Block",				
@@ -479,7 +478,6 @@
 													"Height":-1,
 													"Content":"",				
 													"RootName":"",
-													"MergeVariables":"N",
 													"ChildElements":[
 														{
 															"ElementType":"Text",
@@ -496,7 +494,7 @@
 															"ContentSize":13,
 															"ContentBold":"N",
 															"VerticalSpacing":8,
-															"IntervalSymbols":",",
+															"IntervalSymbols":"",
 															"AutoWrap":"Y",
 															"Rotation":0					
 														}									
@@ -535,7 +533,7 @@
 									"ContentSize":9,
 									"ContentBold":"N",
 									"VerticalSpacing":8,
-									"IntervalSymbols":",",
+									"IntervalSymbols":"",
 									"AutoWrap":"N",
 									"Rotation":0
 								}						

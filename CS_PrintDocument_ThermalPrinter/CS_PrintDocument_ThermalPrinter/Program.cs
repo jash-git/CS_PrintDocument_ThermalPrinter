@@ -6,6 +6,7 @@ using ZXing.Windows.Compatibility;// NET5之後CS3050(Error CS0305 Using generic
 using ZXing.Common;
 using ZXing.QrCode;
 using System.Runtime.Intrinsics.Arm;
+using System.Text.Json;
 
 public class DPI_Funs
 {
@@ -86,46 +87,313 @@ public class Barcode_Funs
 
 }
 
-public class PrintTemplate_Fun
-{
 
-}
-public class PrintTemplate
+public class PT_ChildElement
 {
-    protected string m_strPrinterName;
+    public string ElementType { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
+    public string X_Alignment { get; set; }
+    public string Y_Alignment { get; set; }
+    public int Index { get; set; }
+    public int Width { get; set; }
+    public int Height { get; set; }
+    public string Content { get; set; }
+    public string RootName { get; set; }//Block,Rows
+    public List<PT_ChildElement> ChildElements { get; set; }//Block,Rows
+    public int Rotation { get; set; }//Text,QrCode,BarCode,Image
+    public string VerticalContentAlig { get; set; }//Text
+    public string HorizontalContentAlig { get; set; }//Text
+    public int? ContentSize { get; set; }//Text
+    public string ContentBold { get; set; }//Text
+    public int? VerticalSpacing { get; set; }//Text
+    public string IntervalSymbols { get; set; }//Text
+    public string AutoWrap { get; set; }//Text
+    public int? RowSpacing { get; set; }//Table
+    public string AlwaysPrint { get; set; }//Table
+    public string DisplayMode { get; set; }//Rows
+    public string ErrorCorrection { get; set; }//QrCode
+    public string Format { get; set; }//BarCode
+}
+
+public class PT_Page
+{
+    public string Content { get; set; }
+    public string ElementType { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
+    public string X_Alignment { get; set; }
+    public string Y_Alignment { get; set; }
+    public int Index { get; set; }
+    public int Width { get; set; }
+    public int Height { get; set; }
+    public int Spacing { get; set; }
+    public int Rotation { get; set; }
+    public int ZoomRatio { get; set; }
+    public string FontName { get; set; }
+    public string StartBuzzer { get; set; }
+    public string ExternalBuzzer { get; set; }
+    public string BuzzerCmd { get; set; }
+    public string ExtBuzzerCmd { get; set; }
+    public List<PT_ChildElement> ChildElements { get; set; }
+}
+public class CS_PrintTemplate_Fun
+{
+    //---
+    //JsonDocument搜尋函數 
+
+    // 主搜尋邏輯
+    public static void FindInElement(JsonElement element, string searchKey, Dictionary<string, string> results, bool partialMatch, string currentPath, bool findAllMatches)
+    {
+        switch (element.ValueKind)
+        {
+            case JsonValueKind.Object:
+                foreach (JsonProperty prop in element.EnumerateObject())
+                {
+                    string newPath = $"{currentPath}.{prop.Name}";
+                    bool isMatch = partialMatch
+                        ? prop.Name.Contains(searchKey, StringComparison.OrdinalIgnoreCase)
+                        : prop.NameEquals(searchKey);
+
+                    if (isMatch && !results.ContainsKey(newPath))
+                        results.Add(newPath, prop.Value.ToString());
+
+                    if (!findAllMatches && results.Count > 0)
+                    {
+                        return; // Stop searching once we find the first match
+                    }
+
+                    FindInElement(prop.Value, searchKey, results, partialMatch, newPath, findAllMatches);
+                }
+                break;
+
+            case JsonValueKind.Array:
+                int index = 0;
+                foreach (JsonElement item in element.EnumerateArray())
+                {
+                    string newPath = $"{currentPath}[{index}]";
+                    FindInElement(item, searchKey, results, partialMatch, newPath, findAllMatches);
+                    index++;
+
+                    if (!findAllMatches && results.Count > 0)
+                    {
+                        return; // Stop searching once we find the first match
+                    }
+                }
+                break;
+        }
+    }
+
+    // 根據 JSON 路徑取出對應 JsonElement
+    public static bool TryGetElementAtPath(JsonElement root, string path, out JsonElement result)
+    {
+        result = root;
+
+        if (string.IsNullOrEmpty(path))
+            return true;
+
+        string[] parts = path.Split('.', StringSplitOptions.RemoveEmptyEntries);
+
+        foreach (string part in parts)
+        {
+            if (result.ValueKind == JsonValueKind.Object)
+            {
+                string key = part;
+                int bracketIndex = part.IndexOf('[');
+                if (bracketIndex != -1)
+                {
+                    key = part[..bracketIndex];
+                }
+
+                if (!result.TryGetProperty(key, out result))
+                    return false;
+
+                if (bracketIndex != -1)
+                {
+                    if (!TryParseArrayAccess(ref result, part[bracketIndex..]))
+                        return false;
+                }
+            }
+            else if (result.ValueKind == JsonValueKind.Array)
+            {
+                if (!TryParseArrayAccess(ref result, part))
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static bool TryParseArrayAccess(ref JsonElement element, string bracketPart)
+    {
+        while (bracketPart.StartsWith("["))
+        {
+            int endBracket = bracketPart.IndexOf(']');
+            if (endBracket == -1)
+                return false;
+
+            string indexStr = bracketPart[1..endBracket];
+            if (!int.TryParse(indexStr, out int index))
+                return false;
+
+            if (element.ValueKind != JsonValueKind.Array || element.GetArrayLength() <= index)
+                return false;
+
+            element = element[index];
+
+            bracketPart = bracketPart[(endBracket + 1)..];
+        }
+
+        return true;
+    }
+
+    //---JsonDocument搜尋函數 
+}
+public class CS_PrintTemplate
+{
     protected PrintDocument m_PrintDocument;
-    public PrintTemplate() 
+    protected JsonDocument m_JsonDocument;
+    protected PT_Page m_PT_Page = null;
+    private Font m_NormalFont;//一般字 Height =3mm
+    private Font m_BigFont;//單倍字 Height =5mm
+    private Font m_DoubleFont;//雙倍字 Height =11mm
+    private Font m_FourFont;//四倍字 Height =13mm
+    private float [] m_fltFontHeight =new float[4] {3,5,11,13};//由小到大
+
+    public bool m_blnResult;
+    public string m_strResult;
+    public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate) 
     {
-        m_PrintDocument = new PrintDocument();
-        m_PrintDocument.PrintPage += new PrintPageEventHandler(PrintPage);
+        try
+        {
+            m_PrintDocument = new PrintDocument();
+            bool blnPrinterFound = false;
+            bool blnPrintTemplateCreated = false;
+
+            foreach (string printer in PrinterSettings.InstalledPrinters)
+            {
+                if (printer.Equals(strPrinterDriverName, StringComparison.OrdinalIgnoreCase))
+                {
+                    m_PrintDocument.PrinterSettings.PrinterName = printer;
+                    blnPrinterFound = true;
+                    break;
+                }
+            }
+            m_JsonDocument = JsonDocument.Parse(strPrintTemplate);
+            m_PT_Page = JsonSerializer.Deserialize<PT_Page>(strPrintTemplate);
+            blnPrintTemplateCreated = ((m_JsonDocument!=null) && (m_PT_Page!=null))?true:false;
+            if (!(blnPrinterFound & blnPrintTemplateCreated))
+            {
+                m_blnResult = false;
+                if ((!blnPrinterFound) & (blnPrintTemplateCreated))
+                {
+                    m_strResult = $"建構子運行失敗;找不到對應驅動";
+                }
+                else if((blnPrinterFound) & (!blnPrintTemplateCreated))
+                {
+                    m_strResult = $"建構子運行失敗;模板資料錯誤";
+                }
+                else
+                {
+                    m_strResult = $"建構子運行失敗;找不到對應驅動且模板資料錯誤";
+                }              
+            }
+            else
+            {
+                m_PrintDocument.PrintPage += new PrintPageEventHandler(PrintPage);
+                m_PrintDocument.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
+
+                float SysDpi = 203 * m_PT_Page.ZoomRatio;//設定印表機DPI
+                //---
+                //字型變數定義
+                m_NormalFont = new Font(m_PT_Page.FontName, 9);//一般字 Height =3mm
+                m_BigFont = new Font(m_PT_Page.FontName, 13);//單倍字 Height =5mm
+                m_DoubleFont = new Font(m_PT_Page.FontName, 28);//雙倍字 Height =11mm
+                m_FourFont = new Font(m_PT_Page.FontName, 40);//四倍字 Height =13mm
+                for (int i = 0; m_fltFontHeight.Length > 0; i++)//計算出每種字型的高度Pixels
+                {
+                    m_fltFontHeight[i] = DPI_Funs.MillimetersToPixels(m_fltFontHeight[i], SysDpi);
+                }
+                //---字型變數定義
+
+                int width = (int)DPI_Funs.PixelsToMillimeters(m_PT_Page.Width, SysDpi);  // 約 315
+                int height = 50000;//500cm
+
+
+
+                PaperSize paperSize = new PaperSize("Custom_80mm", width, height);
+                m_PrintDocument.DefaultPageSettings.PaperSize = paperSize;
+                m_PrintDocument.Print();//驅動PrintPage
+            }
+
+        }
+        catch(Exception ex)
+        {
+            m_blnResult = false;
+            m_strResult = $"建構子運行失敗;{ex.Message}";
+        }
+
     }
-    private void PrintPage(object sender, PrintPageEventArgs e)
+    private void PrintPage(object sender, PrintPageEventArgs e)//實際產生列印內容
     {
+        /*
+        //https://learn.microsoft.com/zh-tw/dotnet/api/system.drawing.graphicsunit?view=windowsdesktop-9.0&viewFallbackFrom=dotnet-plat-ext-8.0
+        Display	1	
+        指定顯示裝置的測量單位。 一般來說，視訊顯示會使用像素，而印表機會使用 1/100 英吋。
+
+        Document	5	
+        指定文件單位 (1/300 英吋) 做為測量單位。
+
+        Inch	4	
+        指定英吋做為測量單位。
+
+        Millimeter	6	
+        指定公釐做為測量單位。
+
+        Pixel	2	
+        指定裝置像素做為測量單位。
+
+        Point	3	
+        指定印表機的點 (1/72 英吋) 做為測量單位。
+
+        World	0	
+        指定全局座標系統的單位做為測量單位。            
+        */
+        //e.Graphics.PageUnit = GraphicsUnit.Document;//300DPI ~ https://radio-idea.blogspot.com/2016/09/c-printdocument.html#google_vignette
+        e.Graphics.PageUnit = GraphicsUnit.Pixel;//解析度 ~ https://radio-idea.blogspot.com/2016/09/c-printdocument.html#google_vignette
+        Graphics g = e.Graphics;//抓取印表機畫布
+        try
+        {
+
+
+
+
+
+
+
+            m_blnResult = true;
+            m_strResult = $"已經將列印頁面產生並傳送到對應的印表機柱列中";
+            e.HasMorePages = false;
+        }
+        catch (Exception ex)
+        {
+            m_blnResult = false;
+            m_strResult = $"PrintPage運行失敗;{ex.Message}";
+        }
+
     }
+
 }
 class Program
 {
     static void Main()
     {
         string targetPrinterName = "POS80D";//"POS-80C";//"80mm Series Printer";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
-        PrintDocument printDoc = new PrintDocument();
-        // 指定印表機
-        bool found = false;
-        foreach (string printer in PrinterSettings.InstalledPrinters)
-        {
-            if (printer.Equals(targetPrinterName, StringComparison.OrdinalIgnoreCase))
-            {
-                printDoc.PrinterSettings.PrinterName = printer;
-                found = true;
-                break;
-            }
-        }
 
-        if (!found)
-        {
-            Console.WriteLine($"找不到印表機：{targetPrinterName}");
-            return;
-        }
     }
     static void Main_V0()
     {
