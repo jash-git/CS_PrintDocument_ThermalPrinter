@@ -16,6 +16,7 @@
 	"ExternalBuzzer": "N",
 	"BuzzerCmd": "",
 	"ExtBuzzerCmd": "",
+	"PrintMode":"",
 	"ChildElements": [
 		{
 			"ElementType": "Block",

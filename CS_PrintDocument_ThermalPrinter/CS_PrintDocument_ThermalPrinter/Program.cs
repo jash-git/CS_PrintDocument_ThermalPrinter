@@ -7,6 +7,8 @@ using ZXing.Common;
 using ZXing.QrCode;
 using System.Runtime.Intrinsics.Arm;
 using System.Text.Json;
+using CS_PrintDocument_ThermalPrinter;
+using System.Reflection;
 
 public class DPI_Funs
 {
@@ -135,6 +137,7 @@ public class PT_Page
     public string ExternalBuzzer { get; set; }
     public string BuzzerCmd { get; set; }
     public string ExtBuzzerCmd { get; set; }
+    public string PrintMode { get; set; }
     public List<PT_ChildElement> ChildElements { get; set; }
 }
 public class CS_PrintTemplate_Fun
@@ -256,36 +259,47 @@ public class CS_PrintTemplate_Fun
 public class CS_PrintTemplate
 {
     protected PrintDocument m_PrintDocument;
-    protected JsonDocument m_JsonDocument;
+    //protected JsonDocument m_JsonDocument;
     protected PT_Page m_PT_Page = null;
+    protected orders_new m_OrderData = null;
+
     private Font m_NormalFont;//一般字 Height =3mm
     private Font m_BigFont;//單倍字 Height =5mm
+    private Font m_InvoiceFont;//發票 Height =6mm
     private Font m_DoubleFont;//雙倍字 Height =11mm
     private Font m_FourFont;//四倍字 Height =13mm
-    private float [] m_fltFontHeight =new float[4] {3,5,11,13};//由小到大
+    private float [] m_fltFontHeight =new float[5] {3,5,6,11,13};//由小到大
 
+    private int m_intPages = 1;//此範本一次要列印次數(一菜一切)
+    private int m_intPageNumbers = 0;//目前印第幾張
     public bool m_blnResult;
     public string m_strResult;
-    public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate) 
+    public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate,string strOrderData) 
     {
         try
         {
-            m_PrintDocument = new PrintDocument();
             bool blnPrinterFound = false;
             bool blnPrintTemplateCreated = false;
-
+            //---
+            //驅動程式名稱比對
             foreach (string printer in PrinterSettings.InstalledPrinters)
             {
                 if (printer.Equals(strPrinterDriverName, StringComparison.OrdinalIgnoreCase))
                 {
-                    m_PrintDocument.PrinterSettings.PrinterName = printer;
                     blnPrinterFound = true;
                     break;
                 }
             }
-            m_JsonDocument = JsonDocument.Parse(strPrintTemplate);
+            //---驅動程式名稱比對
+
+            //---
+            //json2object
+            // m_JsonDocument = JsonDocument.Parse(strPrintTemplate);
             m_PT_Page = JsonSerializer.Deserialize<PT_Page>(strPrintTemplate);
-            blnPrintTemplateCreated = ((m_JsonDocument!=null) && (m_PT_Page!=null))?true:false;
+            m_OrderData = JsonSerializer.Deserialize<orders_new>(strOrderData);
+            blnPrintTemplateCreated = (m_PT_Page != null) ? true : false;//((m_JsonDocument!=null) && (m_PT_Page!=null))?true:false;
+            //---json2object
+
             if (!(blnPrinterFound & blnPrintTemplateCreated))
             {
                 m_blnResult = false;
@@ -304,31 +318,56 @@ public class CS_PrintTemplate
             }
             else
             {
-                m_PrintDocument.PrintPage += new PrintPageEventHandler(PrintPage);
-                m_PrintDocument.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
-
                 float SysDpi = 203 * m_PT_Page.ZoomRatio;//設定印表機DPI
                 //---
                 //字型變數定義
                 m_NormalFont = new Font(m_PT_Page.FontName, 9);//一般字 Height =3mm
                 m_BigFont = new Font(m_PT_Page.FontName, 13);//單倍字 Height =5mm
+                m_InvoiceFont = new Font(m_PT_Page.FontName, 16); ;//發票 Height =6mm
                 m_DoubleFont = new Font(m_PT_Page.FontName, 28);//雙倍字 Height =11mm
                 m_FourFont = new Font(m_PT_Page.FontName, 40);//四倍字 Height =13mm
-                for (int i = 0; m_fltFontHeight.Length > 0; i++)//計算出每種字型的高度Pixels
+                for (int i = 0; i<m_fltFontHeight.Length ; i++)//計算出每種字型的高度Pixels
                 {
                     m_fltFontHeight[i] = DPI_Funs.MillimetersToPixels(m_fltFontHeight[i], SysDpi);
                 }
                 //---字型變數定義
+                if((m_PT_Page.PrintMode!=null)&&(m_PT_Page.PrintMode== "Single"))
+                {
+                    if ((m_OrderData != null) && (m_OrderData.order_items.Count > 0))
+                    {
+                        m_intPages = m_OrderData.order_items.Count;
+                    }
+                    else
+                    {
+                        m_intPages = 0;
+                    }
+                }
+                else
+                {
+                    m_intPages = 1;
+                }
 
-                int width = (int)DPI_Funs.PixelsToMillimeters(m_PT_Page.Width, SysDpi);  // 約 315
-                int height = 50000;//500cm
+                for(int i=0;i< m_intPages;i++)
+                {
+                    m_intPageNumbers = i + 1;
+
+                    m_PrintDocument = null;
+                    m_PrintDocument = new PrintDocument();//印表畫布
+                    m_PrintDocument.PrinterSettings.PrinterName = strPrinterDriverName;
+                    m_PrintDocument.PrintPage += new PrintPageEventHandler(PrintPage);
+                    m_PrintDocument.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
+                    
+                    int width = (int)DPI_Funs.PixelsToMillimeters(m_PT_Page.Width, SysDpi);  // 約 315
+                    int height = 50000;//500cm
 
 
 
-                PaperSize paperSize = new PaperSize("Custom_80mm", width, height);
-                m_PrintDocument.DefaultPageSettings.PaperSize = paperSize;
-                m_PrintDocument.Print();//驅動PrintPage
-            }
+                    PaperSize paperSize = new PaperSize("Custom_80mm", width, height);
+                    m_PrintDocument.DefaultPageSettings.PaperSize = paperSize;
+                    m_PrintDocument.Print();//驅動PrintPage
+                }
+
+            }//if (!(blnPrinterFound & blnPrintTemplateCreated))-else
 
         }
         catch(Exception ex)
@@ -338,6 +377,25 @@ public class CS_PrintTemplate
         }
 
     }
+    
+    private PT_ChildElement GetDataElement(PT_ChildElement root)
+    {
+        PT_ChildElement ElementResult = null;
+        return ElementResult;
+    }
+    private void DrawingPage(Graphics g)
+    {
+        //---
+        //測試多頁列印+裁紙
+        /*
+        Brush brush = Brushes.Black;
+        g.DrawString($"050 ~ {m_intPageNumbers}", m_DoubleFont, brush, 0, 50);
+        //*/
+        //---測試多頁列印+裁紙
+
+
+    }
+
     private void PrintPage(object sender, PrintPageEventArgs e)//實際產生列印內容
     {
         /*
@@ -369,15 +427,10 @@ public class CS_PrintTemplate
         try
         {
 
-
-
-
-
-
-
+            DrawingPage(g);
             m_blnResult = true;
             m_strResult = $"已經將列印頁面產生並傳送到對應的印表機柱列中";
-            e.HasMorePages = false;
+            e.HasMorePages = false;//驅動切紙
         }
         catch (Exception ex)
         {
@@ -392,8 +445,12 @@ class Program
 {
     static void Main()
     {
-        string targetPrinterName = "POS80D";//"POS-80C";//"80mm Series Printer";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
-
+        string strPrinterDriverName = "80mm Series Printer";//"POS80D";//"POS-80C";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+        StreamReader sr00 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Input.json");
+        string strOrderData = sr00.ReadToEnd();
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Bill_80_Block.json");
+        string strPrintTemplate = sr01.ReadToEnd();
+        CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderData);
     }
     static void Main_V0()
     {
