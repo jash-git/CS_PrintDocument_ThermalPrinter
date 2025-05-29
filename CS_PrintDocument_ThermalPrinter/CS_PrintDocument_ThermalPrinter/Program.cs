@@ -9,6 +9,7 @@ using System.Runtime.Intrinsics.Arm;
 using System.Text.Json;
 using CS_PrintDocument_ThermalPrinter;
 using System.Reflection;
+using System.Collections;
 
 public class DPI_Funs
 {
@@ -117,7 +118,16 @@ public class PT_ChildElement
     public string ErrorCorrection { get; set; }//QrCode
     public string Format { get; set; }//BarCode
 }
-
+public class ContainerElement
+{//存放在堆疊內的原件
+   public PT_ChildElement m_Element;
+    public int m_index;
+    public ContainerElement(PT_ChildElement element, int index)
+    {
+        m_Element = element;
+        m_index = index;
+    }
+}
 public class PT_Page
 {
     public string Content { get; set; }
@@ -269,6 +279,8 @@ public class CS_PrintTemplate
     private Font m_DoubleFont;//雙倍字 Height =11mm
     private Font m_FourFont;//四倍字 Height =13mm
     private float [] m_fltFontHeight =new float[5] {3,5,6,11,13};//由小到大
+    private Stack<ContainerElement> m_ContainerElements = new Stack<ContainerElement>();//存放容器物件
+    private string m_strDataPath = "";
 
     private int m_intPages = 1;//此範本一次要列印次數(一菜一切)
     private int m_intPageNumbers = 0;//目前印第幾張
@@ -378,11 +390,48 @@ public class CS_PrintTemplate
 
     }
     
-    private PT_ChildElement GetDataElement(PT_ChildElement root)
+    
+    private bool m_blnGetDataElement = false;
+    private PT_ChildElement GetDataElement(PT_ChildElement root)//取得資料物件
     {
         PT_ChildElement ElementResult = null;
+        if((root.ChildElements!=null) && (root.ChildElements.Count>0))
+        {
+            ContainerElement ContainerElementBuf = new ContainerElement(root, 1);
+            m_ContainerElements.Push(ContainerElementBuf);//放入堆疊
+
+            if ((ContainerElementBuf.m_Element.RootName!=null) && (ContainerElementBuf.m_Element.RootName.Length>0))
+            {
+                m_strDataPath += "." + ContainerElementBuf.m_Element.RootName;
+            }
+            m_blnGetDataElement = false;
+            return GetDataElement(root.ChildElements[0]);//遞迴呼叫
+        }
+        else
+        {
+            m_blnGetDataElement = true;
+            ElementResult = root;
+        }
         return ElementResult;
     }
+
+    private string m_strElement2DataLog = "";
+    private void Element2Data(PT_ChildElement PT_ChildElementBuf)
+    {
+        /*
+        if(m_strElement2DataLog.Length==0)
+        {
+            ContainerElement[] ContainerElements = m_ContainerElements.ToArray();
+            for (int i = (ContainerElements.Length - 1); i >= 0; i--)
+            {
+                m_strElement2DataLog += ContainerElements[i].m_Element.ElementType + "/";
+            }
+        }
+        */
+
+        m_strElement2DataLog += ((m_strDataPath.Length==0)?".": m_strDataPath) + ";\t" + PT_ChildElementBuf.Content + ";" ;
+    }
+
     private void DrawingPage(Graphics g)
     {
         //---
@@ -392,8 +441,49 @@ public class CS_PrintTemplate
         g.DrawString($"050 ~ {m_intPageNumbers}", m_DoubleFont, brush, 0, 50);
         //*/
         //---測試多頁列印+裁紙
+        m_strDataPath = "";
+        for (int i = 0;i< m_PT_Page.ChildElements.Count;i++)//依序處理Page的內容
+        {
+            PT_ChildElement PT_ChildElementBuf = GetDataElement(m_PT_Page.ChildElements[i]);
+            Element2Data(PT_ChildElementBuf);//元件轉畫布
 
+            //清空堆疊迴圈
+            while (m_ContainerElements.Count > 0)
+            {
+                ContainerElement ContainerElementBuf= (ContainerElement)m_ContainerElements.Peek();//讀取不刪除
+                if (ContainerElementBuf.m_index < ContainerElementBuf.m_Element.ChildElements.Count) 
+                {
+                    PT_ChildElementBuf = GetDataElement(ContainerElementBuf.m_Element.ChildElements[ContainerElementBuf.m_index]);
+                    ContainerElementBuf.m_index++;//改變旗標
+                    Element2Data(PT_ChildElementBuf);//元件轉畫布
+                }
+                else
+                {
+                    if ((ContainerElementBuf.m_Element.RootName != null) && (ContainerElementBuf.m_Element.RootName.Length > 0))
+                    {
+                        m_strDataPath = m_strDataPath.Substring(0, (m_strDataPath.Length - ContainerElementBuf.m_Element.RootName.Length - 1));
+                    }
 
+                    if(m_blnGetDataElement)
+                    {
+                        m_strElement2DataLog += "\n";
+                        m_blnGetDataElement = false;
+
+                        /*
+                        ContainerElement[] ContainerElements = m_ContainerElements.ToArray();
+                        for (int j = (ContainerElements.Length - 1); j >= 0; j--)
+                        {
+                            m_strElement2DataLog += ContainerElements[j].m_Element.ElementType + "/";
+                        }
+                        */
+                    }
+                    
+                    m_ContainerElements.Pop();//移除最上面元件
+                }
+            }           
+        }
+
+        Console.WriteLine(m_strElement2DataLog);
     }
 
     private void PrintPage(object sender, PrintPageEventArgs e)//實際產生列印內容
@@ -443,6 +533,11 @@ public class CS_PrintTemplate
 }
 class Program
 {
+    static void Pause()
+    {
+        Console.Write("Press any key to continue...");
+        Console.ReadKey(true);
+    }
     static void Main()
     {
         string strPrinterDriverName = "80mm Series Printer";//"POS80D";//"POS-80C";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
@@ -451,6 +546,8 @@ class Program
         StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Bill_80_Block.json");
         string strPrintTemplate = sr01.ReadToEnd();
         CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderData);
+        
+        Pause();
     }
     static void Main_V0()
     {
