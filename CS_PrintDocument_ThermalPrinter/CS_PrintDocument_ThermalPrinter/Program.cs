@@ -308,6 +308,12 @@ public class CS_PrintTemplate
             //json2object
             // m_JsonDocument = JsonDocument.Parse(strPrintTemplate);
             m_PT_Page = JsonSerializer.Deserialize<PT_Page>(strPrintTemplate);
+            if((m_PT_Page!=null) && (m_PT_Page.ChildElements!=null) && (m_PT_Page.ChildElements.Count>0))
+            {
+                // 就地修改 ChildElements 的順序，依照 Index 遞增排序 //如果你要遞減排序，改成 b.Index.CompareTo(a.Index)
+                m_PT_Page.ChildElements.Sort((a, b) => a.Index.CompareTo(b.Index));
+            }
+
             m_OrderData = JsonSerializer.Deserialize<orders_new>(strOrderData);
             blnPrintTemplateCreated = (m_PT_Page != null) ? true : false;//((m_JsonDocument!=null) && (m_PT_Page!=null))?true:false;
             //---json2object
@@ -397,6 +403,9 @@ public class CS_PrintTemplate
         PT_ChildElement ElementResult = null;
         if((root.ChildElements!=null) && (root.ChildElements.Count>0))
         {
+            // 就地修改 ChildElements 的順序，依照 Index 遞增排序 //如果你要遞減排序，改成 b.Index.CompareTo(a.Index)
+            root.ChildElements.Sort((a, b) => a.Index.CompareTo(b.Index));
+
             ContainerElement ContainerElementBuf = new ContainerElement(root, 1);
             m_ContainerElements.Push(ContainerElementBuf);//放入堆疊
 
@@ -418,18 +427,24 @@ public class CS_PrintTemplate
     private string m_strElement2DataLog = "";
     private void Element2Data(PT_ChildElement PT_ChildElementBuf)
     {
-        /*
-        if(m_strElement2DataLog.Length==0)
-        {
+        if (PT_ChildElementBuf.Index==0)
+        {// Block/Rows下第一個資料元件要進行的處理程序
+
+            //上層元件標註
             ContainerElement[] ContainerElements = m_ContainerElements.ToArray();
             for (int i = (ContainerElements.Length - 1); i >= 0; i--)
             {
                 m_strElement2DataLog += ContainerElements[i].m_Element.ElementType + "/";
             }
-        }
-        */
+            m_strElement2DataLog += "~";
 
-        m_strElement2DataLog += ((m_strDataPath.Length==0)?".": m_strDataPath) + ";\t" + PT_ChildElementBuf.Content + ";" ;
+
+
+            //資料集標註
+            m_strElement2DataLog += ((m_strDataPath.Length == 0) ? "." : m_strDataPath) + ";\t";
+        }
+
+        m_strElement2DataLog += PT_ChildElementBuf.Content + ";";
     }
 
     private void DrawingPage(Graphics g)
@@ -450,7 +465,7 @@ public class CS_PrintTemplate
             //清空堆疊迴圈
             while (m_ContainerElements.Count > 0)
             {
-                ContainerElement ContainerElementBuf= (ContainerElement)m_ContainerElements.Peek();//讀取不刪除
+                ContainerElement ContainerElementBuf= (ContainerElement)m_ContainerElements.Peek();//讀取堆疊資料但不刪除
                 if (ContainerElementBuf.m_index < ContainerElementBuf.m_Element.ChildElements.Count) 
                 {
                     PT_ChildElementBuf = GetDataElement(ContainerElementBuf.m_Element.ChildElements[ContainerElementBuf.m_index]);
@@ -478,7 +493,7 @@ public class CS_PrintTemplate
                         */
                     }
                     
-                    m_ContainerElements.Pop();//移除最上面元件
+                    m_ContainerElements.Pop();//移除堆疊最上面元件
                 }
             }           
         }
