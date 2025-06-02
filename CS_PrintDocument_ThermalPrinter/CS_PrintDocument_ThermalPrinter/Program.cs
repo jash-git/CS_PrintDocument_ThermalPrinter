@@ -10,6 +10,7 @@ using System.Text.Json;
 using CS_PrintDocument_ThermalPrinter;
 using System.Reflection;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 public class DPI_Funs
 {
@@ -266,6 +267,19 @@ public class CS_PrintTemplate_Fun
 
     //---JsonDocument搜尋函數 
 }
+
+public class ForLoopVar
+{
+    public string m_strName;
+    public int m_intCount;
+    public int m_intIndex;
+    public ForLoopVar(string strName,int intCount,int intIndex=-1) 
+    {
+        m_strName = strName;
+        m_intCount = intCount;
+        m_intIndex = intIndex;//-1:表示intCount還未初始化
+    }
+}
 public class CS_PrintTemplate
 {
     protected PrintDocument m_PrintDocument;
@@ -280,6 +294,7 @@ public class CS_PrintTemplate
     private Font m_FourFont;//四倍字 Height =13mm
     private float [] m_fltFontHeight =new float[5] {3,5,6,11,13};//由小到大
     private Stack<ContainerElement> m_ContainerElements = new Stack<ContainerElement>();//存放容器物件
+    private List<ForLoopVar> m_ForLoopVars = new List<ForLoopVar>();//存放迴圈索引變數
     private string m_strDataPath = "";
 
     private int m_intPages = 1;//此範本一次要列印次數(一菜一切)
@@ -315,6 +330,7 @@ public class CS_PrintTemplate
             }
 
             m_OrderData = JsonSerializer.Deserialize<orders_new>(strOrderData);
+            ForLoopVarsInit();// m_ForLoopVars變數初始化
             blnPrintTemplateCreated = (m_PT_Page != null) ? true : false;//((m_JsonDocument!=null) && (m_PT_Page!=null))?true:false;
             //---json2object
 
@@ -395,8 +411,174 @@ public class CS_PrintTemplate
         }
 
     }
-    
-    
+
+    private object? GetFieldValueByName(object obj, string fieldName)
+    {//C# .net8 ~ 傳入字串 轉換成 物件成員名稱並取回對應數值 (你可以使用 Reflection 或 Expression Trees 來根據字串取出對應的物件成員（欄位或屬性）的值)
+
+        if (obj == null || string.IsNullOrWhiteSpace(fieldName))
+            return null;
+
+        // BindingFlags to access public instance fields
+        var field = obj.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.Public);
+
+        if (field == null)
+            return null;
+
+        return field.GetValue(obj);
+    }
+    private string GetOrderData(string strDataPath,string strVarName)
+    {
+        string strResult = "";
+
+        switch(strDataPath)
+        {
+            case ".":
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderData, strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }            
+                break;
+            case "order_items":
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderData.order_items[m_ForLoopVars[0].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "order_items.condiments":
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderData.order_items[m_ForLoopVars[0].m_intIndex].condiments[m_ForLoopVars[1].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "order_items.set_meals":
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderData.order_items[m_ForLoopVars[0].m_intIndex].set_meals[m_ForLoopVars[2].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "order_items.set_meals.product":
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderData.order_items[m_ForLoopVars[0].m_intIndex].set_meals[m_ForLoopVars[2].m_intIndex].product[m_ForLoopVars[3].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "order_items.set_meals.product.condiments":
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderData.order_items[m_ForLoopVars[0].m_intIndex].set_meals[m_ForLoopVars[2].m_intIndex].product[m_ForLoopVars[3].m_intIndex].condiments[m_ForLoopVars[4].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "packages":
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderData.packages[m_ForLoopVars[5].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "coupons":
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderData.coupons[m_ForLoopVars[6].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "tablewares":
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderData.tablewares[m_ForLoopVars[7].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "payments":
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderData.payments[m_ForLoopVars[8].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+        }
+
+        return strResult;
+    }
+
+    private string TemplateContent2Data(string strContent)
+    {
+        string strResult = "";
+        string pattern = @"\{([^}]+)}(\}*)|[^{}]+";
+        var matches = Regex.Matches(strContent, pattern);
+
+        return strResult;
+    }
+
+    private void ForLoopVarsInit()// m_ForLoopVars變數初始化
+    {
+        m_ForLoopVars.Clear();
+
+        m_ForLoopVars.Add(new ForLoopVar("order_items", 0));
+        m_ForLoopVars.Add(new ForLoopVar("order_items.condiments", 0));
+        m_ForLoopVars.Add(new ForLoopVar("order_items.set_meals", 0));
+        m_ForLoopVars.Add(new ForLoopVar("order_items.set_meals.product", 0));
+        m_ForLoopVars.Add(new ForLoopVar("order_items.set_meals.product.condiments", 0));
+        m_ForLoopVars.Add(new ForLoopVar("packages", 0));
+        m_ForLoopVars.Add(new ForLoopVar("coupons", 0));
+        m_ForLoopVars.Add(new ForLoopVar("tablewares", 0));
+        m_ForLoopVars.Add(new ForLoopVar("payments", 0));
+
+        if (m_OrderData!=null)
+        {
+            m_ForLoopVars[0].m_intCount = (m_OrderData.order_items!=null)? m_OrderData.order_items.Count : 0;
+            m_ForLoopVars[0].m_intIndex = (m_ForLoopVars[0].m_intCount > 0) ? 0 : -1;
+            //m_ForLoopVars.Add(new ForLoopVar("order_items.condiments", 0));
+            //m_ForLoopVars.Add(new ForLoopVar("order_items.set_meals", 0));
+            //m_ForLoopVars.Add(new ForLoopVar("order_items.set_meals.product", 0));
+            //m_ForLoopVars.Add(new ForLoopVar("order_items.set_meals.product.condiments", 0));
+            m_ForLoopVars[5].m_intCount = (m_OrderData.packages != null) ? m_OrderData.packages.Count : 0;
+            m_ForLoopVars[5].m_intIndex = (m_ForLoopVars[5].m_intCount > 0) ? 0 : -1;
+            m_ForLoopVars[6].m_intCount = (m_OrderData.coupons != null) ? m_OrderData.coupons.Count : 0;
+            m_ForLoopVars[6].m_intIndex = (m_ForLoopVars[6].m_intCount > 0) ? 0 : -1;
+            m_ForLoopVars[7].m_intCount = (m_OrderData.tablewares != null) ? m_OrderData.tablewares.Count : 0;
+            m_ForLoopVars[7].m_intIndex = (m_ForLoopVars[7].m_intCount > 0) ? 0 : -1;
+            m_ForLoopVars[8].m_intCount = (m_OrderData.payments != null) ? m_OrderData.payments.Count : 0;
+            m_ForLoopVars[8].m_intIndex = (m_ForLoopVars[8].m_intCount > 0) ? 0 : -1;
+        }
+    }
+
     private bool m_blnGetDataElement = false;
     private PT_ChildElement GetDataElement(PT_ChildElement root)//取得資料物件
     {
