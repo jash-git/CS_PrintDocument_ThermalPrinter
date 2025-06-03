@@ -395,7 +395,7 @@ public class CS_PrintTemplate
                     int height = 50000;//500cm
 
 
-
+                    //TemplateContent2Data(".", "{$call_num}");
                     PaperSize paperSize = new PaperSize("Custom_80mm", width, height);
                     m_PrintDocument.DefaultPageSettings.PaperSize = paperSize;
                     m_PrintDocument.Print();//驅動PrintPage
@@ -412,19 +412,68 @@ public class CS_PrintTemplate
 
     }
 
+    private bool Element_Preprocess(PT_ChildElement PT_ChildElementBuf)//元件預先處理
+    {
+        bool blnResult= true;
+
+        switch (PT_ChildElementBuf.ElementType)
+        {
+            case "Table":
+                blnResult = TableShow(PT_ChildElementBuf);
+                break;
+
+        }
+        return blnResult;
+    }
+    private bool TableShow(PT_ChildElement PT_ChildElementBuf)
+    {//透過程式手段 把Table下面低一層的元素RootName全部合併放到Table中
+        bool blnResult = false;
+        int intCount = 0;
+        if(PT_ChildElementBuf.AlwaysPrint=="Y")
+        {
+            blnResult = true;
+            return blnResult;
+        }
+
+        for (int i = 0; i < PT_ChildElementBuf.ChildElements.Count; i++)
+        {
+            if (PT_ChildElementBuf.ChildElements[i].RootName.Length > 0)
+            {
+                for(int j = 0; j<m_ForLoopVars.Count;j++)
+                {
+                    if(m_ForLoopVars[j].m_strName == PT_ChildElementBuf.ChildElements[i].RootName)
+                    {
+                        intCount += m_ForLoopVars[j].m_intCount;
+                        break;
+                    }
+                }
+
+                if(intCount>0)
+                {
+                    blnResult = true;
+                    break;
+                }
+            }
+        }
+        return blnResult;
+    }
     private object? GetFieldValueByName(object obj, string fieldName)
     {//C# .net8 ~ 傳入字串 轉換成 物件成員名稱並取回對應數值 (你可以使用 Reflection 或 Expression Trees 來根據字串取出對應的物件成員（欄位或屬性）的值)
 
         if (obj == null || string.IsNullOrWhiteSpace(fieldName))
             return null;
 
-        // BindingFlags to access public instance fields
-        var field = obj.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.Public);
 
-        if (field == null)
+        //JSON屬性變數
+        var field00 = obj.GetType().GetProperty(fieldName, BindingFlags.Instance | BindingFlags.Public);
+
+        // BindingFlags to access public instance fields[一般成員變數]
+        var field01 = obj.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.Public);
+
+        if ((field00 == null) && (field01 == null))
             return null;
 
-        return field.GetValue(obj);
+        return (field00==null)? field01.GetValue(obj): field00.GetValue(obj);
     }
     private string GetOrderData(string strDataPath,string strVarName)
     {
@@ -537,12 +586,39 @@ public class CS_PrintTemplate
         return strResult;
     }
 
-    private string TemplateContent2Data(string strContent)
+    private string TemplateContent2Data(string strDataPath,string strContent)//模板Content轉實際顯示資料
     {
         string strResult = "";
+
         string pattern = @"\{([^}]+)}(\}*)|[^{}]+";
         var matches = Regex.Matches(strContent, pattern);
+        var result = new List<string>();
 
+        foreach (Match match in matches)
+        {
+            if (match.Groups[1].Success) // 匹配了 {xxx}
+            {
+                string value = match.Groups[1].Value + match.Groups[2].Value;
+                result.Add(value);
+            }
+            else
+            {
+                result.Add(match.Value);
+            }
+        }
+
+        foreach (var part in result)
+        {
+            string strVarName = part;
+            if (strVarName.Substring(0,1)=="$")
+            {
+                strResult += GetOrderData(strDataPath, strVarName.Substring(1, strVarName.Length-1));
+            }
+            else
+            {
+                strResult += strVarName;
+            }
+        }
         return strResult;
     }
 
@@ -587,6 +663,10 @@ public class CS_PrintTemplate
         {
             // 就地修改 ChildElements 的順序，依照 Index 遞增排序 //如果你要遞減排序，改成 b.Index.CompareTo(a.Index)
             root.ChildElements.Sort((a, b) => a.Index.CompareTo(b.Index));
+            if(!Element_Preprocess(root))
+            {
+                return ElementResult;
+            }
 
             ContainerElement ContainerElementBuf = new ContainerElement(root, 1);
             m_ContainerElements.Push(ContainerElementBuf);//放入堆疊
@@ -609,6 +689,11 @@ public class CS_PrintTemplate
     private string m_strElement2DataLog = "";
     private void Element2Data(PT_ChildElement PT_ChildElementBuf)
     {
+        if (PT_ChildElementBuf==null)
+        {
+            return;
+        }
+
         if (PT_ChildElementBuf.Index==0)
         {// Block/Rows下第一個資料元件要進行的處理程序
 

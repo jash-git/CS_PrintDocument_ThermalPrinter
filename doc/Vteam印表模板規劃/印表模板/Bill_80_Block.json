@@ -543,6 +543,39 @@
 					]		
 				}		
 			]
-		}
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Increment",
+			"Index": 6,
+			"Width": 640,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Y",
+					"Index":0,				
+					"Width":576,
+					"Height":8,
+					"Content":"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":8,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		}		
 	]
 }
