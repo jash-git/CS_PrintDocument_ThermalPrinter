@@ -1,0 +1,27 @@
+相關函數整理
+DPI_Funs
+	public static void GetScreenDpi(out float DpiX, out float DpiY)//系統DPI
+	public static float PixelsToInches(int pixels, float dpi)//像素 -> 英吋
+	public static float PixelsToMillimeters(int pixels, float dpi)//像素 -> 毫米
+	public static int MillimetersToPixels(float millimeters, float dpi)//毫米 -> 像素
+	
+Barcode_Funs
+	public static Bitmap QrCode(String StrData)//文字轉QrCode
+	public static Bitmap BarCode(String StrData)//文字轉BarCode
+
+CS_PrintTemplate_Fun//JSON DOC 搜尋功能(沒在使用)
+
+public class CS_PrintTemplate//主要資料元件
+	public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate,string strOrderData)//建構子 
+	private bool Element_Preprocess(PT_ChildElement PT_ChildElementBuf)//元件預先處理
+		private bool TableShow(PT_ChildElement PT_ChildElementBuf)//判斷資料表是否要顯示
+	private string GetOrderData(string strDataPath,string strVarName)//取回對應資料集指定欄位資料
+		private object? GetFieldValueByName(object obj, string fieldName)//從JSON記憶體給定元素名稱字串取回對應員素質
+	private string TemplateContent2Data(string strDataPath,string strContent)//模板Content轉實際顯示資料
+	private void ForLoopVarsInit()// m_ForLoopVars變數初始化
+	private void ForLoopVarsSet(string strPath)// m_ForLoopVars變數設定
+	private PT_ChildElement GetDataElement(PT_ChildElement root)//取得資料物件
+	private void Element2Data(PT_ChildElement PT_ChildElementBuf)//元件轉資料
+	private void Data2Image()//資料轉圖
+	private void DrawingPage(Graphics g)//畫布實際建立函數
+	private void PrintPage(object sender, PrintPageEventArgs e)//實際產生列印內容觸發函數

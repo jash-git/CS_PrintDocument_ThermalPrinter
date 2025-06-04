@@ -53,7 +53,7 @@ public class Barcode_Funs
     using ZXing.QrCode;  
     */
 
-    public static Bitmap QrCode(String StrData)
+    public static Bitmap QrCode(String StrData)//文字轉QrCode
     {
         // Create a BarcodeWriter instance
         var barcodeWriter = new BarcodeWriter();//ZXing.Windows.Compatibility
@@ -72,7 +72,7 @@ public class Barcode_Funs
 
         return barcodeBitmap;
     }
-    public static Bitmap BarCode(String StrData)
+    public static Bitmap BarCode(String StrData)//文字轉BarCode
     {
         // Create a BarcodeWriter instance
         var barcodeWriter = new BarcodeWriter();//ZXing.Windows.Compatibility
@@ -91,7 +91,7 @@ public class Barcode_Funs
 
 }
 
-
+//資料元件結構
 public class PT_ChildElement
 {
     public string ElementType { get; set; }
@@ -268,6 +268,7 @@ public class CS_PrintTemplate_Fun
     //---JsonDocument搜尋函數 
 }
 
+//資料元件結構
 public class ForLoopVar
 {
     public string m_strName;
@@ -287,21 +288,31 @@ public class CS_PrintTemplate
     protected PT_Page m_PT_Page = null;
     protected orders_new m_OrderData = null;
 
+    //---
+    //繪圖系統變數
     private Font m_NormalFont;//一般字 Height =3mm
     private Font m_BigFont;//單倍字 Height =5mm
     private Font m_InvoiceFont;//發票 Height =6mm
     private Font m_DoubleFont;//雙倍字 Height =11mm
     private Font m_FourFont;//四倍字 Height =13mm
     private float [] m_fltFontHeight =new float[5] {3,5,6,11,13};//由小到大
+    public float m_fltLast_X = 0;//最後列印定位點X座標
+    public float m_fltLast_Y = 0;//最後列印定位點Y座標
+    public float m_fltMax_Height = 0;//同列最大列印高度
+    public float m_fltLLast_Height = 0;//最後列印最大高度
+    //---繪圖系統變數
+
+    //---
+    //運算系統變數
     private Stack<ContainerElement> m_ContainerElements = new Stack<ContainerElement>();//存放容器物件
     private List<ForLoopVar> m_ForLoopVars = new List<ForLoopVar>();//存放迴圈索引變數
-    private string m_strDataPath = "";
-
+    private string m_strDataPath = "";//目前資料集路徑階層
     private int m_intPages = 1;//此範本一次要列印次數(一菜一切)
-    private int m_intPageNumbers = 0;//目前印第幾張
+    //---運算系統變數
+
     public bool m_blnResult;
     public string m_strResult;
-    public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate,string strOrderData) 
+    public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate,string strOrderData)//建構子 
     {
         try
         {
@@ -383,7 +394,6 @@ public class CS_PrintTemplate
 
                 for(int i=0;i< m_intPages;i++)
                 {
-                    m_intPageNumbers = i + 1;
 
                     m_PrintDocument = null;
                     m_PrintDocument = new PrintDocument();//印表畫布
@@ -421,11 +431,15 @@ public class CS_PrintTemplate
             case "Table":
                 blnResult = TableShow(PT_ChildElementBuf);
                 break;
-
+            case "Rows":
+                string strBuf = m_strDataPath + PT_ChildElementBuf.RootName;
+                break;
+            case "Block":
+                break;
         }
         return blnResult;
     }
-    private bool TableShow(PT_ChildElement PT_ChildElementBuf)
+    private bool TableShow(PT_ChildElement PT_ChildElementBuf)//判斷資料表是否要顯示
     {//透過程式手段 把Table下面低一層的元素RootName全部合併放到Table中
         bool blnResult = false;
         int intCount = 0;
@@ -457,7 +471,7 @@ public class CS_PrintTemplate
         }
         return blnResult;
     }
-    private object? GetFieldValueByName(object obj, string fieldName)
+    private object? GetFieldValueByName(object obj, string fieldName)//從JSON記憶體給定元素名稱字串取回對應員素質
     {//C# .net8 ~ 傳入字串 轉換成 物件成員名稱並取回對應數值 (你可以使用 Reflection 或 Expression Trees 來根據字串取出對應的物件成員（欄位或屬性）的值)
 
         if (obj == null || string.IsNullOrWhiteSpace(fieldName))
@@ -475,7 +489,7 @@ public class CS_PrintTemplate
 
         return (field00==null)? field01.GetValue(obj): field00.GetValue(obj);
     }
-    private string GetOrderData(string strDataPath,string strVarName)
+    private string GetOrderData(string strDataPath,string strVarName,bool blnAutoInc=true)
     {
         string strResult = "";
 
@@ -494,7 +508,14 @@ public class CS_PrintTemplate
             case "order_items":
                 try
                 {
-                    strResult = GetFieldValueByName(m_OrderData.order_items[m_ForLoopVars[0].m_intIndex], strVarName).ToString();
+                    if((m_ForLoopVars[0].m_intIndex>=0) && (m_ForLoopVars[0].m_intIndex< m_ForLoopVars[0].m_intCount))
+                    {
+                        strResult = GetFieldValueByName(m_OrderData.order_items[m_ForLoopVars[0].m_intIndex], strVarName).ToString();
+                    }
+                    else
+                    {
+                        strResult = "";
+                    }
                 }
                 catch
                 {
@@ -622,6 +643,101 @@ public class CS_PrintTemplate
         return strResult;
     }
 
+    private int  ForLoopVarsSet(string strPath)// m_ForLoopVars變數設定
+    {
+        int intResult = 0;
+        if(m_ForLoopVars.Count==0)
+        {
+            return intResult;
+        }
+
+        switch (strPath)
+        {
+            case "":
+            case "order_items":
+                m_ForLoopVars[0].m_intIndex = ((m_ForLoopVars[0].m_intIndex + 1) >= m_ForLoopVars[0].m_intCount) ? (m_ForLoopVars[0].m_intCount - 1) : (m_ForLoopVars[0].m_intIndex + 1);
+                intResult = m_ForLoopVars[0].m_intCount;
+                break;
+            case "order_items.condiments":
+                if(m_ForLoopVars[1].m_intIndex==-1)
+                {
+                    if(m_ForLoopVars[0].m_intCount>0)
+                    {
+                        m_ForLoopVars[1].m_intCount = m_OrderData.order_items[m_ForLoopVars[0].m_intIndex].condiments.Count;
+                        m_ForLoopVars[1].m_intIndex = (m_ForLoopVars[1].m_intCount > 0) ? 0 : -1;
+                    }
+                }
+                else
+                {
+                    m_ForLoopVars[1].m_intIndex = ((m_ForLoopVars[1].m_intIndex + 1) >= m_ForLoopVars[1].m_intCount) ? (m_ForLoopVars[1].m_intCount - 1) : (m_ForLoopVars[1].m_intIndex + 1);
+                }
+                intResult = m_ForLoopVars[1].m_intCount;
+                break;
+            case "order_items.set_meals":
+                if (m_ForLoopVars[2].m_intIndex == -1)
+                {
+                    if (m_ForLoopVars[0].m_intCount > 0)
+                    {
+                        m_ForLoopVars[2].m_intCount = m_OrderData.order_items[m_ForLoopVars[0].m_intIndex].set_meals.Count;
+                        m_ForLoopVars[2].m_intIndex = (m_ForLoopVars[2].m_intCount > 0) ? 0 : -1;
+                    }
+                }
+                else
+                {
+                    m_ForLoopVars[2].m_intIndex = ((m_ForLoopVars[2].m_intIndex + 1) >= m_ForLoopVars[2].m_intCount) ? (m_ForLoopVars[2].m_intCount - 1) : (m_ForLoopVars[2].m_intIndex + 1);
+                }
+                intResult = m_ForLoopVars[2].m_intCount;
+                break;
+            case "order_items.set_meals.product":
+                if (m_ForLoopVars[3].m_intIndex == -1)
+                {
+                    if ((m_ForLoopVars[0].m_intCount > 0) && (m_ForLoopVars[2].m_intCount > 0))
+                    {
+                        m_ForLoopVars[3].m_intCount = m_OrderData.order_items[m_ForLoopVars[0].m_intIndex].set_meals[m_ForLoopVars[2].m_intIndex].product.Count;
+                        m_ForLoopVars[3].m_intIndex = (m_ForLoopVars[3].m_intCount > 0) ? 0 : -1;
+                    }
+                }
+                else
+                {
+                    m_ForLoopVars[3].m_intIndex = ((m_ForLoopVars[3].m_intIndex + 1) >= m_ForLoopVars[3].m_intCount) ? (m_ForLoopVars[3].m_intCount - 1) : (m_ForLoopVars[3].m_intIndex + 1);
+                }
+                intResult = m_ForLoopVars[3].m_intCount;
+                break;
+            case "order_items.set_meals.product.condiments":
+                if (m_ForLoopVars[4].m_intIndex == -1)
+                {
+                    if ((m_ForLoopVars[0].m_intCount > 0) && (m_ForLoopVars[2].m_intCount > 0) && (m_ForLoopVars[3].m_intCount > 0))
+                    {
+                        m_ForLoopVars[4].m_intCount = m_OrderData.order_items[m_ForLoopVars[0].m_intIndex].set_meals[m_ForLoopVars[2].m_intIndex].product[m_ForLoopVars[3].m_intIndex].condiments.Count;
+                        m_ForLoopVars[4].m_intIndex = (m_ForLoopVars[4].m_intCount > 0) ? 0 : -1;
+                    }
+                }
+                else
+                {
+                    m_ForLoopVars[4].m_intIndex = ((m_ForLoopVars[4].m_intIndex + 1) >= m_ForLoopVars[4].m_intCount) ? (m_ForLoopVars[4].m_intCount - 1) : (m_ForLoopVars[4].m_intIndex + 1);
+                }
+                intResult = m_ForLoopVars[4].m_intCount;
+                break;
+            case "packages":
+                m_ForLoopVars[5].m_intIndex = ((m_ForLoopVars[5].m_intIndex + 1) >= m_ForLoopVars[5].m_intCount) ? (m_ForLoopVars[5].m_intCount - 1) : (m_ForLoopVars[5].m_intIndex + 1);
+                intResult = m_ForLoopVars[5].m_intCount;
+                break;
+            case "coupons":
+                m_ForLoopVars[6].m_intIndex = ((m_ForLoopVars[6].m_intIndex + 1) >= m_ForLoopVars[6].m_intCount) ? (m_ForLoopVars[6].m_intCount - 1) : (m_ForLoopVars[6].m_intIndex + 1);
+                intResult = m_ForLoopVars[6].m_intCount;
+                break;
+            case "tablewares":
+                m_ForLoopVars[7].m_intIndex = ((m_ForLoopVars[7].m_intIndex + 1) >= m_ForLoopVars[7].m_intCount) ? (m_ForLoopVars[7].m_intCount - 1) : (m_ForLoopVars[7].m_intIndex + 1);
+                intResult = m_ForLoopVars[7].m_intCount;
+                break;
+            case "payments":
+                m_ForLoopVars[8].m_intIndex = ((m_ForLoopVars[8].m_intIndex + 1) >= m_ForLoopVars[8].m_intCount) ? (m_ForLoopVars[8].m_intCount - 1) : (m_ForLoopVars[8].m_intIndex + 1);
+                intResult = m_ForLoopVars[8].m_intCount;
+                break;
+        }
+
+        return intResult;
+    }
     private void ForLoopVarsInit()// m_ForLoopVars變數初始化
     {
         m_ForLoopVars.Clear();
@@ -639,19 +755,19 @@ public class CS_PrintTemplate
         if (m_OrderData!=null)
         {
             m_ForLoopVars[0].m_intCount = (m_OrderData.order_items!=null)? m_OrderData.order_items.Count : 0;
-            m_ForLoopVars[0].m_intIndex = (m_ForLoopVars[0].m_intCount > 0) ? 0 : -1;
+            m_ForLoopVars[0].m_intIndex = -1;//(m_ForLoopVars[0].m_intCount > 0) ? 0 : -1;
             //m_ForLoopVars.Add(new ForLoopVar("order_items.condiments", 0));
             //m_ForLoopVars.Add(new ForLoopVar("order_items.set_meals", 0));
             //m_ForLoopVars.Add(new ForLoopVar("order_items.set_meals.product", 0));
             //m_ForLoopVars.Add(new ForLoopVar("order_items.set_meals.product.condiments", 0));
             m_ForLoopVars[5].m_intCount = (m_OrderData.packages != null) ? m_OrderData.packages.Count : 0;
-            m_ForLoopVars[5].m_intIndex = (m_ForLoopVars[5].m_intCount > 0) ? 0 : -1;
+            m_ForLoopVars[5].m_intIndex = -1;//(m_ForLoopVars[5].m_intCount > 0) ? 0 : -1;
             m_ForLoopVars[6].m_intCount = (m_OrderData.coupons != null) ? m_OrderData.coupons.Count : 0;
-            m_ForLoopVars[6].m_intIndex = (m_ForLoopVars[6].m_intCount > 0) ? 0 : -1;
+            m_ForLoopVars[6].m_intIndex = -1;//(m_ForLoopVars[6].m_intCount > 0) ? 0 : -1;
             m_ForLoopVars[7].m_intCount = (m_OrderData.tablewares != null) ? m_OrderData.tablewares.Count : 0;
-            m_ForLoopVars[7].m_intIndex = (m_ForLoopVars[7].m_intCount > 0) ? 0 : -1;
+            m_ForLoopVars[7].m_intIndex = -1;//(m_ForLoopVars[7].m_intCount > 0) ? 0 : -1;
             m_ForLoopVars[8].m_intCount = (m_OrderData.payments != null) ? m_OrderData.payments.Count : 0;
-            m_ForLoopVars[8].m_intIndex = (m_ForLoopVars[8].m_intCount > 0) ? 0 : -1;
+            m_ForLoopVars[8].m_intIndex = -1;//(m_ForLoopVars[8].m_intCount > 0) ? 0 : -1;
         }
     }
 
@@ -687,7 +803,7 @@ public class CS_PrintTemplate
     }
 
     private string m_strElement2DataLog = "";
-    private void Element2Data(PT_ChildElement PT_ChildElementBuf)
+    private void Element2Data(PT_ChildElement PT_ChildElementBuf)//元件轉資料
     {
         if (PT_ChildElementBuf==null)
         {
@@ -714,7 +830,12 @@ public class CS_PrintTemplate
         m_strElement2DataLog += PT_ChildElementBuf.Content + ";";
     }
 
-    private void DrawingPage(Graphics g)
+    private void Data2Image()//資料轉圖
+    {
+
+    }
+
+    private void DrawingPage(Graphics g)//畫布實際建立函數
     {
         //---
         //測試多頁列印+裁紙
@@ -727,7 +848,7 @@ public class CS_PrintTemplate
         for (int i = 0;i< m_PT_Page.ChildElements.Count;i++)//依序處理Page的內容
         {
             PT_ChildElement PT_ChildElementBuf = GetDataElement(m_PT_Page.ChildElements[i]);
-            Element2Data(PT_ChildElementBuf);//元件轉畫布
+            Element2Data(PT_ChildElementBuf);//元件轉資料
 
             //清空堆疊迴圈
             while (m_ContainerElements.Count > 0)
@@ -737,7 +858,7 @@ public class CS_PrintTemplate
                 {
                     PT_ChildElementBuf = GetDataElement(ContainerElementBuf.m_Element.ChildElements[ContainerElementBuf.m_index]);
                     ContainerElementBuf.m_index++;//改變旗標
-                    Element2Data(PT_ChildElementBuf);//元件轉畫布
+                    Element2Data(PT_ChildElementBuf);//元件轉資料
                 }
                 else
                 {
@@ -768,7 +889,7 @@ public class CS_PrintTemplate
         Console.WriteLine(m_strElement2DataLog);
     }
 
-    private void PrintPage(object sender, PrintPageEventArgs e)//實際產生列印內容
+    private void PrintPage(object sender, PrintPageEventArgs e)//實際產生列印內容觸發函數
     {
         /*
         //https://learn.microsoft.com/zh-tw/dotnet/api/system.drawing.graphicsunit?view=windowsdesktop-9.0&viewFallbackFrom=dotnet-plat-ext-8.0
