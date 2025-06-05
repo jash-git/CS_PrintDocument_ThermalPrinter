@@ -405,7 +405,6 @@ public class CS_PrintTemplate
                     int height = 50000;//500cm
 
 
-                    //TemplateContent2Data(".", "{$call_num}");
                     PaperSize paperSize = new PaperSize("Custom_80mm", width, height);
                     m_PrintDocument.DefaultPageSettings.PaperSize = paperSize;
                     m_PrintDocument.Print();//驅動PrintPage
@@ -425,16 +424,49 @@ public class CS_PrintTemplate
     private bool Element_Preprocess(PT_ChildElement PT_ChildElementBuf)//元件預先處理
     {
         bool blnResult= true;
-
+        string strDataPathBuf = "";
         switch (PT_ChildElementBuf.ElementType)
         {
             case "Table":
                 blnResult = TableShow(PT_ChildElementBuf);
                 break;
             case "Rows":
-                string strBuf = m_strDataPath + PT_ChildElementBuf.RootName;
+                strDataPathBuf = GetStackPath();
+                if (PT_ChildElementBuf.RootName.Length>0)
+                {
+                    if(strDataPathBuf.Length>0)
+                    {
+                        strDataPathBuf += "." + PT_ChildElementBuf.RootName;
+                    }
+                    else
+                    {
+                        strDataPathBuf = PT_ChildElementBuf.RootName;
+                    }
+
+                    if (ForLoopVarsSet(strDataPathBuf) <= 0)
+                    {
+                        blnResult = false;
+                    }
+                }
                 break;
             case "Block":
+                strDataPathBuf = GetStackPath();
+                if (PT_ChildElementBuf.RootName.Length > 0)
+                {
+                    if (strDataPathBuf.Length > 0)
+                    {
+                        strDataPathBuf += "." + PT_ChildElementBuf.RootName;
+                    }
+                    else
+                    {
+                        strDataPathBuf = PT_ChildElementBuf.RootName;
+                    }
+
+                    if (ForLoopVarsSet(strDataPathBuf) <= 0)
+                    {
+                        blnResult = false;
+                    }
+                }
                 break;
         }
         return blnResult;
@@ -495,6 +527,7 @@ public class CS_PrintTemplate
 
         switch(strDataPath)
         {
+            case "":
             case ".":
                 try
                 {
@@ -643,7 +676,31 @@ public class CS_PrintTemplate
         return strResult;
     }
 
-    private int  ForLoopVarsSet(string strPath)// m_ForLoopVars變數設定
+    private string GetStackPath()//取得堆疊物件的資料集路徑
+    {
+        string strResult = "";
+        ContainerElement[] ContainerElements = m_ContainerElements.ToArray();
+        if((ContainerElements!=null) && (ContainerElements.Length>0))
+        {
+            for (int i = (ContainerElements.Length - 1); i >= 0; i--)
+            {
+                if((ContainerElements[i].m_Element.RootName!=null) && ContainerElements[i].m_Element.RootName.Length>0)
+                {
+                    if(strResult.Length>0)
+                    {
+                        strResult += "." + ContainerElements[i].m_Element.RootName;
+                    }
+                    else
+                    {
+                        strResult = ContainerElements[i].m_Element.RootName;
+                    }
+                }            
+            }
+        }
+
+        return strResult;
+    }
+    private int ForLoopVarsSet(string strPath)// m_ForLoopVars變數設定
     {
         int intResult = 0;
         if(m_ForLoopVars.Count==0)
@@ -653,7 +710,6 @@ public class CS_PrintTemplate
 
         switch (strPath)
         {
-            case "":
             case "order_items":
                 m_ForLoopVars[0].m_intIndex = ((m_ForLoopVars[0].m_intIndex + 1) >= m_ForLoopVars[0].m_intCount) ? (m_ForLoopVars[0].m_intCount - 1) : (m_ForLoopVars[0].m_intIndex + 1);
                 intResult = m_ForLoopVars[0].m_intCount;
@@ -733,6 +789,12 @@ public class CS_PrintTemplate
             case "payments":
                 m_ForLoopVars[8].m_intIndex = ((m_ForLoopVars[8].m_intIndex + 1) >= m_ForLoopVars[8].m_intCount) ? (m_ForLoopVars[8].m_intCount - 1) : (m_ForLoopVars[8].m_intIndex + 1);
                 intResult = m_ForLoopVars[8].m_intCount;
+                break;
+            case "":
+                intResult = m_ForLoopVars[0].m_intCount;
+                break;
+            default://以上都不符合走這個
+                intResult = 0;
                 break;
         }
 
@@ -827,7 +889,16 @@ public class CS_PrintTemplate
             m_strElement2DataLog += ((m_strDataPath.Length == 0) ? "." : m_strDataPath) + ";\t";
         }
 
-        m_strElement2DataLog += PT_ChildElementBuf.Content + ";";
+        string strContentDatrBuf = "";
+        if (m_strDataPath.Length > 1)
+        {
+            strContentDatrBuf = TemplateContent2Data(m_strDataPath.Substring(1, m_strDataPath.Length-1), PT_ChildElementBuf.Content);
+        }
+        else
+        {
+            strContentDatrBuf = TemplateContent2Data(m_strDataPath, PT_ChildElementBuf.Content);
+        }
+        m_strElement2DataLog += strContentDatrBuf + ";";//PT_ChildElementBuf.Content + ";";
     }
 
     private void Data2Image()//資料轉圖
