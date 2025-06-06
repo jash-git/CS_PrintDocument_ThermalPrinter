@@ -394,7 +394,7 @@
 											"Width":640,
 											"Height":-1,
 											"Content":"",				
-											"RootName":"",
+											"RootName":"product",
 											"ChildElements":[
 												{
 													"ElementType":"Text",
@@ -405,7 +405,7 @@
 													"Index":0,
 													"Width":376,
 													"Height":40,
-													"Content":"{$product_name}",
+													"Content":"{$name}",
 													"VerticalContentAlig":"Center",
 													"HorizontalContentAlig":"Left",
 													"ContentSize":13,
@@ -424,7 +424,7 @@
 													"Index":1,
 													"Width":80,
 													"Height":40,
-													"Content":"{$count}",
+													"Content":"{$quantity}",
 													"VerticalContentAlig":"Center",
 													"HorizontalContentAlig":"Left",
 													"ContentSize":13,
@@ -465,7 +465,7 @@
 											"Width":640,
 											"Height":-1,
 											"Content":"",				
-											"RootName":"condiments",
+											"RootName":"product",
 											"DisplayMode":"Merge",
 											"ChildElements":[
 												{
@@ -478,7 +478,7 @@
 													"Width":640,
 													"Height":-1,
 													"Content":"",				
-													"RootName":"",
+													"RootName":"condiments",
 													"ChildElements":[
 														{
 															"ElementType":"Text",

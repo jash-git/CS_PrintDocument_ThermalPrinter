@@ -25,4 +25,5 @@ public class CS_PrintTemplate//主要資料元件
 	private void Element2Data(PT_ChildElement PT_ChildElementBuf)//元件轉資料
 	private void Data2Image()//資料轉圖
 	private void DrawingPage(Graphics g)//畫布實際建立函數
+		堆疊和變數控制
 	private void PrintPage(object sender, PrintPageEventArgs e)//實際產生列印內容觸發函數

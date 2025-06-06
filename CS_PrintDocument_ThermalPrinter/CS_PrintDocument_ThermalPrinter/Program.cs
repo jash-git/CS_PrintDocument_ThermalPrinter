@@ -425,6 +425,8 @@ public class CS_PrintTemplate
     {
         bool blnResult= true;
         string strDataPathBuf = "";
+        int intIndex = -1;
+        int intNum = -1;
         switch (PT_ChildElementBuf.ElementType)
         {
             case "Table":
@@ -443,7 +445,7 @@ public class CS_PrintTemplate
                         strDataPathBuf = PT_ChildElementBuf.RootName;
                     }
 
-                    if (ForLoopVarsSet(strDataPathBuf) <= 0)
+                    if (ForLoopVarsSet(strDataPathBuf, ref intIndex, ref intNum) <= 0)
                     {
                         blnResult = false;
                     }
@@ -462,7 +464,7 @@ public class CS_PrintTemplate
                         strDataPathBuf = PT_ChildElementBuf.RootName;
                     }
 
-                    if (ForLoopVarsSet(strDataPathBuf) <= 0)
+                    if (ForLoopVarsSet(strDataPathBuf, ref intIndex, ref intNum) <= 0)
                     {
                         blnResult = false;
                     }
@@ -700,7 +702,7 @@ public class CS_PrintTemplate
 
         return strResult;
     }
-    private int ForLoopVarsSet(string strPath)// m_ForLoopVars變數設定
+    private int ForLoopVarsSet(string strPath,ref int intIndex,ref int intNum)// m_ForLoopVars變數設定
     {
         int intResult = 0;
         if(m_ForLoopVars.Count==0)
@@ -711,8 +713,10 @@ public class CS_PrintTemplate
         switch (strPath)
         {
             case "order_items":
+                intIndex = m_ForLoopVars[0].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                 m_ForLoopVars[0].m_intIndex = ((m_ForLoopVars[0].m_intIndex + 1) >= m_ForLoopVars[0].m_intCount) ? (m_ForLoopVars[0].m_intCount - 1) : (m_ForLoopVars[0].m_intIndex + 1);
                 intResult = m_ForLoopVars[0].m_intCount;
+                intNum = 0;
                 break;
             case "order_items.condiments":
                 if(m_ForLoopVars[1].m_intIndex==-1)
@@ -725,9 +729,11 @@ public class CS_PrintTemplate
                 }
                 else
                 {
+                    intIndex = m_ForLoopVars[1].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                     m_ForLoopVars[1].m_intIndex = ((m_ForLoopVars[1].m_intIndex + 1) >= m_ForLoopVars[1].m_intCount) ? (m_ForLoopVars[1].m_intCount - 1) : (m_ForLoopVars[1].m_intIndex + 1);
                 }
                 intResult = m_ForLoopVars[1].m_intCount;
+                intNum = 1;
                 break;
             case "order_items.set_meals":
                 if (m_ForLoopVars[2].m_intIndex == -1)
@@ -740,9 +746,11 @@ public class CS_PrintTemplate
                 }
                 else
                 {
+                    intIndex = m_ForLoopVars[2].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                     m_ForLoopVars[2].m_intIndex = ((m_ForLoopVars[2].m_intIndex + 1) >= m_ForLoopVars[2].m_intCount) ? (m_ForLoopVars[2].m_intCount - 1) : (m_ForLoopVars[2].m_intIndex + 1);
                 }
                 intResult = m_ForLoopVars[2].m_intCount;
+                intNum = 2;
                 break;
             case "order_items.set_meals.product":
                 if (m_ForLoopVars[3].m_intIndex == -1)
@@ -755,9 +763,11 @@ public class CS_PrintTemplate
                 }
                 else
                 {
+                    intIndex = m_ForLoopVars[3].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                     m_ForLoopVars[3].m_intIndex = ((m_ForLoopVars[3].m_intIndex + 1) >= m_ForLoopVars[3].m_intCount) ? (m_ForLoopVars[3].m_intCount - 1) : (m_ForLoopVars[3].m_intIndex + 1);
                 }
                 intResult = m_ForLoopVars[3].m_intCount;
+                intNum = 3;
                 break;
             case "order_items.set_meals.product.condiments":
                 if (m_ForLoopVars[4].m_intIndex == -1)
@@ -770,31 +780,39 @@ public class CS_PrintTemplate
                 }
                 else
                 {
+                    intIndex = m_ForLoopVars[4].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                     m_ForLoopVars[4].m_intIndex = ((m_ForLoopVars[4].m_intIndex + 1) >= m_ForLoopVars[4].m_intCount) ? (m_ForLoopVars[4].m_intCount - 1) : (m_ForLoopVars[4].m_intIndex + 1);
                 }
                 intResult = m_ForLoopVars[4].m_intCount;
+                intNum = 4;
                 break;
             case "packages":
+                intIndex = m_ForLoopVars[5].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                 m_ForLoopVars[5].m_intIndex = ((m_ForLoopVars[5].m_intIndex + 1) >= m_ForLoopVars[5].m_intCount) ? (m_ForLoopVars[5].m_intCount - 1) : (m_ForLoopVars[5].m_intIndex + 1);
                 intResult = m_ForLoopVars[5].m_intCount;
+                intNum = 5;
                 break;
             case "coupons":
+                intIndex = m_ForLoopVars[6].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                 m_ForLoopVars[6].m_intIndex = ((m_ForLoopVars[6].m_intIndex + 1) >= m_ForLoopVars[6].m_intCount) ? (m_ForLoopVars[6].m_intCount - 1) : (m_ForLoopVars[6].m_intIndex + 1);
                 intResult = m_ForLoopVars[6].m_intCount;
+                intNum = 6;
                 break;
             case "tablewares":
+                intIndex = m_ForLoopVars[7].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                 m_ForLoopVars[7].m_intIndex = ((m_ForLoopVars[7].m_intIndex + 1) >= m_ForLoopVars[7].m_intCount) ? (m_ForLoopVars[7].m_intCount - 1) : (m_ForLoopVars[7].m_intIndex + 1);
-                intResult = m_ForLoopVars[7].m_intCount;
+                intNum = 7;
                 break;
             case "payments":
+                intIndex = m_ForLoopVars[8].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                 m_ForLoopVars[8].m_intIndex = ((m_ForLoopVars[8].m_intIndex + 1) >= m_ForLoopVars[8].m_intCount) ? (m_ForLoopVars[8].m_intCount - 1) : (m_ForLoopVars[8].m_intIndex + 1);
                 intResult = m_ForLoopVars[8].m_intCount;
-                break;
-            case "":
-                intResult = m_ForLoopVars[0].m_intCount;
+                intNum = 8;
                 break;
             default://以上都不符合走這個
                 intResult = 0;
+                intIndex = -1;
+                intNum = -1;
                 break;
         }
 
@@ -942,19 +960,39 @@ public class CS_PrintTemplate
                     {
                         m_strElement2DataLog += "\n";
                         m_blnGetDataElement = false;
-
-                        /*
-                        ContainerElement[] ContainerElements = m_ContainerElements.ToArray();
-                        for (int j = (ContainerElements.Length - 1); j >= 0; j--)
-                        {
-                            m_strElement2DataLog += ContainerElements[j].m_Element.ElementType + "/";
-                        }
-                        */
                     }
-                    
-                    m_ContainerElements.Pop();//移除堆疊最上面元件
+
+                    if ((ContainerElementBuf.m_Element.ElementType=="Rows")|| (ContainerElementBuf.m_Element.ElementType == "Block"))
+                    {
+                        int intIndex = -1; 
+                        int intNum = -1;
+                        int intCount = -1;
+                        string strDataPathBuf = "";
+                        strDataPathBuf = GetStackPath();
+                        intCount = ForLoopVarsSet(strDataPathBuf, ref intIndex, ref intNum);
+                        if ( (intCount!=0) && (intIndex < intCount) )
+                        {
+                            ContainerElementBuf.m_index = 0;
+                            if(intNum==0)//相依變數全部也要觸發重置機制，當下次呼叫到ForLoopVarsSet就會執行
+                            {
+                                m_ForLoopVars[1].m_intIndex = -1;
+                                m_ForLoopVars[2].m_intIndex = -1;
+                                m_ForLoopVars[3].m_intIndex = -1;
+                                m_ForLoopVars[4].m_intIndex = -1;
+                            }
+                        }
+                        else
+                        {
+                            m_ContainerElements.Pop();//移除堆疊最上面元件
+                        }
+                    }
+                    else
+                    {//Table 直接移除 ~ 堆疊只放Rows、Block 和 Table
+                        m_ContainerElements.Pop();//移除堆疊最上面元件
+                    }
+
                 }
-            }           
+            }//while (m_ContainerElements.Count > 0)           
         }
 
         Console.WriteLine(m_strElement2DataLog);
