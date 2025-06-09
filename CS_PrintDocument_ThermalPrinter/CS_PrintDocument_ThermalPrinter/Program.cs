@@ -12,6 +12,44 @@ using System.Reflection;
 using System.Collections;
 using System.Text.RegularExpressions;
 
+public class BitmapBase64_Funs//圖片和Base64戶轉
+{
+    //圖片轉換base64字串
+    public static string Image2Base64String(Bitmap bmp)
+    {
+        try
+        {
+            MemoryStream ms = new MemoryStream();
+            bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+            byte[] arr = new byte[ms.Length];
+            ms.Position = 0;
+            ms.Read(arr, 0, (int)ms.Length);
+            ms.Close();
+            return Convert.ToBase64String(arr);
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+    //base64字串轉換圖片
+    public static Bitmap Base64String2Image(string strbase64)
+    {
+        try
+        {
+            byte[] arr = Convert.FromBase64String(strbase64);
+            MemoryStream ms = new MemoryStream(arr);
+            Bitmap bmp = new Bitmap(ms);
+            ms.Close();
+            return bmp;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+}
+
 public class DPI_Funs
 {
     //---
@@ -72,13 +110,13 @@ public class Barcode_Funs
 
         return barcodeBitmap;
     }
-    public static Bitmap BarCode(String StrData)//文字轉BarCode
+    public static Bitmap BarCode(String StrData,int Height,int Width)//文字轉BarCode
     {
         // Create a BarcodeWriter instance
         var barcodeWriter = new BarcodeWriter();//ZXing.Windows.Compatibility
         barcodeWriter.Format = BarcodeFormat.CODE_128;
-        barcodeWriter.Options.Height = 100;
-        barcodeWriter.Options.Width = 300;
+        barcodeWriter.Options.Height = Height;
+        barcodeWriter.Options.Width = Width;
 
         // Generate the barcode as a Bitmap
         Bitmap barcodeBitmap = barcodeWriter.Write(StrData);
@@ -305,8 +343,10 @@ public class CS_PrintTemplate
     //---
     //運算系統變數
     private Stack<ContainerElement> m_ContainerElements = new Stack<ContainerElement>();//存放容器物件
+    private Stack<ContainerElement> m_RecycleElements = new Stack<ContainerElement>();//回收
     private List<ForLoopVar> m_ForLoopVars = new List<ForLoopVar>();//存放迴圈索引變數
     private string m_strDataPath = "";//目前資料集路徑階層
+    private string m_strRealData = "";//目前真實資料
     private int m_intPages = 1;//此範本一次要列印次數(一菜一切)
     //---運算系統變數
 
@@ -883,11 +923,12 @@ public class CS_PrintTemplate
     }
 
     private string m_strElement2DataLog = "";
-    private void Element2Data(PT_ChildElement PT_ChildElementBuf)//元件轉資料
+    private string Element2Data(PT_ChildElement PT_ChildElementBuf)//元件轉資料
     {
+        string strResult = "";
         if (PT_ChildElementBuf==null)
         {
-            return;
+            return strResult;
         }
 
         if (PT_ChildElementBuf.Index==0)
@@ -917,11 +958,39 @@ public class CS_PrintTemplate
             strContentDatrBuf = TemplateContent2Data(m_strDataPath, PT_ChildElementBuf.Content);
         }
         m_strElement2DataLog += strContentDatrBuf + ";";//PT_ChildElementBuf.Content + ";";
+
+        strResult = strContentDatrBuf;
+        return strResult;
     }
 
-    private void Data2Image()//資料轉圖
+    private void Data2Image(PT_ChildElement PT_ChildElementBuf, Graphics g)//資料轉圖
     {
+        if(m_strRealData.Length==0)
+        {
+            return;
+        }
 
+        Bitmap BitmapBuf = null;
+        switch (PT_ChildElementBuf.ElementType)
+        {
+            case "Image":
+                BitmapBuf = BitmapBase64_Funs.Base64String2Image(m_strRealData);
+                break;
+            case "QrCode":
+                BitmapBuf = Barcode_Funs.QrCode(m_strRealData);
+                break;
+            case "BarCode":
+                BitmapBuf = Barcode_Funs.BarCode(m_strRealData, PT_ChildElementBuf.Height, PT_ChildElementBuf.Width);
+                break;
+        }
+        if(BitmapBuf!=null)
+        {
+
+        }
+        else
+        {
+
+        }
     }
 
     private void DrawingPage(Graphics g)//畫布實際建立函數
@@ -937,7 +1006,8 @@ public class CS_PrintTemplate
         for (int i = 0;i< m_PT_Page.ChildElements.Count;i++)//依序處理Page的內容
         {
             PT_ChildElement PT_ChildElementBuf = GetDataElement(m_PT_Page.ChildElements[i]);
-            Element2Data(PT_ChildElementBuf);//元件轉資料
+            m_strRealData = Element2Data(PT_ChildElementBuf);//元件轉資料
+            Data2Image(PT_ChildElementBuf, g);
 
             //清空堆疊迴圈
             while (m_ContainerElements.Count > 0)
@@ -947,7 +1017,8 @@ public class CS_PrintTemplate
                 {
                     PT_ChildElementBuf = GetDataElement(ContainerElementBuf.m_Element.ChildElements[ContainerElementBuf.m_index]);
                     ContainerElementBuf.m_index++;//改變旗標
-                    Element2Data(PT_ChildElementBuf);//元件轉資料
+                    m_strRealData = Element2Data(PT_ChildElementBuf);//元件轉資料
+                    Data2Image(PT_ChildElementBuf, g);
                 }
                 else
                 {
@@ -983,6 +1054,22 @@ public class CS_PrintTemplate
                         }
                         else
                         {
+                            bool blnTableLoop = false;
+                            ContainerElement[] ContainerElements = m_ContainerElements.ToArray();
+                            for(int j= (ContainerElements.Length-1);j>=0;j--)
+                            {
+                                if (ContainerElements[j].m_Element.ElementType== "Table")
+                                {
+                                    blnTableLoop = true;
+                                    break;
+                                }
+                            }
+                            if (blnTableLoop && (ContainerElementBuf.m_Element.ChildElements.Count>0))
+                            {
+                                ContainerElementBuf.m_index = 1;
+                                m_RecycleElements.Push(ContainerElementBuf);
+                            }
+
                             m_ContainerElements.Pop();//移除堆疊最上面元件
                         }
                     }
@@ -1055,7 +1142,7 @@ class Program
         string strPrinterDriverName = "80mm Series Printer";//"POS80D";//"POS-80C";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
         StreamReader sr00 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Input.json");
         string strOrderData = sr00.ReadToEnd();
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Bill_80_Block.json");
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Bill_80.json");
         string strPrintTemplate = sr01.ReadToEnd();
         CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderData);
         
@@ -1066,7 +1153,7 @@ class Program
         float SysDpiX, SysDpiY;
         DPI_Funs.GetScreenDpi(out SysDpiX,out SysDpiY);
         Bitmap bmp1 = Barcode_Funs.QrCode("相關網站: https://github.com/micjahn/ZXing.Net/issues/458");
-        Bitmap bmp2 = Barcode_Funs.BarCode("1234567890");
+        Bitmap bmp2 = Barcode_Funs.BarCode("1234567890",100,300);
         string targetPrinterName = "POS80D";//"POS-80C";//"80mm Series Printer";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
 
         PrintDocument printDoc = new PrintDocument();
