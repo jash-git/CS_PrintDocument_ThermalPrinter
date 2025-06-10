@@ -11,9 +11,17 @@ using CS_PrintDocument_ThermalPrinter;
 using System.Reflection;
 using System.Collections;
 using System.Text.RegularExpressions;
+using System.Runtime.Intrinsics.X86;
 
 public class BitmapBase64_Funs//圖片和Base64戶轉
 {
+    //---
+    //相關線上測試工具
+    // https://www.base64-image.de/
+    // https://base64.guru/converter/encode/image
+    // https://base64.guru/converter/decode/file
+    //---相關線上測試工具
+
     //圖片轉換base64字串
     public static string Image2Base64String(Bitmap bmp)
     {
@@ -334,16 +342,17 @@ public class CS_PrintTemplate
     private Font m_DoubleFont;//雙倍字 Height =11mm
     private Font m_FourFont;//四倍字 Height =13mm
     private float [] m_fltFontHeight =new float[5] {3,5,6,11,13};//由小到大
-    public float m_fltLast_X = 0;//最後列印定位點X座標
-    public float m_fltLast_Y = 0;//最後列印定位點Y座標
-    public float m_fltMax_Height = 0;//同列最大列印高度
-    public float m_fltLLast_Height = 0;//最後列印最大高度
+    private float m_fltSysDpi = 0;//印表DPI
+    private float m_fltLast_X = 0;//最後列印定位點X座標
+    private float m_fltLast_Y = 0;//最後列印定位點Y座標
+    private float m_fltMax_Height = 0;//同列最大列印高度
+    private float m_fltLLast_Height = 0;//最後列印最大高度
     //---繪圖系統變數
 
     //---
     //運算系統變數
     private Stack<ContainerElement> m_ContainerElements = new Stack<ContainerElement>();//存放容器物件
-    private Stack<ContainerElement> m_RecycleElements = new Stack<ContainerElement>();//回收
+    //private Stack<ContainerElement> m_RecycleElements = new Stack<ContainerElement>();//回收
     private List<ForLoopVar> m_ForLoopVars = new List<ForLoopVar>();//存放迴圈索引變數
     private string m_strDataPath = "";//目前資料集路徑階層
     private string m_strRealData = "";//目前真實資料
@@ -403,7 +412,7 @@ public class CS_PrintTemplate
             }
             else
             {
-                float SysDpi = 203 * m_PT_Page.ZoomRatio;//設定印表機DPI
+                m_fltSysDpi = 203 * m_PT_Page.ZoomRatio;//設定印表機DPI
                 //---
                 //字型變數定義
                 m_NormalFont = new Font(m_PT_Page.FontName, 9);//一般字 Height =3mm
@@ -413,7 +422,7 @@ public class CS_PrintTemplate
                 m_FourFont = new Font(m_PT_Page.FontName, 40);//四倍字 Height =13mm
                 for (int i = 0; i<m_fltFontHeight.Length ; i++)//計算出每種字型的高度Pixels
                 {
-                    m_fltFontHeight[i] = DPI_Funs.MillimetersToPixels(m_fltFontHeight[i], SysDpi);
+                    m_fltFontHeight[i] = DPI_Funs.MillimetersToPixels(m_fltFontHeight[i], m_fltSysDpi);
                 }
                 //---字型變數定義
                 if((m_PT_Page.PrintMode!=null)&&(m_PT_Page.PrintMode== "Single"))
@@ -441,7 +450,7 @@ public class CS_PrintTemplate
                     m_PrintDocument.PrintPage += new PrintPageEventHandler(PrintPage);
                     m_PrintDocument.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
                     
-                    int width = (int)DPI_Funs.PixelsToMillimeters(m_PT_Page.Width, SysDpi);  // 約 315
+                    int width = (int)DPI_Funs.PixelsToMillimeters(m_PT_Page.Width, m_fltSysDpi);  // 約 315
                     int height = 50000;//500cm
 
 
@@ -907,10 +916,7 @@ public class CS_PrintTemplate
             ContainerElement ContainerElementBuf = new ContainerElement(root, 1);
             m_ContainerElements.Push(ContainerElementBuf);//放入堆疊
 
-            if ((ContainerElementBuf.m_Element.RootName!=null) && (ContainerElementBuf.m_Element.RootName.Length>0))
-            {
-                m_strDataPath += "." + ContainerElementBuf.m_Element.RootName;
-            }
+            m_strDataPath = GetStackPath();
             m_blnGetDataElement = false;
             return GetDataElement(root.ChildElements[0]);//遞迴呼叫
         }
@@ -949,14 +955,7 @@ public class CS_PrintTemplate
         }
 
         string strContentDatrBuf = "";
-        if (m_strDataPath.Length > 1)
-        {
-            strContentDatrBuf = TemplateContent2Data(m_strDataPath.Substring(1, m_strDataPath.Length-1), PT_ChildElementBuf.Content);
-        }
-        else
-        {
-            strContentDatrBuf = TemplateContent2Data(m_strDataPath, PT_ChildElementBuf.Content);
-        }
+       strContentDatrBuf = TemplateContent2Data(m_strDataPath, PT_ChildElementBuf.Content);
         m_strElement2DataLog += strContentDatrBuf + ";";//PT_ChildElementBuf.Content + ";";
 
         strResult = strContentDatrBuf;
@@ -965,15 +964,54 @@ public class CS_PrintTemplate
 
     private void Data2Image(PT_ChildElement PT_ChildElementBuf, Graphics g)//資料轉圖
     {
-        if(m_strRealData.Length==0)
+
+        if (m_strRealData.Length == 0)
         {
             return;
         }
 
+        float fltWidth = PT_ChildElementBuf.Width;
+        float fltHeight = (PT_ChildElementBuf.Height>0) ? PT_ChildElementBuf.Height : 0;
+        float fltStartX = -1;
+        float fltStartY = -1;
+        float fltXBuf = 0;
+        float fltYBuf = 0;
+
+        switch(PT_ChildElementBuf.X_Alignment)
+        {
+            case "X":
+                fltStartX = PT_ChildElementBuf.X;
+                break;
+            case "Right":
+                fltStartX = -1;
+                fltXBuf = m_PT_Page.Width - DPI_Funs.MillimetersToPixels(6, m_fltSysDpi);//6(機器滾輪大小)            
+                break;
+            case "Center":
+                fltStartX = -2;
+                fltXBuf = ( m_PT_Page.Width - DPI_Funs.MillimetersToPixels(6*2, m_fltSysDpi) )/2;//12mm是兩側留白(機器滾輪大小)
+                break;
+        }
+
+        switch (PT_ChildElementBuf.Y_Alignment)
+        {
+            case "Y":
+                fltStartY = PT_ChildElementBuf.Y;
+                break;
+            case "Increment":
+                fltStartY = m_fltLast_Y + m_fltLLast_Height + 1;//[垂直排列 ~ 目前Y = 前一元件的Y + 前一元件的Height + 1]
+                break;
+            case "Element":
+                fltStartY = m_fltLast_Y;//[橫向排列 ~ 目前Y = 前一個元件Y]
+                break;
+        }
         Bitmap BitmapBuf = null;
         switch (PT_ChildElementBuf.ElementType)
         {
             case "Image":
+                if(m_strRealData.Contains(","))
+                {//data:image/png;base64,..... 把實際資料抓出來
+                    m_strRealData = m_strRealData.Split(",")[1];
+                }
                 BitmapBuf = BitmapBase64_Funs.Base64String2Image(m_strRealData);
                 break;
             case "QrCode":
@@ -985,7 +1023,27 @@ public class CS_PrintTemplate
         }
         if(BitmapBuf!=null)
         {
+            if(fltStartX<0)
+            {
+                switch(fltStartX)
+                {
+                    case -1://"Right"
+                        fltStartX = fltXBuf - fltWidth;
+                        break;
+                    case -2://"Center"
+                        fltStartX = fltXBuf - (fltWidth/2);
+                        break;
+                }
+            }
 
+            g.DrawImage( BitmapBuf, new Rectangle((int)(fltStartX), (int)(fltStartY),(int)(fltWidth),(int)(fltHeight)) );
+
+            if(m_fltMax_Height < fltHeight)
+            {//同列最大列印高度
+                m_fltMax_Height = fltHeight;
+            }
+            m_fltLast_X = fltStartX;
+            m_fltLast_Y = fltStartY;
         }
         else
         {
@@ -1024,13 +1082,14 @@ public class CS_PrintTemplate
                 {
                     if ((ContainerElementBuf.m_Element.RootName != null) && (ContainerElementBuf.m_Element.RootName.Length > 0))
                     {
-                        m_strDataPath = m_strDataPath.Substring(0, (m_strDataPath.Length - ContainerElementBuf.m_Element.RootName.Length - 1));
+                        m_strDataPath = GetStackPath();
                     }
 
                     if(m_blnGetDataElement)
                     {
                         m_strElement2DataLog += "\n";
                         m_blnGetDataElement = false;
+                        m_fltLLast_Height = m_fltMax_Height;//(不同列時，運算用)
                     }
 
                     if ((ContainerElementBuf.m_Element.ElementType=="Rows")|| (ContainerElementBuf.m_Element.ElementType == "Block"))
@@ -1044,16 +1103,52 @@ public class CS_PrintTemplate
                         if ( (intCount!=0) && (intIndex < intCount) )
                         {
                             ContainerElementBuf.m_index = 0;
-                            if(intNum==0)//相依變數全部也要觸發重置機制，當下次呼叫到ForLoopVarsSet就會執行
+                            
+                            //----
+                            //相依變數全部也要觸發重置機制，當下次呼叫到ForLoopVarsSet就會執行
+                            if (intNum == 0)//order_items
                             {
                                 m_ForLoopVars[1].m_intIndex = -1;
+                                m_ForLoopVars[1].m_intCount = -1;
                                 m_ForLoopVars[2].m_intIndex = -1;
+                                m_ForLoopVars[2].m_intCount = -1;
                                 m_ForLoopVars[3].m_intIndex = -1;
+                                m_ForLoopVars[3].m_intCount = -1;
                                 m_ForLoopVars[4].m_intIndex = -1;
+                                m_ForLoopVars[4].m_intCount = -1;
                             }
+                            if (intNum == 1)//order_items.condiments
+                            {
+
+                            }
+                            if (intNum == 2)//order_items.set_meals
+                            {//驗證可以
+                                /*
+                                if (m_RecycleElements.Count > 0)
+                                {
+                                    m_ContainerElements.Push((ContainerElement)m_RecycleElements.Peek());
+                                    m_RecycleElements.Pop();
+                                }
+                                //*/
+                                m_ForLoopVars[3].m_intIndex = -1;
+                                m_ForLoopVars[3].m_intCount = -1;
+                                m_ForLoopVars[4].m_intIndex = -1;
+                                m_ForLoopVars[4].m_intCount = -1;
+                            }
+                            if (intNum == 3)//order_items.set_meals.product
+                            {
+                                m_ForLoopVars[4].m_intIndex = -1;
+                                m_ForLoopVars[4].m_intCount = -1;
+                            }
+                            if (intNum == 4)//order_items.set_meals.product.condiments
+                            {
+
+                            }
+                            //---相依變數全部也要觸發重置機制，當下次呼叫到ForLoopVarsSet就會執行
                         }
                         else
                         {
+                            /*
                             bool blnTableLoop = false;
                             ContainerElement[] ContainerElements = m_ContainerElements.ToArray();
                             for(int j= (ContainerElements.Length-1);j>=0;j--)
@@ -1069,6 +1164,7 @@ public class CS_PrintTemplate
                                 ContainerElementBuf.m_index = 1;
                                 m_RecycleElements.Push(ContainerElementBuf);
                             }
+                            */
 
                             m_ContainerElements.Pop();//移除堆疊最上面元件
                         }

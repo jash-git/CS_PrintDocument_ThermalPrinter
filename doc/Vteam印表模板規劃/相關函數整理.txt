@@ -1,4 +1,8 @@
 相關函數整理
+BitmapBase64_Funs
+	public static string Image2Base64String(Bitmap bmp)//圖片轉換base64字串
+	public static Bitmap Base64String2Image(string strbase64)//base64字串轉換圖片
+	
 DPI_Funs
 	public static void GetScreenDpi(out float DpiX, out float DpiY)//系統DPI
 	public static float PixelsToInches(int pixels, float dpi)//像素 -> 英吋
@@ -23,7 +27,7 @@ public class CS_PrintTemplate//主要資料元件
 	privat string GetStackPath()//取得堆疊物件的資料集路徑
 	private PT_ChildElement GetDataElement(PT_ChildElement root)//取得資料物件
 	private void Element2Data(PT_ChildElement PT_ChildElementBuf)//元件轉資料
-	private void Data2Image()//資料轉圖
+	private void Data2Image(PT_ChildElement PT_ChildElementBuf, Graphics g)//資料轉圖
 	private void DrawingPage(Graphics g)//畫布實際建立函數
 		堆疊和變數控制
 	private void PrintPage(object sender, PrintPageEventArgs e)//實際產生列印內容觸發函數
