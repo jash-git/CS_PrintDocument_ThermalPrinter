@@ -5,13 +5,13 @@ using ZXing;
 using ZXing.Windows.Compatibility;// NET5之後CS3050(Error CS0305 Using generic type 'BarcodeWriter ' requires type 1) 解決方法 : https://github.com/micjahn/ZXing.Net/issues/458
 using ZXing.Common;
 using ZXing.QrCode;
-using System.Runtime.Intrinsics.Arm;
 using System.Text.Json;
 using CS_PrintDocument_ThermalPrinter;
 using System.Reflection;
 using System.Collections;
 using System.Text.RegularExpressions;
 using System.Runtime.Intrinsics.X86;
+using System.Text;
 
 public class BitmapBase64_Funs//圖片和Base64戶轉
 {
@@ -1004,6 +1004,7 @@ public class CS_PrintTemplate
                 fltStartY = m_fltLast_Y;//[橫向排列 ~ 目前Y = 前一個元件Y]
                 break;
         }
+
         Bitmap BitmapBuf = null;
         switch (PT_ChildElementBuf.ElementType)
         {
@@ -1022,7 +1023,7 @@ public class CS_PrintTemplate
                 break;
         }
         if(BitmapBuf!=null)
-        {
+        {//圖片模式
             if(fltStartX<0)
             {
                 switch(fltStartX)
@@ -1042,13 +1043,205 @@ public class CS_PrintTemplate
             {//同列最大列印高度
                 m_fltMax_Height = fltHeight;
             }
-            m_fltLast_X = fltStartX;
-            m_fltLast_Y = fltStartY;
-        }
+            m_fltLast_X = PT_ChildElementBuf.X;
+            m_fltLast_Y = fltHeight;
+        }//if(BitmapBuf!=null)
         else
-        {
+        {//文字模式
+            /*
+                m_NormalFont = new Font(m_PT_Page.FontName, 9);//一般字 Height =3mm
+                m_BigFont = new Font(m_PT_Page.FontName, 13);//單倍字 Height =5mm
+                m_InvoiceFont = new Font(m_PT_Page.FontName, 16); ;//發票 Height =6mm
+                m_DoubleFont = new Font(m_PT_Page.FontName, 28);//雙倍字 Height =11mm
+                m_FourFont = new Font(m_PT_Page.FontName, 40);//四倍字 Height =13mm              
+            */
+            bool blnAutoWrap =(PT_ChildElementBuf.AutoWrap=="Y") ? true : false;//自動換行旗標
+            float fltVerticalSpacing = (float)PT_ChildElementBuf.VerticalSpacing;//自動換行間隙
+            string strIntervalSymbols = PT_ChildElementBuf.IntervalSymbols;//合併資料間隔符號
+            string strHorizontalContentAlig = PT_ChildElementBuf.HorizontalContentAlig;//文字Y軸對其方式
 
+            Font NowFont = null;
+            float fltNowFontHeight = 0;
+            Brush brush = Brushes.Black;
+
+            NowFont = m_NormalFont;
+            fltNowFontHeight = m_fltFontHeight[0];
+            switch (PT_ChildElementBuf.ContentSize)
+            {
+                case 40:
+                    NowFont = m_FourFont;
+                    fltNowFontHeight = m_fltFontHeight[4];
+                    break;
+                case 28:
+                    NowFont = m_DoubleFont;
+                    fltNowFontHeight = m_fltFontHeight[3];
+                    break;
+                case 16:
+                    NowFont = m_InvoiceFont;
+                    fltNowFontHeight = m_fltFontHeight[2];
+                    break;
+                case 13:
+                    NowFont = m_BigFont;
+                    fltNowFontHeight = m_fltFontHeight[1];
+                    break;
+                case 9:
+                    NowFont = m_NormalFont;
+                    fltNowFontHeight = m_fltFontHeight[0];
+                    break;
+            }
+            
+            if(PT_ChildElementBuf.ContentBold=="Y")
+            {
+                NowFont = new Font(NowFont, FontStyle.Bold);
+            }
+
+            string strShowData = "";
+            string[] strShowArrayData = null;
+            int intWlen = Wlen(m_strRealData);//資料總字數
+            //float fltDataAllLength = intWlen * fltNowFontHeight;//資料總長度
+            int intOneRowWords = (int)(fltWidth / fltNowFontHeight);//單列最大字數
+            
+            int intMaxRows = 1;//最大列數
+            if((intOneRowWords < intWlen) && blnAutoWrap)
+            {
+                strShowArrayData = SplitStringByByteLength(m_strRealData, intOneRowWords);//顯示多行資料集
+                intMaxRows = (strShowArrayData!=null) ? strShowArrayData.Length : intMaxRows;//紀錄列數
+
+                if (fltHeight > 0)//元件有限高
+                {
+                    int intLimitRows = (int)(fltHeight / (fltNowFontHeight + fltVerticalSpacing));//限制下最多列數
+                    intMaxRows = (intLimitRows < intMaxRows) ? intLimitRows : intMaxRows;//最後列數
+                }
+            }
+            else
+            {
+                strShowData = GetSubstringByByteLength(m_strRealData, (intMaxRows * intOneRowWords));//單行資料
+            }
+
+
+
+            switch (PT_ChildElementBuf.VerticalContentAlig)//文字Y軸對其方式
+            {
+                case "Top":
+                    fltStartY = fltStartY;
+                    break;
+                case "Down":
+                    fltStartY = fltStartY + (fltHeight - (fltNowFontHeight + (intMaxRows - 1) * (fltNowFontHeight + fltVerticalSpacing)));
+                    break;
+                case "Center":
+                    fltStartY = fltStartY +( (fltHeight/2) - ( (fltNowFontHeight + (intMaxRows - 1) * (fltNowFontHeight + fltVerticalSpacing)) / 2) );
+                    break;
+            }
+
+            switch (PT_ChildElementBuf.HorizontalContentAlig)//文字Y軸對其方式
+            {
+                case "Left":
+                    fltStartX = fltStartX;
+                    break;
+                case "Right":
+                    if(intMaxRows==1)
+                    {
+                        fltStartX = fltStartX + ( fltWidth - (fltNowFontHeight * Wlen(strShowData)) );
+                    }
+                    else
+                    {
+
+                    }
+                    break;
+                case "Center":
+                    if (intMaxRows == 1)
+                    {
+                        fltStartX = fltStartX + (fltWidth/2 - (fltNowFontHeight * Wlen(strShowData))/2 );
+                    }
+                    else
+                    {
+
+                    }
+                    break;
+            }
+
+            if(intMaxRows == 1)
+            {
+                g.DrawString(strShowData, NowFont, brush, fltStartX, fltStartY);
+            }
+            else
+            {
+                for (int i = 0; i < intMaxRows; i++)
+                {
+                    g.DrawString(strShowData, NowFont, brush, fltStartX, fltStartY);
+                    fltStartY += (fltNowFontHeight + fltVerticalSpacing);
+                    m_fltMax_Height = fltStartY;
+                }
+            }
+
+            if (m_fltMax_Height < fltHeight)
+            {//同列最大列印高度
+                m_fltMax_Height = fltHeight;
+            }
+            m_fltLast_X = PT_ChildElementBuf.X;
+            m_fltLast_Y = (fltHeight>0)?fltHeight : m_fltMax_Height;
         }
+    }
+
+    private int Wlen(string val)//計算資料字元數
+    {
+        int length = 0;
+        foreach (char c in val)
+        {
+            length += c <= 0xFF ? 1 : 2; // ASCII ≤ 0xFF 為 1 byte，其餘為 2 byte
+        }
+        return length;
+    }
+
+    private string[] SplitStringByByteLength(string val, int maxByteLength)//將一字串按照最大字元數分成數段存成陣列
+    {
+        List<string> segments = new List<string>();  // 用來儲存切割後的字串片段
+        int length = 0;  // 當前位元組長度
+        StringBuilder currentSegment = new StringBuilder();  // 當前的字串片段
+
+        foreach (char c in val)
+        {
+            int byteCount = c <= 0xFF ? 1 : 2;  // 根據字元的位元組數計算
+
+            // 如果加上這個字元後超過最大位元組長度，則將當前片段儲存並重置
+            if (length + byteCount > maxByteLength)
+            {
+                segments.Add(currentSegment.ToString());
+                currentSegment.Clear();  // 清空當前片段
+                length = 0;  // 重置位元組長度
+            }
+
+            currentSegment.Append(c);  // 將字元加入當前片段
+            length += byteCount;  // 增加位元組長度
+        }
+
+        // 最後一段字串需要加到結果中
+        if (currentSegment.Length > 0)
+        {
+            segments.Add(currentSegment.ToString());
+        }
+
+        return segments.ToArray();  // 返回字串陣列
+    }
+
+    private string GetSubstringByByteLength(string val, int byteLength)//取出一段指定字元數的資料
+    {
+        int length = 0;  // 計算目前的位元組長度
+        StringBuilder result = new StringBuilder(); // 用來存放結果字串
+
+        foreach (char c in val)
+        {
+            int byteCount = c <= 0xFF ? 1 : 2;  // 根據字元的位元組數計算
+            if (length + byteCount > byteLength)
+            {
+                break; // 超過指定的位元組長度時退出
+            }
+
+            result.Append(c);  // 加入字元到結果字串
+            length += byteCount;  // 累加目前的位元組長度
+        }
+
+        return result.ToString();  // 返回結果字串
     }
 
     private void DrawingPage(Graphics g)//畫布實際建立函數
