@@ -336,17 +336,17 @@ public class CS_PrintTemplate
 
     //---
     //繪圖系統變數
-    private Font m_NormalFont;//一般字 Height =3mm
-    private Font m_BigFont;//單倍字 Height =5mm
-    private Font m_InvoiceFont;//發票 Height =6mm
-    private Font m_DoubleFont;//雙倍字 Height =11mm
-    private Font m_FourFont;//四倍字 Height =13mm
-    private float [] m_fltFontHeight =new float[5] {3,5,6,11,13};//由小到大
+    private Font m_NormalFont;//一般字 Height =3mm ~[0]
+    private Font m_BigFont;//單倍字 Height =5mm ~[1]
+    private Font m_InvoiceFont;//發票 Height =6mm ~[2]
+    private Font m_DoubleFont;//雙倍字 Height =11mm ~[3]
+    private Font m_FourFont;//四倍字 Height =13mm ~[4]
+    private float [] m_fltFontHeight =new float[5] {3,5,6,11,13};//由小到大,單位為 mm
     private float m_fltSysDpi = 0;//印表DPI
     private float m_fltLast_X = 0;//最後列印定位點X座標
     private float m_fltLast_Y = 0;//最後列印定位點Y座標
     private float m_fltMax_Height = 0;//同列最大列印高度
-    private float m_fltLLast_Height = 0;//最後列印最大高度
+    private float m_fltLast_Height = 0;//最後列印最大高度
     //---繪圖系統變數
 
     //---
@@ -977,6 +977,8 @@ public class CS_PrintTemplate
         float fltXBuf = 0;
         float fltYBuf = 0;
 
+        //---
+        //計算元件定位點
         switch(PT_ChildElementBuf.X_Alignment)
         {
             case "X":
@@ -998,12 +1000,17 @@ public class CS_PrintTemplate
                 fltStartY = PT_ChildElementBuf.Y;
                 break;
             case "Increment":
-                fltStartY = m_fltLast_Y + m_fltLLast_Height + 1;//[垂直排列 ~ 目前Y = 前一元件的Y + 前一元件的Height + 1]
+                fltStartY = m_fltLast_Y + m_fltLast_Height + 1;//[垂直排列 ~ 目前Y = 前一元件的Y + 前一元件的Height + 1]
                 break;
             case "Element":
                 fltStartY = m_fltLast_Y;//[橫向排列 ~ 目前Y = 前一個元件Y]
                 break;
         }
+
+        //移動到第一次計算出元件定位點，因為文字定位點≠元件定位點
+        m_fltLast_X = fltStartX;
+        m_fltLast_Y = fltStartY;
+        //---計算元件定位點
 
         Bitmap BitmapBuf = null;
         switch (PT_ChildElementBuf.ElementType)
@@ -1022,6 +1029,7 @@ public class CS_PrintTemplate
                 BitmapBuf = Barcode_Funs.BarCode(m_strRealData, PT_ChildElementBuf.Height, PT_ChildElementBuf.Width);
                 break;
         }
+
         if(BitmapBuf!=null)
         {//圖片模式
             if(fltStartX<0)
@@ -1039,12 +1047,6 @@ public class CS_PrintTemplate
 
             g.DrawImage( BitmapBuf, new Rectangle((int)(fltStartX), (int)(fltStartY),(int)(fltWidth),(int)(fltHeight)) );
 
-            if(m_fltMax_Height < fltHeight)
-            {//同列最大列印高度
-                m_fltMax_Height = fltHeight;
-            }
-            m_fltLast_X = PT_ChildElementBuf.X;
-            m_fltLast_Y = fltHeight;
         }//if(BitmapBuf!=null)
         else
         {//文字模式
@@ -1109,13 +1111,38 @@ public class CS_PrintTemplate
 
                 if (fltHeight > 0)//元件有限高
                 {
-                    int intLimitRows = (int)(fltHeight / (fltNowFontHeight + fltVerticalSpacing));//限制下最多列數
+                    int i = 0;
+                    float fltBuf = fltHeight;
+                    int intLimitRows = 0;//限制下最多列數
+                    bool blnbreak = false;
+                    do
+                    {
+                        if(fltBuf >= (fltNowFontHeight + i*fltVerticalSpacing))
+                        {
+                            intLimitRows++;
+                            fltBuf = fltBuf - (fltNowFontHeight + i * fltVerticalSpacing);
+                            i = 1;
+                        }
+                        else
+                        {
+                            blnbreak = true;
+                        }
+                    } while (!blnbreak);
                     intMaxRows = (intLimitRows < intMaxRows) ? intLimitRows : intMaxRows;//最後列數
+                }
+                else
+                {//元件沒限高
+                    fltHeight = (intMaxRows * fltNowFontHeight) + ((intMaxRows - 1) * fltVerticalSpacing);
                 }
             }
             else
             {
-                strShowData = GetSubstringByByteLength(m_strRealData, (intMaxRows * intOneRowWords));//單行資料
+                //strShowData = GetSubstringByByteLength(m_strRealData, (intMaxRows * intOneRowWords));//單行資料
+                strShowData = m_strRealData;
+                if(fltHeight<=0)
+                {//元件沒限高
+                    fltHeight = (intMaxRows * fltNowFontHeight) + ((intMaxRows - 1) * fltVerticalSpacing);
+                }
             }
 
 
@@ -1160,7 +1187,7 @@ public class CS_PrintTemplate
                     break;
             }
 
-            if(intMaxRows == 1)
+            if(strShowArrayData == null)
             {
                 g.DrawString(strShowData, NowFont, brush, fltStartX, fltStartY);
             }
@@ -1168,19 +1195,22 @@ public class CS_PrintTemplate
             {
                 for (int i = 0; i < intMaxRows; i++)
                 {
-                    g.DrawString(strShowData, NowFont, brush, fltStartX, fltStartY);
+                    g.DrawString(strShowArrayData[i], NowFont, brush, fltStartX, fltStartY);
                     fltStartY += (fltNowFontHeight + fltVerticalSpacing);
                     m_fltMax_Height = fltStartY;
                 }
             }
-
-            if (m_fltMax_Height < fltHeight)
-            {//同列最大列印高度
-                m_fltMax_Height = fltHeight;
-            }
-            m_fltLast_X = PT_ChildElementBuf.X;
-            m_fltLast_Y = (fltHeight>0)?fltHeight : m_fltMax_Height;
         }
+
+        if (m_fltMax_Height < fltHeight)
+        {//同列最大列印高度
+            m_fltMax_Height = fltHeight;
+        }
+        /*
+        //移動到第一次計算出元件定位點，因為文字定位點≠元件定位點
+        m_fltLast_X = fltStartX;
+        m_fltLast_Y = fltStartY;
+        */
     }
 
     private int Wlen(string val)//計算資料字元數
@@ -1257,8 +1287,11 @@ public class CS_PrintTemplate
         for (int i = 0;i< m_PT_Page.ChildElements.Count;i++)//依序處理Page的內容
         {
             PT_ChildElement PT_ChildElementBuf = GetDataElement(m_PT_Page.ChildElements[i]);
-            m_strRealData = Element2Data(PT_ChildElementBuf);//元件轉資料
-            Data2Image(PT_ChildElementBuf, g);
+            if (PT_ChildElementBuf != null)
+            {
+                m_strRealData = Element2Data(PT_ChildElementBuf);//元件轉資料
+                Data2Image(PT_ChildElementBuf, g);
+            }
 
             //清空堆疊迴圈
             while (m_ContainerElements.Count > 0)
@@ -1268,8 +1301,11 @@ public class CS_PrintTemplate
                 {
                     PT_ChildElementBuf = GetDataElement(ContainerElementBuf.m_Element.ChildElements[ContainerElementBuf.m_index]);
                     ContainerElementBuf.m_index++;//改變旗標
-                    m_strRealData = Element2Data(PT_ChildElementBuf);//元件轉資料
-                    Data2Image(PT_ChildElementBuf, g);
+                    if(PT_ChildElementBuf!=null)
+                    {
+                        m_strRealData = Element2Data(PT_ChildElementBuf);//元件轉資料
+                        Data2Image(PT_ChildElementBuf, g);
+                    }
                 }
                 else
                 {
@@ -1282,7 +1318,8 @@ public class CS_PrintTemplate
                     {
                         m_strElement2DataLog += "\n";
                         m_blnGetDataElement = false;
-                        m_fltLLast_Height = m_fltMax_Height;//(不同列時，運算用)
+                        m_fltLast_Height = m_fltMax_Height;//(不同列時，運算用)
+                        m_fltMax_Height = 0;//初始化變數
                     }
 
                     if ((ContainerElementBuf.m_Element.ElementType=="Rows")|| (ContainerElementBuf.m_Element.ElementType == "Block"))
