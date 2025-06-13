@@ -990,7 +990,7 @@ public class CS_PrintTemplate
                 break;
             case "Center":
                 fltStartX = -2;
-                fltXBuf = ( m_PT_Page.Width - DPI_Funs.MillimetersToPixels(6*2, m_fltSysDpi) )/2;//12mm是兩側留白(機器滾輪大小)
+                fltXBuf = ( m_PT_Page.Width - DPI_Funs.MillimetersToPixels(4*2, m_fltSysDpi) )/2;//8mm是兩側留白(機器滾輪大小)
                 break;
         }
 
@@ -1008,6 +1008,18 @@ public class CS_PrintTemplate
         }
 
         //移動到第一次計算出元件定位點，因為文字定位點≠元件定位點
+        if (fltStartX < 0)
+        {
+            switch (fltStartX)
+            {
+                case -1://"Right"
+                    fltStartX = fltXBuf - fltWidth;
+                    break;
+                case -2://"Center"
+                    fltStartX = fltXBuf - (fltWidth / 2);
+                    break;
+            }
+        }
         m_fltLast_X = fltStartX;
         m_fltLast_Y = fltStartY;
         //---計算元件定位點
@@ -1032,18 +1044,6 @@ public class CS_PrintTemplate
 
         if(BitmapBuf!=null)
         {//圖片模式
-            if(fltStartX<0)
-            {
-                switch(fltStartX)
-                {
-                    case -1://"Right"
-                        fltStartX = fltXBuf - fltWidth;
-                        break;
-                    case -2://"Center"
-                        fltStartX = fltXBuf - (fltWidth/2);
-                        break;
-                }
-            }
 
             g.DrawImage( BitmapBuf, new Rectangle((int)(fltStartX), (int)(fltStartY),(int)(fltWidth),(int)(fltHeight)) );
 
@@ -1099,9 +1099,9 @@ public class CS_PrintTemplate
 
             string strShowData = "";
             string[] strShowArrayData = null;
-            int intWlen = Wlen(m_strRealData);//資料總字數
+            int intWlen = Wlen(m_strRealData);//資料總字數(將中文字換成2個英文字長度)
             //float fltDataAllLength = intWlen * fltNowFontHeight;//資料總長度
-            int intOneRowWords = (int)(fltWidth / fltNowFontHeight);//單列最大字數
+            int intOneRowWords = (int)(fltWidth / fltNowFontHeight)*2;//單列最大中文字數*2 = (英文字數量)
             
             int intMaxRows = 1;//最大列數
             if((intOneRowWords < intWlen) && blnAutoWrap)
@@ -1168,21 +1168,21 @@ public class CS_PrintTemplate
                 case "Right":
                     if(intMaxRows==1)
                     {
-                        fltStartX = fltStartX + ( fltWidth - (fltNowFontHeight * Wlen(strShowData)) );
+                        fltStartX = fltStartX + ( fltWidth - (0.65f * fltNowFontHeight * Wlen(strShowData)) );
                     }
                     else
                     {
-
+                        fltStartX = fltStartX;//多行一律靠左
                     }
                     break;
                 case "Center":
                     if (intMaxRows == 1)
                     {
-                        fltStartX = fltStartX + (fltWidth/2 - (fltNowFontHeight * Wlen(strShowData))/2 );
+                        fltStartX = fltStartX + (fltWidth/2 - (0.65f * fltNowFontHeight * Wlen(strShowData))/2 );//0.65是實驗出來的數值: 字寬 = 0.65*字高
                     }
                     else
                     {
-
+                        fltStartX = fltStartX;//多行一律靠左
                     }
                     break;
             }
@@ -1196,8 +1196,7 @@ public class CS_PrintTemplate
                 for (int i = 0; i < intMaxRows; i++)
                 {
                     g.DrawString(strShowArrayData[i], NowFont, brush, fltStartX, fltStartY);
-                    fltStartY += (fltNowFontHeight + fltVerticalSpacing);
-                    m_fltMax_Height = fltStartY;
+                    fltStartY += (fltNowFontHeight + fltVerticalSpacing);            
                 }
             }
         }
@@ -1465,7 +1464,7 @@ class Program
     }
     static void Main()
     {
-        string strPrinterDriverName = "80mm Series Printer";//"POS80D";//"POS-80C";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+        string strPrinterDriverName = "POS-80C";//"POS80D";//"80mm Series Printer";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
         StreamReader sr00 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Input.json");
         string strOrderData = sr00.ReadToEnd();
         StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Bill_80.json");
@@ -1480,7 +1479,7 @@ class Program
         DPI_Funs.GetScreenDpi(out SysDpiX,out SysDpiY);
         Bitmap bmp1 = Barcode_Funs.QrCode("相關網站: https://github.com/micjahn/ZXing.Net/issues/458");
         Bitmap bmp2 = Barcode_Funs.BarCode("1234567890",100,300);
-        string targetPrinterName = "POS80D";//"POS-80C";//"80mm Series Printer";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+        string targetPrinterName = "80mm Series Printer";//"POS80D";//"POS-80C";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
 
         PrintDocument printDoc = new PrintDocument();
 
