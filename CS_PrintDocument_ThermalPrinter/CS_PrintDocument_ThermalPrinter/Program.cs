@@ -322,9 +322,9 @@ public class ForLoopVar
     public int m_intIndex;
     public ForLoopVar(string strName,int intCount,int intIndex=-1) 
     {
-        m_strName = strName;
-        m_intCount = intCount;
-        m_intIndex = intIndex;//-1:表示intCount還未初始化
+        m_strName = strName;//資料及名稱
+        m_intCount = intCount;//資料及總比數
+        m_intIndex = intIndex;//目前存取在第幾筆的旗標，-1:表示intCount還未初始化
     }
 }
 public class CS_PrintTemplate
@@ -355,7 +355,9 @@ public class CS_PrintTemplate
     //private Stack<ContainerElement> m_RecycleElements = new Stack<ContainerElement>();//回收
     private List<ForLoopVar> m_ForLoopVars = new List<ForLoopVar>();//存放迴圈索引變數
     private string m_strDataPath = "";//目前資料集路徑階層
+    private int m_intDataPath = -1;
     private string m_strRealData = "";//目前真實資料
+    private string m_strDisplayMode = "Single";//顯示模式: Single/Merge ~ 元件預先處理被更動
     private int m_intPages = 1;//此範本一次要列印次數(一菜一切)
     //---運算系統變數
 
@@ -474,6 +476,7 @@ public class CS_PrintTemplate
     {
         bool blnResult= true;
         string strDataPathBuf = "";
+        int intDataPathBuf = -1;
         int intIndex = -1;
         int intNum = -1;
         switch (PT_ChildElementBuf.ElementType)
@@ -482,7 +485,9 @@ public class CS_PrintTemplate
                 blnResult = TableShow(PT_ChildElementBuf);
                 break;
             case "Rows":
-                strDataPathBuf = GetStackPath();
+                m_strDisplayMode = (PT_ChildElementBuf.DisplayMode.Length==0)? "Single": PT_ChildElementBuf.DisplayMode;//指定顯示模式
+
+                strDataPathBuf = GetStackPath(ref intDataPathBuf);
                 if (PT_ChildElementBuf.RootName.Length>0)
                 {
                     if(strDataPathBuf.Length>0)
@@ -501,7 +506,7 @@ public class CS_PrintTemplate
                 }
                 break;
             case "Block":
-                strDataPathBuf = GetStackPath();
+                strDataPathBuf = GetStackPath(ref intDataPathBuf);
                 if (PT_ChildElementBuf.RootName.Length > 0)
                 {
                     if (strDataPathBuf.Length > 0)
@@ -727,7 +732,7 @@ public class CS_PrintTemplate
         return strResult;
     }
 
-    private string GetStackPath()//取得堆疊物件的資料集路徑
+    private string GetStackPath(ref int intDataPath)//取得堆疊物件的資料集路徑
     {
         string strResult = "";
         ContainerElement[] ContainerElements = m_ContainerElements.ToArray();
@@ -749,6 +754,40 @@ public class CS_PrintTemplate
             }
         }
 
+        switch (strResult)
+        {
+            case "order_items"://0
+                intDataPath = 0;
+                break;
+            case "order_items.condiments"://1
+                intDataPath = 1;
+                break;
+            case "order_items.set_meals"://2
+                intDataPath = 2;
+                break;
+            case "order_items.set_meals.product"://3
+                intDataPath = 3;
+                break;
+            case "order_items.set_meals.product.condiments"://4
+                intDataPath = 4;
+                break;
+            case "packages"://5
+                intDataPath = 5;
+                break;
+            case "coupons"://6
+                intDataPath = 6;
+                break;
+            case "tablewares"://7
+                intDataPath = 7;
+                break;
+            case "payments"://8
+                intDataPath = 8;
+                break;
+            default://以上都不符合走這個
+                intDataPath = -1;
+                break;
+        }
+
         return strResult;
     }
     private int ForLoopVarsSet(string strPath,ref int intIndex,ref int intNum)// m_ForLoopVars變數設定
@@ -761,13 +800,13 @@ public class CS_PrintTemplate
 
         switch (strPath)
         {
-            case "order_items":
+            case "order_items"://0
                 intIndex = m_ForLoopVars[0].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                 m_ForLoopVars[0].m_intIndex = ((m_ForLoopVars[0].m_intIndex + 1) >= m_ForLoopVars[0].m_intCount) ? (m_ForLoopVars[0].m_intCount - 1) : (m_ForLoopVars[0].m_intIndex + 1);
                 intResult = m_ForLoopVars[0].m_intCount;
                 intNum = 0;
                 break;
-            case "order_items.condiments":
+            case "order_items.condiments"://1
                 if(m_ForLoopVars[1].m_intIndex==-1)
                 {
                     if(m_ForLoopVars[0].m_intCount>0)
@@ -784,7 +823,7 @@ public class CS_PrintTemplate
                 intResult = m_ForLoopVars[1].m_intCount;
                 intNum = 1;
                 break;
-            case "order_items.set_meals":
+            case "order_items.set_meals"://2
                 if (m_ForLoopVars[2].m_intIndex == -1)
                 {
                     if (m_ForLoopVars[0].m_intCount > 0)
@@ -801,7 +840,7 @@ public class CS_PrintTemplate
                 intResult = m_ForLoopVars[2].m_intCount;
                 intNum = 2;
                 break;
-            case "order_items.set_meals.product":
+            case "order_items.set_meals.product"://3
                 if (m_ForLoopVars[3].m_intIndex == -1)
                 {
                     if ((m_ForLoopVars[0].m_intCount > 0) && (m_ForLoopVars[2].m_intCount > 0))
@@ -818,7 +857,7 @@ public class CS_PrintTemplate
                 intResult = m_ForLoopVars[3].m_intCount;
                 intNum = 3;
                 break;
-            case "order_items.set_meals.product.condiments":
+            case "order_items.set_meals.product.condiments"://4
                 if (m_ForLoopVars[4].m_intIndex == -1)
                 {
                     if ((m_ForLoopVars[0].m_intCount > 0) && (m_ForLoopVars[2].m_intCount > 0) && (m_ForLoopVars[3].m_intCount > 0))
@@ -835,24 +874,24 @@ public class CS_PrintTemplate
                 intResult = m_ForLoopVars[4].m_intCount;
                 intNum = 4;
                 break;
-            case "packages":
+            case "packages"://5
                 intIndex = m_ForLoopVars[5].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                 m_ForLoopVars[5].m_intIndex = ((m_ForLoopVars[5].m_intIndex + 1) >= m_ForLoopVars[5].m_intCount) ? (m_ForLoopVars[5].m_intCount - 1) : (m_ForLoopVars[5].m_intIndex + 1);
                 intResult = m_ForLoopVars[5].m_intCount;
                 intNum = 5;
                 break;
-            case "coupons":
+            case "coupons"://6
                 intIndex = m_ForLoopVars[6].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                 m_ForLoopVars[6].m_intIndex = ((m_ForLoopVars[6].m_intIndex + 1) >= m_ForLoopVars[6].m_intCount) ? (m_ForLoopVars[6].m_intCount - 1) : (m_ForLoopVars[6].m_intIndex + 1);
                 intResult = m_ForLoopVars[6].m_intCount;
                 intNum = 6;
                 break;
-            case "tablewares":
+            case "tablewares"://7
                 intIndex = m_ForLoopVars[7].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                 m_ForLoopVars[7].m_intIndex = ((m_ForLoopVars[7].m_intIndex + 1) >= m_ForLoopVars[7].m_intCount) ? (m_ForLoopVars[7].m_intCount - 1) : (m_ForLoopVars[7].m_intIndex + 1);
                 intNum = 7;
                 break;
-            case "payments":
+            case "payments"://8
                 intIndex = m_ForLoopVars[8].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                 m_ForLoopVars[8].m_intIndex = ((m_ForLoopVars[8].m_intIndex + 1) >= m_ForLoopVars[8].m_intCount) ? (m_ForLoopVars[8].m_intCount - 1) : (m_ForLoopVars[8].m_intIndex + 1);
                 intResult = m_ForLoopVars[8].m_intCount;
@@ -916,7 +955,7 @@ public class CS_PrintTemplate
             ContainerElement ContainerElementBuf = new ContainerElement(root, 1);
             m_ContainerElements.Push(ContainerElementBuf);//放入堆疊
 
-            m_strDataPath = GetStackPath();
+            m_strDataPath = GetStackPath(ref m_intDataPath);
             m_blnGetDataElement = false;
             return GetDataElement(root.ChildElements[0]);//遞迴呼叫
         }
@@ -955,7 +994,28 @@ public class CS_PrintTemplate
         }
 
         string strContentDatrBuf = "";
-       strContentDatrBuf = TemplateContent2Data(m_strDataPath, PT_ChildElementBuf.Content);
+        if(m_strDisplayMode== "Single")
+        {
+            strContentDatrBuf = TemplateContent2Data(m_strDataPath, PT_ChildElementBuf.Content);
+        }
+        else
+        {
+            int intIndex = -1;
+            int intNum = -1;
+            do
+            {
+                if (strContentDatrBuf.Length == 0)
+                {
+                    strContentDatrBuf = TemplateContent2Data(m_strDataPath, PT_ChildElementBuf.Content);
+                }
+                else
+                {
+                    strContentDatrBuf += PT_ChildElementBuf.IntervalSymbols + TemplateContent2Data(m_strDataPath, PT_ChildElementBuf.Content);
+                }
+
+                ForLoopVarsSet(m_strDataPath, ref intIndex, ref intNum);
+            } while (intIndex<m_ForLoopVars[m_intDataPath].m_intCount);
+        }
         m_strElement2DataLog += strContentDatrBuf + ";";//PT_ChildElementBuf.Content + ";";
 
         strResult = strContentDatrBuf;
@@ -1299,7 +1359,7 @@ public class CS_PrintTemplate
                 if (ContainerElementBuf.m_index < ContainerElementBuf.m_Element.ChildElements.Count) 
                 {
                     PT_ChildElementBuf = GetDataElement(ContainerElementBuf.m_Element.ChildElements[ContainerElementBuf.m_index]);
-                    ContainerElementBuf.m_index++;//改變旗標
+                    ContainerElementBuf.m_index++;//改變已處理的子元件編號(旗標)
                     if(PT_ChildElementBuf!=null)
                     {
                         m_strRealData = Element2Data(PT_ChildElementBuf);//元件轉資料
@@ -1310,7 +1370,7 @@ public class CS_PrintTemplate
                 {
                     if ((ContainerElementBuf.m_Element.RootName != null) && (ContainerElementBuf.m_Element.RootName.Length > 0))
                     {
-                        m_strDataPath = GetStackPath();
+                        m_strDataPath = GetStackPath(ref m_intDataPath);
                     }
 
                     if(m_blnGetDataElement)
@@ -1321,18 +1381,19 @@ public class CS_PrintTemplate
                         m_fltMax_Height = 0;//初始化變數
                     }
 
-                    if ((ContainerElementBuf.m_Element.ElementType=="Rows")|| (ContainerElementBuf.m_Element.ElementType == "Block"))
+                    if ((ContainerElementBuf.m_Element.ElementType=="Rows"))// || (ContainerElementBuf.m_Element.ElementType == "Block")
                     {
                         int intIndex = -1; 
                         int intNum = -1;
                         int intCount = -1;
                         string strDataPathBuf = "";
-                        strDataPathBuf = GetStackPath();
+                        int intDataPathBuf = -1;
+                        strDataPathBuf = GetStackPath(ref intDataPathBuf);
                         intCount = ForLoopVarsSet(strDataPathBuf, ref intIndex, ref intNum);
                         if ( (intCount!=0) && (intIndex < intCount) )
                         {
-                            ContainerElementBuf.m_index = 0;
-                            
+                            ContainerElementBuf.m_index = 0;//改變已處理的子元件編號(旗標)~ 從同計算
+
                             //----
                             //相依變數全部也要觸發重置機制，當下次呼叫到ForLoopVarsSet就會執行
                             if (intNum == 0)//order_items
@@ -1399,7 +1460,7 @@ public class CS_PrintTemplate
                         }
                     }
                     else
-                    {//Table 直接移除 ~ 堆疊只放Rows、Block 和 Table
+                    {//Table 直接移除 ~ 堆疊只放Rows
                         m_ContainerElements.Pop();//移除堆疊最上面元件
                     }
 
@@ -1464,7 +1525,7 @@ class Program
     }
     static void Main()
     {
-        string strPrinterDriverName = "POS-80C";//"POS80D";//"80mm Series Printer";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+        string strPrinterDriverName = "80mm Series Printer";//"POS-80C";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
         StreamReader sr00 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Input.json");
         string strOrderData = sr00.ReadToEnd();
         StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Bill_80.json");

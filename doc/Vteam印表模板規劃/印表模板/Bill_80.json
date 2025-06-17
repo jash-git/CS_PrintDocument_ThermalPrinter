@@ -350,14 +350,14 @@
 											"ChildElements":[
 												{
 													"ElementType":"Text",
-													"X":0,
+													"X":40,
 													"Y":0,
 													"X_Alignment":"X",
-													"Y_Alignment":"Y",
+													"Y_Alignment":"Increment",
 													"Index":0,
-													"Width":640,
+													"Width":600,
 													"Height":40,
-													"Content":"{$condiment_name}",
+													"Content":"{$condiment_name}(${$price})",
 													"VerticalContentAlig":"Center",
 													"HorizontalContentAlig":"Left",
 													"ContentSize":13,
