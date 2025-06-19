@@ -12,6 +12,53 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
+public class TimeConvert
+{
+    //https://stackoverflow.com/questions/249760/how-can-i-convert-a-unix-timestamp-to-datetime-and-vice-versa
+    public static DateTime UnixTimeStampToDateTime(double unixTimeStamp, bool blnUTC = true)
+    {
+        // Unix timestamp is seconds past epoch
+        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        try
+        {
+            if (blnUTC)
+            {
+                dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();//from php vteam api to C# 使用
+            }
+            else
+            {
+                dateTime = dateTime.AddSeconds(unixTimeStamp);//from SQLite STRFTIME('%s',max(report_time)) to C# 使用
+            }
+        }
+        catch (Exception ex)
+        {
+            String StrLog = String.Format("{0}: {1}", "TimeConvert_UnixTimeStampToDateTime() Error", ex.ToString());
+        }
+
+        return dateTime;
+    }
+
+    //https://ourcodeworld.com/articles/read/865/how-to-convert-an-unixtime-to-datetime-class-and-viceversa-in-c-sharp
+    public static long DateTimeToUnixTimeStamp(DateTime MyDateTime)
+    {
+        /*
+        TimeSpan timeSpan = MyDateTime - new DateTime(1970, 1, 1, 0, 0, 0);
+        return (long)(timeSpan.TotalSeconds-8*60*60);//8*60*60 來源: GMT+08:00 ~ https://www.epochconverter.com/
+        */
+
+        DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        TimeSpan diff = MyDateTime.ToUniversalTime() - origin;
+        return (long)(diff.TotalSeconds);//https://stackoverflow.com/questions/3354893/how-can-i-convert-a-datetime-to-the-number-of-seconds-since-1970
+    }
+
+    public static DateTime JavaTimeStampToDateTime(double javaTimeStamp)
+    {
+        // Java timestamp is milliseconds past epoch
+        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dateTime = dateTime.AddMilliseconds(javaTimeStamp).ToLocalTime();
+        return dateTime;
+    }
+}//TimeConvert
 
 public class BitmapBase64_Funs//圖片和Base64戶轉
 {
@@ -353,7 +400,7 @@ public class CS_PrintTemplate
     //運算系統變數
     private Stack<ContainerElement> m_ContainerElements = new Stack<ContainerElement>();//存放容器物件
     //private Stack<ContainerElement> m_RecycleElements = new Stack<ContainerElement>();//回收
-    private List<ForLoopVar> m_ForLoopVars = new List<ForLoopVar>();//存放迴圈索引變數
+    private List<ForLoopVar> m_ForLoopVars = new List<ForLoopVar>();//存放迴圈索引變數(資料集名稱列表，不再裡面的都是變數名稱)
     private string m_strDataPath = "";//目前資料集路徑階層
     private int m_intDataPath = -1;
     private string m_strRealData = "";//目前真實資料
@@ -476,7 +523,7 @@ public class CS_PrintTemplate
     {
         bool blnResult= true;
         string strDataPathBuf = "";
-        int intDataPathBuf = -1;
+        //int intDataPathBuf = -1;
         int intIndex = -1;
         int intNum = -1;
         switch (PT_ChildElementBuf.ElementType)
@@ -486,11 +533,12 @@ public class CS_PrintTemplate
                 break;
             case "Rows":
                 m_strDisplayMode = (PT_ChildElementBuf.DisplayMode.Length==0)? "Single": PT_ChildElementBuf.DisplayMode;//指定顯示模式
-
-                strDataPathBuf = GetStackPath(ref intDataPathBuf);
-                if (PT_ChildElementBuf.RootName.Length>0)
+                
+                m_strDataPath = GetStackPath(ref m_intDataPath);//strDataPathBuf = GetStackPath(ref intDataPathBuf);
+                if (PT_ChildElementBuf.RootName.Length > 0)
                 {
-                    if(strDataPathBuf.Length>0)
+                    strDataPathBuf = m_strDataPath;
+                    if (strDataPathBuf.Length > 0)
                     {
                         strDataPathBuf += "." + PT_ChildElementBuf.RootName;
                     }
@@ -506,9 +554,10 @@ public class CS_PrintTemplate
                 }
                 break;
             case "Block":
-                strDataPathBuf = GetStackPath(ref intDataPathBuf);
+                m_strDataPath = GetStackPath(ref m_intDataPath);//strDataPathBuf = GetStackPath(ref intDataPathBuf);
                 if (PT_ChildElementBuf.RootName.Length > 0)
                 {
+                    strDataPathBuf = m_strDataPath;
                     if (strDataPathBuf.Length > 0)
                     {
                         strDataPathBuf += "." + PT_ChildElementBuf.RootName;
@@ -539,9 +588,9 @@ public class CS_PrintTemplate
 
         for (int i = 0; i < PT_ChildElementBuf.ChildElements.Count; i++)
         {
-            if (PT_ChildElementBuf.ChildElements[i].RootName.Length > 0)
+            if (PT_ChildElementBuf.ChildElements[i].RootName.Length > 0)//判斷是否有要判斷參數
             {
-                for(int j = 0; j<m_ForLoopVars.Count;j++)
+                for(int j = 0; j<m_ForLoopVars.Count;j++)//陣列變數判斷條件 : ArrayName.Count>0
                 {
                     if(m_ForLoopVars[j].m_strName == PT_ChildElementBuf.ChildElements[i].RootName)
                     {
@@ -550,7 +599,12 @@ public class CS_PrintTemplate
                     }
                 }
 
-                if(intCount>0)
+                if (intCount == 0) //非陣列變數判斷條件: 變數.length > 0
+                {
+                    intCount= (GetOrderData("", PT_ChildElementBuf.ChildElements[i].RootName)).Length;
+                }
+                
+                if (intCount>0)
                 {
                     blnResult = true;
                     break;
@@ -577,7 +631,7 @@ public class CS_PrintTemplate
 
         return (field00==null)? field01.GetValue(obj): field00.GetValue(obj);
     }
-    private string GetOrderData(string strDataPath,string strVarName,bool blnAutoInc=true)
+    private string GetOrderData(string strDataPath,string strVarName)
     {
         string strResult = "";
 
@@ -691,6 +745,26 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
+            case "invoice_data":
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderData.invoice_data, strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            default:
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderData, strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
         }
 
         return strResult;
@@ -742,13 +816,35 @@ public class CS_PrintTemplate
             {
                 if((ContainerElements[i].m_Element.RootName!=null) && ContainerElements[i].m_Element.RootName.Length>0)
                 {
-                    if(strResult.Length>0)
+                    string strBuf="";
+                    bool blnfind = false;
+                    for(int j = 0; j<m_ForLoopVars.Count;j++)
                     {
-                        strResult += "." + ContainerElements[i].m_Element.RootName;
+                        if(strResult.Length > 0)
+                        {
+                            strBuf = strResult + "." + ContainerElements[i].m_Element.RootName;
+                        }
+                        else
+                        {
+                            strBuf = ContainerElements[i].m_Element.RootName;
+                        }
+                        if (strBuf == m_ForLoopVars[j].m_strName)
+                        {
+                            blnfind = true;
+                            break;
+                        }
                     }
-                    else
+
+                    if(blnfind)
                     {
-                        strResult = ContainerElements[i].m_Element.RootName;
+                        if (strResult.Length > 0)
+                        {
+                            strResult += "." + ContainerElements[i].m_Element.RootName;
+                        }
+                        else
+                        {
+                            strResult = ContainerElements[i].m_Element.RootName;
+                        }
                     }
                 }            
             }
@@ -782,6 +878,9 @@ public class CS_PrintTemplate
                 break;
             case "payments"://8
                 intDataPath = 8;
+                break;
+            case "invoice_data"://9
+                intDataPath = 9;
                 break;
             default://以上都不符合走這個
                 intDataPath = -1;
@@ -897,8 +996,13 @@ public class CS_PrintTemplate
                 intResult = m_ForLoopVars[8].m_intCount;
                 intNum = 8;
                 break;
+            case "invoice_data"://9
+                intIndex = m_ForLoopVars[9].m_intIndex;
+                intResult = m_ForLoopVars[9].m_intCount;
+                intNum = 9;
+                break;
             default://以上都不符合走這個
-                intResult = 0;
+                intResult = GetOrderData("", strPath).Length;//不符合資料集就查是否為根結點下的變數，並將變數長度回傳承回判斷依據
                 intIndex = -1;
                 intNum = -1;
                 break;
@@ -919,6 +1023,7 @@ public class CS_PrintTemplate
         m_ForLoopVars.Add(new ForLoopVar("coupons", 0));
         m_ForLoopVars.Add(new ForLoopVar("tablewares", 0));
         m_ForLoopVars.Add(new ForLoopVar("payments", 0));
+        m_ForLoopVars.Add(new ForLoopVar("invoice_data", 0));
 
         if (m_OrderData!=null)
         {
@@ -936,6 +1041,8 @@ public class CS_PrintTemplate
             m_ForLoopVars[7].m_intIndex = -1;//(m_ForLoopVars[7].m_intCount > 0) ? 0 : -1;
             m_ForLoopVars[8].m_intCount = (m_OrderData.payments != null) ? m_OrderData.payments.Count : 0;
             m_ForLoopVars[8].m_intIndex = -1;//(m_ForLoopVars[8].m_intCount > 0) ? 0 : -1;
+            m_ForLoopVars[9].m_intCount = 1;
+            m_ForLoopVars[9].m_intIndex = 0;
         }
     }
 
@@ -1263,7 +1370,7 @@ public class CS_PrintTemplate
 
         if (m_fltMax_Height < fltHeight)
         {//同列最大列印高度
-            m_fltMax_Height = fltHeight;
+            m_fltMax_Height = fltHeight + ((PT_ChildElementBuf.VerticalSpacing!=null)?(float)PT_ChildElementBuf.VerticalSpacing : 0.0f);//fltHeight
         }
         /*
         //移動到第一次計算出元件定位點，因為文字定位點≠元件定位點
@@ -1386,10 +1493,11 @@ public class CS_PrintTemplate
                         int intIndex = -1; 
                         int intNum = -1;
                         int intCount = -1;
-                        string strDataPathBuf = "";
-                        int intDataPathBuf = -1;
-                        strDataPathBuf = GetStackPath(ref intDataPathBuf);
-                        intCount = ForLoopVarsSet(strDataPathBuf, ref intIndex, ref intNum);
+                        //string strDataPathBuf = "";
+                        //int intDataPathBuf = -1;
+                        //strDataPathBuf = GetStackPath(ref intDataPathBuf);
+                        m_strDataPath = GetStackPath(ref m_intDataPath);
+                        intCount = ForLoopVarsSet(m_strDataPath, ref intIndex, ref intNum);//intCount = ForLoopVarsSet(strDataPathBuf, ref intIndex, ref intNum);
                         if ( (intCount!=0) && (intIndex < intCount) )
                         {
                             ContainerElementBuf.m_index = 0;//改變已處理的子元件編號(旗標)~ 從同計算
