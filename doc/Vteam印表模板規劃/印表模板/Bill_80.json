@@ -359,7 +359,7 @@
 					"Index":0,				
 					"Width":576,
 					"Height":8,
-					"Content":"----------------------------------------------------------------------------------------",
+					"Content":"------------------------------------------------------------------------------------------",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
 					"ContentSize":8,
@@ -463,7 +463,7 @@
 					"Index":0,				
 					"Width":576,
 					"Height":8,
-					"Content":"------------------------------------------------------------------------------------------------------------------------",
+					"Content":"----------------------------------------------------------------------------------------------------",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
 					"ContentSize":8,
@@ -852,7 +852,7 @@
 									"Index":0,				
 									"Width":576,
 									"Height":8,
-									"Content":"-----------------------------------------------------------------------------------------------------------------",
+									"Content":"----------------------------------------------------------------------------------------------------",
 									"VerticalContentAlig":"Center",
 									"HorizontalContentAlig":"Left",
 									"ContentSize":9,
@@ -869,12 +869,113 @@
 			]
 		},
 		{
+			"ElementType":"Table",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",
+			"Index":13,				
+			"Width":640,
+			"Height":-1,
+			"Content":"",
+			"RowSpacing":1,
+			"AlwaysPrint":"N",
+			"ChildElements":[
+				{
+					"ElementType":"Rows",				
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Y",
+					"Index":1,			
+					"Width":640,
+					"Height":-1,
+					"Content":"",				
+					"RootName":"packages",
+					"DisplayMode":"Single",
+					"ChildElements":[
+						{
+							"ElementType":"Block",				
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Y",
+							"Index":0,			
+							"Width":640,
+							"Height":-1,
+							"Content":"",				
+							"RootName":"",
+							"ChildElements":[
+								{
+									"ElementType":"Text",
+									"X":0,
+									"Y":0,
+									"X_Alignment":"X",
+									"Y_Alignment":"Increment",
+									"Index":0,
+									"Width":336,
+									"Height":0,
+									"Content":"{$package_name}",
+									"VerticalContentAlig":"Center",
+									"HorizontalContentAlig":"Left",
+									"ContentSize":13,
+									"ContentBold":"N",
+									"VerticalSpacing":1,
+									"IntervalSymbols":"",
+									"AutoWrap":"Y",									
+									"Rotation":0					
+								},
+								{
+									"ElementType":"Text",
+									"X":376,
+									"Y":0,
+									"X_Alignment":"X",
+									"Y_Alignment":"Element",
+									"Index":1,
+									"Width":80,
+									"Height":40,
+									"Content":"{$count}",
+									"VerticalContentAlig":"Center",
+									"HorizontalContentAlig":"Center",
+									"ContentSize":13,
+									"ContentBold":"N",
+									"VerticalSpacing":1,
+									"IntervalSymbols":"",
+									"AutoWrap":"Y",									
+									"Rotation":0					
+								},								
+								{
+									"ElementType":"Text",
+									"X":456,
+									"Y":0,
+									"X_Alignment":"X",
+									"Y_Alignment":"Element",
+									"Index":2,
+									"Width":80,
+									"Height":40,
+									"Content":"{$amount}",
+									"VerticalContentAlig":"Center",
+									"HorizontalContentAlig":"Center",
+									"ContentSize":13,
+									"ContentBold":"N",
+									"VerticalSpacing":1,
+									"IntervalSymbols":"",
+									"AutoWrap":"Y",									
+									"Rotation":0					
+								}											
+							]
+						}
+					]
+				}
+			]
+		},		
+		{
 			"ElementType": "Block",
 			"X": 0,
 			"Y": 0,
 			"X_Alignment": "X",
 			"Y_Alignment": "Y",
-			"Index": 13,
+			"Index": 14,
 			"Width": 640,
 			"Height": 8,
 			"Content": "",
@@ -889,10 +990,43 @@
 					"Index":0,				
 					"Width":576,
 					"Height":8,
-					"Content":"=================================================================",
+					"Content":"==================================================",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
 					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":8,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 15,
+			"Width": 640,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":40,
+					"Content":"商品總數量: {$item_count}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":13,
 					"ContentBold":"N",
 					"VerticalSpacing":1,
 					"IntervalSymbols":"",
@@ -900,6 +1034,39 @@
 					"Rotation":0
 				}
 			]
-		}		
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 16,
+			"Width": 640,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":40,
+					"Content":"小計金額: {$subtotal}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":13,
+					"ContentBold":"N",
+					"VerticalSpacing":1,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		}				
 	]
 }

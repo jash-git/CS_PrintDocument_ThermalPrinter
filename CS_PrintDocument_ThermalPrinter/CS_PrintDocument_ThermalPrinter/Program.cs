@@ -601,7 +601,8 @@ public class CS_PrintTemplate
 
                 if (intCount == 0) //非陣列變數判斷條件: 變數.length > 0
                 {
-                    intCount= (GetOrderData("", PT_ChildElementBuf.ChildElements[i].RootName)).Length;
+                    m_strDataPath = GetStackPath(ref m_intDataPath);
+                    intCount = (GetOrderData(m_strDataPath, PT_ChildElementBuf.ChildElements[i].RootName)).Length;
                 }
                 
                 if (intCount>0)
@@ -1002,7 +1003,12 @@ public class CS_PrintTemplate
                 intNum = 9;
                 break;
             default://以上都不符合走這個
-                intResult = GetOrderData("", strPath).Length;//不符合資料集就查是否為根結點下的變數，並將變數長度回傳承回判斷依據
+                intResult = 0;
+                string[]strsBuf=strPath.Split('.');
+                if(strsBuf.Length > 0 )
+                {
+                    intResult = (GetOrderData(m_strDataPath, strsBuf[strsBuf.Length - 1])).Length;//不符合資料集就查是否為目前結點下的變數，並將變數長度回傳承回判斷依據
+                }             
                 intIndex = -1;
                 intNum = -1;
                 break;
@@ -1452,6 +1458,14 @@ public class CS_PrintTemplate
         m_strDataPath = "";
         for (int i = 0;i< m_PT_Page.ChildElements.Count;i++)//依序處理Page的內容
         {
+            //---
+            //Debug code
+            if(i==12)
+            {
+                bool blncheckpoint = true;
+            }
+            //---Debug code
+
             PT_ChildElement PT_ChildElementBuf = GetDataElement(m_PT_Page.ChildElements[i]);
             if (PT_ChildElementBuf != null)
             {
