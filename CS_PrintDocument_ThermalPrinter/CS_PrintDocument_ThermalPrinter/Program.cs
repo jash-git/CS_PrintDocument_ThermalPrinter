@@ -590,28 +590,38 @@ public class CS_PrintTemplate
         {
             if (PT_ChildElementBuf.ChildElements[i].RootName.Length > 0)//判斷是否有要判斷參數
             {
+                bool blnfind=false;
                 for(int j = 0; j<m_ForLoopVars.Count;j++)//陣列變數判斷條件 : ArrayName.Count>0
                 {
                     if(m_ForLoopVars[j].m_strName == PT_ChildElementBuf.ChildElements[i].RootName)
                     {
                         intCount += m_ForLoopVars[j].m_intCount;
+                        blnfind = true;
                         break;
                     }
                 }
 
-                if (intCount == 0) //非陣列變數判斷條件: 變數.length > 0
+                if ((!blnfind) & (intCount == 0)) //非陣列變數判斷條件: 變數.length > 0
                 {
                     m_strDataPath = GetStackPath(ref m_intDataPath);
-                    intCount = (GetOrderData(m_strDataPath, PT_ChildElementBuf.ChildElements[i].RootName)).Length;
+                    string strDataBuf = GetOrderData(m_strDataPath, PT_ChildElementBuf.ChildElements[i].RootName);
+                    if( (strDataBuf != "0") & (strDataBuf != "0.0")) //判斷取出值不等0
+                    {
+                        intCount = (GetOrderData(m_strDataPath, PT_ChildElementBuf.ChildElements[i].RootName)).Length;
+                    }
+                    else
+                    {
+                        intCount = 0;
+                    }
                 }
                 
                 if (intCount>0)
                 {
                     blnResult = true;
-                    break;
                 }
             }
         }
+
         return blnResult;
     }
     private object? GetFieldValueByName(object obj, string fieldName)//從JSON記憶體給定元素名稱字串取回對應員素質
@@ -989,6 +999,7 @@ public class CS_PrintTemplate
             case "tablewares"://7
                 intIndex = m_ForLoopVars[7].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                 m_ForLoopVars[7].m_intIndex = ((m_ForLoopVars[7].m_intIndex + 1) >= m_ForLoopVars[7].m_intCount) ? (m_ForLoopVars[7].m_intCount - 1) : (m_ForLoopVars[7].m_intIndex + 1);
+                intResult = m_ForLoopVars[7].m_intCount;
                 intNum = 7;
                 break;
             case "payments"://8
@@ -1460,7 +1471,7 @@ public class CS_PrintTemplate
         {
             //---
             //Debug code
-            if(i==12)
+            if(i==22)
             {
                 bool blncheckpoint = true;
             }

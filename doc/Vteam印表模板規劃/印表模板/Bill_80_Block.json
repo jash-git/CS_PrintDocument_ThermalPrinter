@@ -103,20 +103,68 @@
 					"HorizontalContentAlig":"Left",
 					"ContentSize":8,
 					"ContentBold":"N",
-					"VerticalSpacing":10,
+					"VerticalSpacing":20,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",
 					"Rotation":0
 				}
 			]
-		},		
+		},
+		{
+			"ElementType":"Table",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",
+			"Index":3,				
+			"Width":640,
+			"Height":-1,
+			"Content":"",
+			"RowSpacing":1,
+			"AlwaysPrint":"N",
+			"ChildElements":[
+				{
+					"ElementType": "Block",
+					"X": 0,
+					"Y": 0,
+					"X_Alignment": "X",
+					"Y_Alignment": "Y",
+					"Index": 0,
+					"Width": 640,
+					"Height": 8,
+					"Content": "",
+					"RootName": "table_name",
+					"ChildElements": [
+						{
+							"ElementType":"Text",
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Increment",
+							"Index":0,				
+							"Width":576,
+							"Height":8,
+							"Content":"桌號:{$table_name}",
+							"VerticalContentAlig":"Center",
+							"HorizontalContentAlig":"Left",
+							"ContentSize":8,
+							"ContentBold":"N",
+							"VerticalSpacing":20,
+							"IntervalSymbols":"",
+							"AutoWrap":"N",
+							"Rotation":0
+						}					
+					]
+				}
+			]	
+		},
 		{
 			"ElementType": "Block",
 			"X": 0,
 			"Y": 0,
 			"X_Alignment": "X",
 			"Y_Alignment": "Y",
-			"Index": 3,
+			"Index": 4,
 			"Width": 640,
 			"Height": 8,
 			"Content": "",
@@ -131,7 +179,187 @@
 					"Index":0,				
 					"Width":576,
 					"Height":8,
-					"Content":"----------------------------------------------------------------------------------------",
+					"Content":"日期: YYYY-MM-DD 時間: HH:mm",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":20,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		},
+		{
+			"ElementType":"Table",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",
+			"Index":5,				
+			"Width":640,
+			"Height":-1,
+			"Content":"",
+			"RowSpacing":1,
+			"AlwaysPrint":"N",
+			"ChildElements":[
+				{
+					"ElementType": "Block",
+					"X": 0,
+					"Y": 0,
+					"X_Alignment": "X",
+					"Y_Alignment": "Y",
+					"Index": 0,
+					"Width": 640,
+					"Height": 8,
+					"Content": "",
+					"RootName": "invoice_data",
+					"ChildElements": [
+						{
+							"ElementType":"Text",
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Increment",
+							"Index":0,				
+							"Width":576,
+							"Height":8,
+							"Content":"發票號碼: {$inv_no}",
+							"VerticalContentAlig":"Center",
+							"HorizontalContentAlig":"Left",
+							"ContentSize":8,
+							"ContentBold":"N",
+							"VerticalSpacing":20,
+							"IntervalSymbols":"",
+							"AutoWrap":"N",
+							"Rotation":0
+						}					
+					]
+				}
+			]	
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 6,
+			"Width": 640,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":8,
+					"Content":"客戶姓名: {$member_name}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":20,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 7,
+			"Width": 640,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":8,
+					"Content":"連絡電話: {$member_phone}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":20,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 8,
+			"Width": 640,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":8,
+					"Content":"交易序號: {$order_no}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":20,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		},			
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 9,
+			"Width": 640,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":8,
+					"Content":"------------------------------------------------------------------------------------------",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
 					"ContentSize":8,
@@ -149,7 +377,7 @@
 			"Y": 0,
 			"X_Alignment": "X",
 			"Y_Alignment": "Y",
-			"Index": 4,
+			"Index": 10,
 			"Width": 640,
 			"Height": 8,
 			"Content": "",
@@ -220,7 +448,7 @@
 			"Y": 0,
 			"X_Alignment": "X",
 			"Y_Alignment": "Y",
-			"Index": 5,
+			"Index": 11,
 			"Width": 640,
 			"Height": 8,
 			"Content": "",
@@ -235,7 +463,7 @@
 					"Index":0,				
 					"Width":576,
 					"Height":8,
-					"Content":"------------------------------------------------------------------------------------------------------------------------",
+					"Content":"----------------------------------------------------------------------------------------------------",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
 					"ContentSize":8,
@@ -253,7 +481,7 @@
 			"Y": 0,
 			"X_Alignment": "X",
 			"Y_Alignment": "Y",
-			"Index": 6,
+			"Index": 12,
 			"Width": 640,
 			"Height": -1,
 			"Content": "",
@@ -265,7 +493,7 @@
 					"Y":0,
 					"X_Alignment":"X",
 					"Y_Alignment":"Y",
-					"Index":6,				
+					"Index":0,				
 					"Width":640,
 					"Height":-1,
 					"Content":"",
@@ -552,7 +780,55 @@
 											]
 										}										
 									]
-								}								
+								},
+								{
+									"ElementType":"Table",
+									"X":0,
+									"Y":0,
+									"X_Alignment":"X",
+									"Y_Alignment":"Y",
+									"Index":3,				
+									"Width":640,
+									"Height":-1,
+									"Content":"",
+									"RowSpacing":1,
+									"AlwaysPrint":"N",
+									"ChildElements":[
+										{
+											"ElementType":"Block",				
+											"X":0,
+											"Y":0,
+											"X_Alignment":"X",
+											"Y_Alignment":"Y",
+											"Index":0,			
+											"Width":640,
+											"Height":-1,
+											"Content":"",				
+											"RootName":"discount_name",
+											"ChildElements":[
+												{
+													"ElementType":"Text",
+													"X":0,
+													"Y":0,
+													"X_Alignment":"X",
+													"Y_Alignment":"Increment",
+													"Index":0,
+													"Width":640,
+													"Height":40,
+													"Content":"{$discount_name} - {$discount_fee}",
+													"VerticalContentAlig":"Center",
+													"HorizontalContentAlig":"Left",
+													"ContentSize":13,
+													"ContentBold":"N",
+													"VerticalSpacing":1,
+													"IntervalSymbols":"",
+													"AutoWrap":"Y",
+													"Rotation":0					
+												}									
+											]	
+										}									
+									]
+								}									
 							]
 						},
 						{
@@ -576,7 +852,7 @@
 									"Index":0,				
 									"Width":576,
 									"Height":8,
-									"Content":"-----------------------------------------------------------------------------------------------------------------",
+									"Content":"----------------------------------------------------------------------------------------------------",
 									"VerticalContentAlig":"Center",
 									"HorizontalContentAlig":"Left",
 									"ContentSize":9,
@@ -593,12 +869,113 @@
 			]
 		},
 		{
+			"ElementType":"Table",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",
+			"Index":13,				
+			"Width":640,
+			"Height":-1,
+			"Content":"",
+			"RowSpacing":1,
+			"AlwaysPrint":"N",
+			"ChildElements":[
+				{
+					"ElementType":"Rows",				
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Y",
+					"Index":1,			
+					"Width":640,
+					"Height":-1,
+					"Content":"",				
+					"RootName":"packages",
+					"DisplayMode":"Single",
+					"ChildElements":[
+						{
+							"ElementType":"Block",				
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Y",
+							"Index":0,			
+							"Width":640,
+							"Height":-1,
+							"Content":"",				
+							"RootName":"",
+							"ChildElements":[
+								{
+									"ElementType":"Text",
+									"X":0,
+									"Y":0,
+									"X_Alignment":"X",
+									"Y_Alignment":"Increment",
+									"Index":0,
+									"Width":336,
+									"Height":0,
+									"Content":"{$package_name}",
+									"VerticalContentAlig":"Center",
+									"HorizontalContentAlig":"Left",
+									"ContentSize":13,
+									"ContentBold":"N",
+									"VerticalSpacing":1,
+									"IntervalSymbols":"",
+									"AutoWrap":"Y",									
+									"Rotation":0					
+								},
+								{
+									"ElementType":"Text",
+									"X":376,
+									"Y":0,
+									"X_Alignment":"X",
+									"Y_Alignment":"Element",
+									"Index":1,
+									"Width":80,
+									"Height":40,
+									"Content":"{$count}",
+									"VerticalContentAlig":"Center",
+									"HorizontalContentAlig":"Center",
+									"ContentSize":13,
+									"ContentBold":"N",
+									"VerticalSpacing":1,
+									"IntervalSymbols":"",
+									"AutoWrap":"Y",									
+									"Rotation":0					
+								},								
+								{
+									"ElementType":"Text",
+									"X":456,
+									"Y":0,
+									"X_Alignment":"X",
+									"Y_Alignment":"Element",
+									"Index":2,
+									"Width":80,
+									"Height":40,
+									"Content":"{$amount}",
+									"VerticalContentAlig":"Center",
+									"HorizontalContentAlig":"Center",
+									"ContentSize":13,
+									"ContentBold":"N",
+									"VerticalSpacing":1,
+									"IntervalSymbols":"",
+									"AutoWrap":"Y",									
+									"Rotation":0					
+								}											
+							]
+						}
+					]
+				}
+			]
+		},		
+		{
 			"ElementType": "Block",
 			"X": 0,
 			"Y": 0,
 			"X_Alignment": "X",
 			"Y_Alignment": "Y",
-			"Index": 6,
+			"Index": 14,
 			"Width": 640,
 			"Height": 8,
 			"Content": "",
@@ -613,10 +990,43 @@
 					"Index":0,				
 					"Width":576,
 					"Height":8,
-					"Content":"=================================================================",
+					"Content":"==================================================",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
 					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":8,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 15,
+			"Width": 640,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":40,
+					"Content":"商品總數量: {$item_count}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":13,
 					"ContentBold":"N",
 					"VerticalSpacing":1,
 					"IntervalSymbols":"",
@@ -624,6 +1034,138 @@
 					"Rotation":0
 				}
 			]
-		}		
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 16,
+			"Width": 640,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":40,
+					"Content":"小計金額: {$subtotal}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":13,
+					"ContentBold":"N",
+					"VerticalSpacing":1,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 17,
+			"Width": 640,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":40,
+					"Content":"單項折扣/讓總計: {$discount_fee}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":13,
+					"ContentBold":"N",
+					"VerticalSpacing":1,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 18,
+			"Width": 640,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":8,
+					"Content":"------------------------------------------------------------------------------------------",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":10,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}				
+			]
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 19,
+			"Width": 640,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":40,
+					"Content":"服務費({$service_rate}%) {$service_fee}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":13,
+					"ContentBold":"N",
+					"VerticalSpacing":1,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}			
+			]
+		}			
 	]
 }
