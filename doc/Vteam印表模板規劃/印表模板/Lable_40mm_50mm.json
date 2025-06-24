@@ -1,0 +1,52 @@
+{
+	"Content": "",
+	"ElementType": "Page",
+	"X": 0,
+	"Y": 0,
+	"X_Alignment": "X",
+	"Y_Alignment": "Y",
+	"Index": 0,
+	"Width": 320,
+	"Height": -1,
+	"Spacing": 0,
+	"Rotation": 0,
+	"ZoomRatio": 1,
+	"FontName": "新細明體",
+	"StartBuzzer": "N",
+	"ExternalBuzzer": "N",
+	"BuzzerCmd": "",
+	"ExtBuzzerCmd": "",
+	"PrintMode":"",
+	"ChildElements": [
+		{
+			"ElementType":"Table",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",
+			"Index":0,				
+			"Width":320,
+			"Height":-1,
+			"Content":"",
+			"RowSpacing":1,
+			"AlwaysPrint":"N",
+			"ChildElements":[
+				{
+					"ElementType":"Rows",				
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Y",
+					"Index":0,			
+					"Width":320,
+					"Height":-1,
+					"Content":"",				
+					"RootName":"order_items",
+					"DisplayMode":"Single",
+					"ChildElements":[
+					]
+				}
+			]
+		}			
+	]
+}

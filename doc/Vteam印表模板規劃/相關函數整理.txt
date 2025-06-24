@@ -19,7 +19,7 @@ public class CS_PrintTemplate//主要資料元件
 	public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate,string strOrderData)//建構子 
 	private bool Element_Preprocess(PT_ChildElement PT_ChildElementBuf)//元件預先處理
 		private bool TableShow(PT_ChildElement PT_ChildElementBuf)//判斷資料表是否要顯示
-	private string GetOrderData(string strDataPath,string strVarName)//取回對應資料集指定欄位資料
+	private string GetOrderData(string strDataPath,string strVarName,bool blnFindUpperLayer=false)//取回對應資料集指定欄位資料
 		private object? GetFieldValueByName(object obj, string fieldName)//從JSON記憶體給定元素名稱字串取回對應員素質
 	private string TemplateContent2Data(string strDataPath,string strContent)//模板Content轉實際顯示資料
 	private void ForLoopVarsInit()// m_ForLoopVars變數初始化

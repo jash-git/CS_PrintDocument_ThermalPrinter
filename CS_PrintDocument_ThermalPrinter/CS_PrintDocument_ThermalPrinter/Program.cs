@@ -642,14 +642,15 @@ public class CS_PrintTemplate
 
         return (field00==null)? field01.GetValue(obj): field00.GetValue(obj);
     }
-    private string GetOrderData(string strDataPath,string strVarName)
+    private string GetOrderData(string strDataPath,string strVarName,bool blnFindUpperLayer=false)
     {
         string strResult = "";
-
+        bool blnfindRoot = false;//已經找過根節點旗標
         switch(strDataPath)
         {
             case "":
             case ".":
+                blnfindRoot = true;//已經找過根節點旗標
                 try
                 {
                     strResult = GetFieldValueByName(m_OrderData, strVarName).ToString();
@@ -778,7 +779,20 @@ public class CS_PrintTemplate
                 break;
         }
 
-        return strResult;
+        if( (blnFindUpperLayer) && (strResult == "") && (!blnfindRoot))
+        {
+            string strNewDataPath = "";
+            if(strDataPath.Contains("."))
+            {
+                strNewDataPath = strDataPath.Split(".")[0];
+            }
+
+            return GetOrderData(strNewDataPath, strVarName);//只找上一層，沒有一直往上找
+        }
+        else
+        {
+            return strResult;
+        }       
     }
 
     private string TemplateContent2Data(string strDataPath,string strContent)//模板Content轉實際顯示資料
@@ -807,7 +821,7 @@ public class CS_PrintTemplate
             string strVarName = part;
             if (strVarName.Substring(0,1)=="$")
             {
-                strResult += GetOrderData(strDataPath, strVarName.Substring(1, strVarName.Length-1));
+                strResult += GetOrderData(strDataPath, strVarName.Substring(1, strVarName.Length-1),true);
             }
             else
             {
@@ -1656,7 +1670,7 @@ class Program
         Console.Write("Press any key to continue...");
         Console.ReadKey(true);
     }
-    static void Main()
+    static void Main_V1()
     {
         string strPrinterDriverName = "80mm Series Printer";//"POS-80C";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
         StreamReader sr00 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Input.json");
@@ -1667,7 +1681,7 @@ class Program
         
         Pause();
     }
-    static void Main_V0()
+    static void Main()
     {
         float SysDpiX, SysDpiY;
         DPI_Funs.GetScreenDpi(out SysDpiX,out SysDpiY);
@@ -1729,7 +1743,7 @@ class Program
 
             Graphics g = e.Graphics;//抓取印表機畫布
             /*
-            Bitmap BitmapBuf = new Bitmap((int)(80 * 3.937),5000);//建立BMP記憶體空間
+            Bitmap BitmapBuf = new Bitmap(DPI_Funs.MillimetersToPixels(79, 203), 5000);//建立BMP記憶體空間
             Graphics g = Graphics.FromImage(BitmapBuf);//從BMP記憶體自建畫布 ~ https://stackoverflow.com/questions/10868623/converting-print-page-graphics-to-bitmap-c-sharp
             g.Clear(Color.White);//畫布指定底色
             //*/
