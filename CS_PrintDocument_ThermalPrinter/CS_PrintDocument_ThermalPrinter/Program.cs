@@ -474,7 +474,7 @@ public class CS_PrintTemplate
                     m_fltFontHeight[i] = DPI_Funs.MillimetersToPixels(m_fltFontHeight[i], m_fltSysDpi);
                 }
                 //---字型變數定義
-                if((m_PT_Page.PrintMode!=null)&&(m_PT_Page.PrintMode== "Single"))
+                if((m_PT_Page.PrintMode!=null) && (m_PT_Page.PrintMode== "MultipleCut"))
                 {
                     if ((m_OrderData != null) && (m_OrderData.order_items.Count > 0))
                     {
@@ -487,25 +487,19 @@ public class CS_PrintTemplate
                 }
                 else
                 {
-                    m_intPages = 1;
+                    m_intPages = 1;//一般模式
                 }
 
-                for(int i=0;i< m_intPages;i++)
+                if(m_intPages==1)
                 {
-
-                    m_PrintDocument = null;
-                    m_PrintDocument = new PrintDocument();//印表畫布
-                    m_PrintDocument.PrinterSettings.PrinterName = strPrinterDriverName;
-                    m_PrintDocument.PrintPage += new PrintPageEventHandler(PrintPage);
-                    m_PrintDocument.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
-                    
-                    int width = (int)DPI_Funs.PixelsToMillimeters(m_PT_Page.Width, m_fltSysDpi);  // 約 315
-                    int height = 50000;//500cm
-
-
-                    PaperSize paperSize = new PaperSize("Custom_80mm", width, height);
-                    m_PrintDocument.DefaultPageSettings.PaperSize = paperSize;
-                    m_PrintDocument.Print();//驅動PrintPage
+                    NormalPrint(strPrinterDriverName);//一般列印模式
+                }
+                else
+                {//一菜一切
+                    if(m_intPages>0)
+                    {
+                        MultipleCutPrint(strPrinterDriverName);//一菜一切
+                    }            
                 }
 
             }//if (!(blnPrinterFound & blnPrintTemplateCreated))-else
@@ -519,6 +513,8 @@ public class CS_PrintTemplate
 
     }
 
+    //---
+    //共用函數
     private bool Element_Preprocess(PT_ChildElement PT_ChildElementBuf)//元件預先處理
     {
         bool blnResult= true;
@@ -1470,6 +1466,26 @@ public class CS_PrintTemplate
 
         return result.ToString();  // 返回結果字串
     }
+    //---共用函數
+    
+    //---
+    //一般列印
+    private void NormalPrint(string strPrinterDriverName)//一般列印模式
+    {
+        m_PrintDocument = null;
+        m_PrintDocument = new PrintDocument();//印表畫布
+        m_PrintDocument.PrinterSettings.PrinterName = strPrinterDriverName;
+        m_PrintDocument.PrintPage += new PrintPageEventHandler(PrintPage);
+        m_PrintDocument.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
+
+        int width = (int)DPI_Funs.PixelsToMillimeters(m_PT_Page.Width, m_fltSysDpi);  // 約 315
+        int height = 50000;//500cm
+
+
+        PaperSize paperSize = new PaperSize("NormalPrint", width, height);
+        m_PrintDocument.DefaultPageSettings.PaperSize = paperSize;
+        m_PrintDocument.Print();//驅動PrintPage
+    }
 
     private void DrawingPage(Graphics g)//畫布實際建立函數
     {
@@ -1661,7 +1677,217 @@ public class CS_PrintTemplate
         }
 
     }
+    //---一般列印
 
+    //---
+    //一菜一切
+    private void MultipleCutPrint(string strPrinterDriverName)
+    {
+        for (int i = 0; i < m_ForLoopVars[0].m_intCount; i++)
+        {
+            m_ForLoopVars[0].m_intIndex = i;
+
+            m_PrintDocument = null;
+            m_PrintDocument = new PrintDocument();//印表畫布
+            m_PrintDocument.PrinterSettings.PrinterName = strPrinterDriverName;
+            m_PrintDocument.PrintPage += new PrintPageEventHandler(MultipleCutPrintPage);
+            m_PrintDocument.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
+
+            int width = (int)DPI_Funs.PixelsToMillimeters(m_PT_Page.Width, m_fltSysDpi);  // 約 315
+            int height = (m_PT_Page.Height>0)? (int)DPI_Funs.PixelsToMillimeters(m_PT_Page.Height, m_fltSysDpi) : 50000;//500cm
+
+
+            PaperSize paperSize = new PaperSize("MultipleCutPrint", width, height);
+            m_PrintDocument.DefaultPageSettings.PaperSize = paperSize;
+            m_PrintDocument.Print();//驅動PrintPage
+        }
+    }
+
+    private void MultipleCutDrawingPage(Graphics g)//畫布實際建立函數
+    {
+
+        m_strDataPath = "";
+        for (int i = 0; i < m_PT_Page.ChildElements.Count; i++)//依序處理Page的內容
+        {
+            //---
+            //Debug code
+            if (i == 22)
+            {
+                bool blncheckpoint = true;
+            }
+            //---Debug code
+
+            PT_ChildElement PT_ChildElementBuf = GetDataElement(m_PT_Page.ChildElements[i]);
+            if (PT_ChildElementBuf != null)
+            {
+                m_strRealData = Element2Data(PT_ChildElementBuf);//元件轉資料
+                Data2Image(PT_ChildElementBuf, g);
+            }
+
+            //清空堆疊迴圈
+            while (m_ContainerElements.Count > 0)
+            {
+                ContainerElement ContainerElementBuf = (ContainerElement)m_ContainerElements.Peek();//讀取堆疊資料但不刪除
+                if (ContainerElementBuf.m_index < ContainerElementBuf.m_Element.ChildElements.Count)
+                {
+                    PT_ChildElementBuf = GetDataElement(ContainerElementBuf.m_Element.ChildElements[ContainerElementBuf.m_index]);
+                    ContainerElementBuf.m_index++;//改變已處理的子元件編號(旗標)
+                    if (PT_ChildElementBuf != null)
+                    {
+                        m_strRealData = Element2Data(PT_ChildElementBuf);//元件轉資料
+                        Data2Image(PT_ChildElementBuf, g);
+                    }
+                }
+                else
+                {
+                    if ((ContainerElementBuf.m_Element.RootName != null) && (ContainerElementBuf.m_Element.RootName.Length > 0))
+                    {
+                        m_strDataPath = GetStackPath(ref m_intDataPath);
+                    }
+
+                    if (m_blnGetDataElement)
+                    {
+                        m_strElement2DataLog += "\n";
+                        m_blnGetDataElement = false;
+                        m_fltLast_Height = m_fltMax_Height;//(不同列時，運算用)
+                        m_fltMax_Height = 0;//初始化變數
+                    }
+
+                    if ((ContainerElementBuf.m_Element.ElementType == "Rows"))// || (ContainerElementBuf.m_Element.ElementType == "Block")
+                    {
+                        int intIndex = -1;
+                        int intNum = -1;
+                        int intCount = -1;
+                        //string strDataPathBuf = "";
+                        //int intDataPathBuf = -1;
+                        //strDataPathBuf = GetStackPath(ref intDataPathBuf);
+                        m_strDataPath = GetStackPath(ref m_intDataPath);
+                        intCount = ForLoopVarsSet(m_strDataPath, ref intIndex, ref intNum);//intCount = ForLoopVarsSet(strDataPathBuf, ref intIndex, ref intNum);
+                        if ((intCount != 0) && (intIndex < intCount))
+                        {
+                            ContainerElementBuf.m_index = 0;//改變已處理的子元件編號(旗標)~ 從同計算
+
+                            //----
+                            //相依變數全部也要觸發重置機制，當下次呼叫到ForLoopVarsSet就會執行
+                            if (intNum == 0)//order_items
+                            {
+                                m_ForLoopVars[1].m_intIndex = -1;
+                                m_ForLoopVars[1].m_intCount = -1;
+                                m_ForLoopVars[2].m_intIndex = -1;
+                                m_ForLoopVars[2].m_intCount = -1;
+                                m_ForLoopVars[3].m_intIndex = -1;
+                                m_ForLoopVars[3].m_intCount = -1;
+                                m_ForLoopVars[4].m_intIndex = -1;
+                                m_ForLoopVars[4].m_intCount = -1;
+                            }
+                            if (intNum == 1)//order_items.condiments
+                            {
+
+                            }
+                            if (intNum == 2)//order_items.set_meals
+                            {//驗證可以
+                                /*
+                                if (m_RecycleElements.Count > 0)
+                                {
+                                    m_ContainerElements.Push((ContainerElement)m_RecycleElements.Peek());
+                                    m_RecycleElements.Pop();
+                                }
+                                //*/
+                                m_ForLoopVars[3].m_intIndex = -1;
+                                m_ForLoopVars[3].m_intCount = -1;
+                                m_ForLoopVars[4].m_intIndex = -1;
+                                m_ForLoopVars[4].m_intCount = -1;
+                            }
+                            if (intNum == 3)//order_items.set_meals.product
+                            {
+                                m_ForLoopVars[4].m_intIndex = -1;
+                                m_ForLoopVars[4].m_intCount = -1;
+                            }
+                            if (intNum == 4)//order_items.set_meals.product.condiments
+                            {
+
+                            }
+                            //---相依變數全部也要觸發重置機制，當下次呼叫到ForLoopVarsSet就會執行
+                        }
+                        else
+                        {
+                            /*
+                            bool blnTableLoop = false;
+                            ContainerElement[] ContainerElements = m_ContainerElements.ToArray();
+                            for(int j= (ContainerElements.Length-1);j>=0;j--)
+                            {
+                                if (ContainerElements[j].m_Element.ElementType== "Table")
+                                {
+                                    blnTableLoop = true;
+                                    break;
+                                }
+                            }
+                            if (blnTableLoop && (ContainerElementBuf.m_Element.ChildElements.Count>0))
+                            {
+                                ContainerElementBuf.m_index = 1;
+                                m_RecycleElements.Push(ContainerElementBuf);
+                            }
+                            */
+
+                            m_ContainerElements.Pop();//移除堆疊最上面元件
+                        }
+                    }
+                    else
+                    {//Table 直接移除 ~ 堆疊只放Rows
+                        m_ContainerElements.Pop();//移除堆疊最上面元件
+                    }
+
+                }
+            }//while (m_ContainerElements.Count > 0)           
+        }
+
+        Console.WriteLine(m_strElement2DataLog);
+    }
+
+    private void MultipleCutPrintPage(object sender, PrintPageEventArgs e)//實際產生列印內容觸發函數
+    {
+        /*
+        //https://learn.microsoft.com/zh-tw/dotnet/api/system.drawing.graphicsunit?view=windowsdesktop-9.0&viewFallbackFrom=dotnet-plat-ext-8.0
+        Display	1	
+        指定顯示裝置的測量單位。 一般來說，視訊顯示會使用像素，而印表機會使用 1/100 英吋。
+
+        Document	5	
+        指定文件單位 (1/300 英吋) 做為測量單位。
+
+        Inch	4	
+        指定英吋做為測量單位。
+
+        Millimeter	6	
+        指定公釐做為測量單位。
+
+        Pixel	2	
+        指定裝置像素做為測量單位。
+
+        Point	3	
+        指定印表機的點 (1/72 英吋) 做為測量單位。
+
+        World	0	
+        指定全局座標系統的單位做為測量單位。            
+        */
+        //e.Graphics.PageUnit = GraphicsUnit.Document;//300DPI ~ https://radio-idea.blogspot.com/2016/09/c-printdocument.html#google_vignette
+        e.Graphics.PageUnit = GraphicsUnit.Pixel;//解析度 ~ https://radio-idea.blogspot.com/2016/09/c-printdocument.html#google_vignette
+        Graphics g = e.Graphics;//抓取印表機畫布
+        try
+        {
+
+            MultipleCutDrawingPage(g);
+            m_blnResult = true;
+            m_strResult = $"已經將列印頁面產生並傳送到對應的印表機柱列中";
+            e.HasMorePages = false;//驅動切紙
+        }
+        catch (Exception ex)
+        {
+            m_blnResult = false;
+            m_strResult = $"PrintPage運行失敗;{ex.Message}";
+        }
+
+    }
+    //---一菜一切
 }
 class Program
 {
@@ -1670,7 +1896,7 @@ class Program
         Console.Write("Press any key to continue...");
         Console.ReadKey(true);
     }
-    static void Main_V1()
+    static void Main()
     {
         string strPrinterDriverName = "80mm Series Printer";//"POS-80C";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
         StreamReader sr00 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Input.json");
@@ -1681,7 +1907,7 @@ class Program
         
         Pause();
     }
-    static void Main()
+    static void Main_V0()
     {
         float SysDpiX, SysDpiY;
         DPI_Funs.GetScreenDpi(out SysDpiX,out SysDpiY);
