@@ -379,7 +379,8 @@ public class CS_PrintTemplate
     protected PrintDocument m_PrintDocument;
     //protected JsonDocument m_JsonDocument;
     protected PT_Page m_PT_Page = null;
-    protected orders_new m_OrderData = null;
+    protected orders_new m_OrderDataAll = null;
+    protected orders_new m_OrderData = null;//實際運算參與運算用
 
     //---
     //繪圖系統變數
@@ -438,8 +439,7 @@ public class CS_PrintTemplate
                 m_PT_Page.ChildElements.Sort((a, b) => a.Index.CompareTo(b.Index));
             }
 
-            m_OrderData = JsonSerializer.Deserialize<orders_new>(strOrderData);
-            ForLoopVarsInit();// m_ForLoopVars變數初始化
+            m_OrderDataAll = JsonSerializer.Deserialize<orders_new>(strOrderData);
             blnPrintTemplateCreated = (m_PT_Page != null) ? true : false;//((m_JsonDocument!=null) && (m_PT_Page!=null))?true:false;
             //---json2object
 
@@ -474,7 +474,7 @@ public class CS_PrintTemplate
                     m_fltFontHeight[i] = DPI_Funs.MillimetersToPixels(m_fltFontHeight[i], m_fltSysDpi);
                 }
                 //---字型變數定義
-                if((m_PT_Page.PrintMode!=null) && (m_PT_Page.PrintMode== "MultipleCut"))
+                if((m_PT_Page.PrintMode!=null) && (m_PT_Page.PrintMode== "SingleProduct"))
                 {
                     if ((m_OrderData != null) && (m_OrderData.order_items.Count > 0))
                     {
@@ -487,6 +487,8 @@ public class CS_PrintTemplate
                 }
                 else
                 {
+                    m_OrderData = m_OrderDataAll;
+                    ForLoopVarsInit();// m_ForLoopVars變數初始化
                     m_intPages = 1;//一般模式
                 }
 
@@ -498,7 +500,7 @@ public class CS_PrintTemplate
                 {//一菜一切
                     if(m_intPages>0)
                     {
-                        MultipleCutPrint(strPrinterDriverName);//一菜一切
+                        SingleProductPrint(strPrinterDriverName);//一菜一切
                     }            
                 }
 
@@ -1681,31 +1683,38 @@ public class CS_PrintTemplate
 
     //---
     //一菜一切
-    private void MultipleCutPrint(string strPrinterDriverName)
+    private void SingleProductPrint(string strPrinterDriverName)
     {
-        for (int i = 0; i < m_ForLoopVars[0].m_intCount; i++)
+        for (int i = 0; i < m_OrderDataAll.order_items.Count; i++)
         {
-            m_ForLoopVars[0].m_intIndex = i;
+            m_OrderData = null;//把運算記憶體清空
+            m_OrderData = m_OrderDataAll.order_itemsDeepClone(i);//每次只拷貝一筆資料進行運算
+            ForLoopVarsInit();// m_ForLoopVars變數初始化
 
             m_PrintDocument = null;
             m_PrintDocument = new PrintDocument();//印表畫布
             m_PrintDocument.PrinterSettings.PrinterName = strPrinterDriverName;
-            m_PrintDocument.PrintPage += new PrintPageEventHandler(MultipleCutPrintPage);
+            m_PrintDocument.PrintPage += new PrintPageEventHandler(SingleProductPrintPage);
             m_PrintDocument.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
 
             int width = (int)DPI_Funs.PixelsToMillimeters(m_PT_Page.Width, m_fltSysDpi);  // 約 315
             int height = (m_PT_Page.Height>0)? (int)DPI_Funs.PixelsToMillimeters(m_PT_Page.Height, m_fltSysDpi) : 50000;//500cm
 
 
-            PaperSize paperSize = new PaperSize("MultipleCutPrint", width, height);
+            PaperSize paperSize = new PaperSize("SingleProductPrint", width, height);
             m_PrintDocument.DefaultPageSettings.PaperSize = paperSize;
             m_PrintDocument.Print();//驅動PrintPage
         }
     }
-
-    private void MultipleCutDrawingPage(Graphics g)//畫布實際建立函數
+    private void SingleProductDrawingPage(Graphics g)//畫布實際建立函數
     {
-
+        //---
+        //測試多頁列印+裁紙
+        /*
+        Brush brush = Brushes.Black;
+        g.DrawString($"050 ~ {m_intPageNumbers}", m_DoubleFont, brush, 0, 50);
+        //*/
+        //---測試多頁列印+裁紙
         m_strDataPath = "";
         for (int i = 0; i < m_PT_Page.ChildElements.Count; i++)//依序處理Page的內容
         {
@@ -1844,7 +1853,7 @@ public class CS_PrintTemplate
         Console.WriteLine(m_strElement2DataLog);
     }
 
-    private void MultipleCutPrintPage(object sender, PrintPageEventArgs e)//實際產生列印內容觸發函數
+    private void SingleProductPrintPage(object sender, PrintPageEventArgs e)//實際產生列印內容觸發函數
     {
         /*
         //https://learn.microsoft.com/zh-tw/dotnet/api/system.drawing.graphicsunit?view=windowsdesktop-9.0&viewFallbackFrom=dotnet-plat-ext-8.0
@@ -1875,7 +1884,7 @@ public class CS_PrintTemplate
         try
         {
 
-            MultipleCutDrawingPage(g);
+            SingleProductDrawingPage(g);
             m_blnResult = true;
             m_strResult = $"已經將列印頁面產生並傳送到對應的印表機柱列中";
             e.HasMorePages = false;//驅動切紙

@@ -324,6 +324,13 @@ namespace CS_PrintDocument_ThermalPrinter
             tablewares = new List<Tableware>();
             strQrcodeInfor = "";
         }
+        public orders_new order_itemsDeepClone(int index)//深層複製
+        {
+            orders_new orders_newBuf = (orders_new)this.MemberwiseClone();//表層屬性複製
+            order_items = new List<OrderItem>();
+            orders_newBuf.order_items.Add(this.order_items[index]);
+            return orders_newBuf;
+        }
 
         public void mergeItems(bool blnSort = true)
         {

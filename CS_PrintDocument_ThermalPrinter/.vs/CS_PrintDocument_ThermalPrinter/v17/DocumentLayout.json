@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\jashv\\OneDrive\\\u684C\u9762\\GITHUB\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{2BAE12AC-D24A-4398-ACD1-610B709B4340}|CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj|c:\\users\\jashv\\onedrive\\\u684C\u9762\\github\\cs_printdocument_thermalprinter\\cs_printdocument_thermalprinter\\cs_printdocument_thermalprinter\\orders_new.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2BAE12AC-D24A-4398-ACD1-610B709B4340}|CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj|solutionrelative:cs_printdocument_thermalprinter\\orders_new.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2BAE12AC-D24A-4398-ACD1-610B709B4340}|CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj|c:\\users\\jashv\\onedrive\\\u684C\u9762\\github\\cs_printdocument_thermalprinter\\cs_printdocument_thermalprinter\\cs_printdocument_thermalprinter\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2BAE12AC-D24A-4398-ACD1-610B709B4340}|CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj|solutionrelative:cs_printdocument_thermalprinter\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -12,10 +16,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{2BAE12AC-D24A-4398-ACD1-610B709B4340}|CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj|c:\\users\\jashv\\onedrive\\\u684C\u9762\\github\\cs_printdocument_thermalprinter\\cs_printdocument_thermalprinter\\cs_printdocument_thermalprinter\\cs_printdocument_thermalprinter.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
       "RelativeMoniker": "D:0:0:{2BAE12AC-D24A-4398-ACD1-610B709B4340}|CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj|solutionrelative:cs_printdocument_thermalprinter\\cs_printdocument_thermalprinter.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2BAE12AC-D24A-4398-ACD1-610B709B4340}|CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj|c:\\users\\jashv\\onedrive\\\u684C\u9762\\github\\cs_printdocument_thermalprinter\\cs_printdocument_thermalprinter\\cs_printdocument_thermalprinter\\orders_new.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2BAE12AC-D24A-4398-ACD1-610B709B4340}|CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj|solutionrelative:cs_printdocument_thermalprinter\\orders_new.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -25,11 +25,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 1154,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Microsoft.Common.CurrentVersion.targets",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
@@ -37,40 +37,43 @@
               "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
               "ViewState": "AgIAAO8UAAAAAAAAAAAawPMUAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
-              "WhenOpened": "2025-06-19T01:53:19.521Z"
+              "WhenOpened": "2025-06-19T01:53:19.521Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "orders_new.cs",
               "DocumentMoniker": "C:\\Users\\jashv\\OneDrive\\\u684C\u9762\\GITHUB\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\orders_new.cs",
               "RelativeDocumentMoniker": "CS_PrintDocument_ThermalPrinter\\orders_new.cs",
               "ToolTip": "C:\\Users\\jashv\\OneDrive\\\u684C\u9762\\GITHUB\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\orders_new.cs",
               "RelativeToolTip": "CS_PrintDocument_ThermalPrinter\\orders_new.cs",
-              "ViewState": "AgIAACEBAAAAAAAAAAAvwGIAAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAAEEBAAAAAAAAAAAtwEoBAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-28T03:16:46.74Z"
+              "WhenOpened": "2025-05-28T03:16:46.74Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "CS_PrintDocument_ThermalPrinter",
               "DocumentMoniker": "C:\\Users\\jashv\\OneDrive\\\u684C\u9762\\GITHUB\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj",
               "RelativeDocumentMoniker": "CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj",
               "ToolTip": "C:\\Users\\jashv\\OneDrive\\\u684C\u9762\\GITHUB\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj",
               "RelativeToolTip": "CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-04-29T01:58:16.364Z"
+              "WhenOpened": "2025-04-29T01:58:16.364Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\jashv\\OneDrive\\\u684C\u9762\\GITHUB\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\Program.cs",
               "RelativeDocumentMoniker": "CS_PrintDocument_ThermalPrinter\\Program.cs",
               "ToolTip": "C:\\Users\\jashv\\OneDrive\\\u684C\u9762\\GITHUB\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\Program.cs",
               "RelativeToolTip": "CS_PrintDocument_ThermalPrinter\\Program.cs",
-              "ViewState": "AgIAAEgHAAAAAAAAAIAwwFUHAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAJcGAAAAAAAAAAAowF4HAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-21T02:54:17.824Z",
               "EditorCaption": ""
