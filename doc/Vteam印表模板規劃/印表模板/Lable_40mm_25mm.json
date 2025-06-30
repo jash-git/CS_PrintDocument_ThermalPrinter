@@ -7,7 +7,7 @@
 	"Y_Alignment": "Y",
 	"Index": 0,
 	"Width": 320,
-	"Height": -1,
+	"Height": 200,
 	"Spacing": 0,
 	"Rotation": 0,
 	"ZoomRatio": 1,
@@ -16,7 +16,7 @@
 	"ExternalBuzzer": "N",
 	"BuzzerCmd": "",
 	"ExtBuzzerCmd": "",
-	"PrintMode":"",
+	"PrintMode":"SingleProduct",
 	"ChildElements": [
 		{
 			"ElementType": "Block",
@@ -73,7 +73,7 @@
 											"X":0,
 											"Y":0,
 											"X_Alignment":"X",
-											"Y_Alignment":"Increment",
+											"Y_Alignment":"Y",
 											"Index":0,
 											"Width":160,
 											"Height":24,

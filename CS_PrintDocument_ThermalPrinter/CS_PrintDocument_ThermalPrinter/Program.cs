@@ -1484,7 +1484,7 @@ public class CS_PrintTemplate
         int height = 50000;//500cm
 
 
-        PaperSize paperSize = new PaperSize("NormalPrint", width, height);
+        PaperSize paperSize = new PaperSize("NormalPrint", (int)(width / 25.4 * 100), (int)(height / 25.4 * 100));//以百分之一英吋為單位
         m_PrintDocument.DefaultPageSettings.PaperSize = paperSize;
         m_PrintDocument.Print();//驅動PrintPage
     }
@@ -1701,21 +1701,20 @@ public class CS_PrintTemplate
             int height = (m_PT_Page.Height>0)? (int)DPI_Funs.PixelsToMillimeters(m_PT_Page.Height, m_fltSysDpi) : 50000;//500cm
 
 
-            PaperSize paperSize = new PaperSize("SingleProductPrint", width, height);
+            PaperSize paperSize = new PaperSize("SingleProductPrint", (int)(width/25.4*100), (int)(height/25.4*100));//以百分之一英吋為單位
             m_PrintDocument.DefaultPageSettings.PaperSize = paperSize;
             m_PrintDocument.Print();//驅動PrintPage
+            //除錯用 只執行一次就跳離迴圈 break;
         }
     }
     private void SingleProductDrawingPage(Graphics g)//畫布實際建立函數
     {
-        //---
-        //測試多頁列印+裁紙
-        /*
-        Brush brush = Brushes.Black;
-        g.DrawString($"050 ~ {m_intPageNumbers}", m_DoubleFont, brush, 0, 50);
-        //*/
-        //---測試多頁列印+裁紙
-        m_strDataPath = "";
+        /*產生BMP檔案畫布 除錯用
+        Bitmap BitmapBuf = new Bitmap(DPI_Funs.MillimetersToPixels(40, 203), DPI_Funs.MillimetersToPixels(25, 203));//建立BMP記憶體空間
+        Graphics g_bmp = Graphics.FromImage(BitmapBuf);//從BMP記憶體自建畫布 ~ https://stackoverflow.com/questions/10868623/converting-print-page-graphics-to-bitmap-c-sharp
+        g_bmp.Clear(Color.White);//畫布指定底色
+        //產生BMP檔案畫布 除錯用*/
+
         for (int i = 0; i < m_PT_Page.ChildElements.Count; i++)//依序處理Page的內容
         {
             //---
@@ -1850,6 +1849,7 @@ public class CS_PrintTemplate
             }//while (m_ContainerElements.Count > 0)           
         }
 
+        //BitmapBuf.Save("printer.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
         Console.WriteLine(m_strElement2DataLog);
     }
 
@@ -1881,6 +1881,7 @@ public class CS_PrintTemplate
         //e.Graphics.PageUnit = GraphicsUnit.Document;//300DPI ~ https://radio-idea.blogspot.com/2016/09/c-printdocument.html#google_vignette
         e.Graphics.PageUnit = GraphicsUnit.Pixel;//解析度 ~ https://radio-idea.blogspot.com/2016/09/c-printdocument.html#google_vignette
         Graphics g = e.Graphics;//抓取印表機畫布
+
         try
         {
 
@@ -1916,7 +1917,7 @@ class Program
         
         //報表~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Bill_80.json");
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct.json");
-        //標籤~
+        //標籤~ 
         StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Lable_40mm_25mm.json");
         string strPrintTemplate = sr01.ReadToEnd();
         
