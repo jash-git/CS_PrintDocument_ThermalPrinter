@@ -817,7 +817,7 @@ public class CS_PrintTemplate
         foreach (var part in result)
         {
             string strVarName = part;
-            if (strVarName.Substring(0,1)=="$")
+            if ((strVarName.Length>1) && (strVarName.Substring(0,1)=="$"))
             {
                 strResult += GetOrderData(strDataPath, strVarName.Substring(1, strVarName.Length-1),true);
             }
@@ -1685,26 +1685,35 @@ public class CS_PrintTemplate
     //一菜一切
     private void SingleProductPrint(string strPrinterDriverName)
     {
+        int intCS_Count = 0;//C# 紀錄第幾項商品變數
         for (int i = 0; i < m_OrderDataAll.order_items.Count; i++)
         {
-            m_OrderData = null;//把運算記憶體清空
-            m_OrderData = m_OrderDataAll.order_itemsDeepClone(i);//每次只拷貝一筆資料進行運算
-            ForLoopVarsInit();// m_ForLoopVars變數初始化
+            for(int j = 0;j< m_OrderDataAll.order_items[i].count;j++)//每一個相同商品都要印一張
+            {
+                intCS_Count++;
 
-            m_PrintDocument = null;
-            m_PrintDocument = new PrintDocument();//印表畫布
-            m_PrintDocument.PrinterSettings.PrinterName = strPrinterDriverName;
-            m_PrintDocument.PrintPage += new PrintPageEventHandler(SingleProductPrintPage);
-            m_PrintDocument.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
+                m_OrderData = null;//把運算記憶體清空
+                m_OrderData = m_OrderDataAll.order_itemsDeepClone(i);//每次只拷貝一筆資料進行運算
+                m_OrderData.order_items[0].item_no = intCS_Count;//C#重新賦予編號
 
-            int width = (int)DPI_Funs.PixelsToMillimeters(m_PT_Page.Width, m_fltSysDpi);  // 約 315
-            int height = (m_PT_Page.Height>0)? (int)DPI_Funs.PixelsToMillimeters(m_PT_Page.Height, m_fltSysDpi) : 50000;//500cm
+                ForLoopVarsInit();// m_ForLoopVars變數初始化
+
+                m_PrintDocument = null;
+                m_PrintDocument = new PrintDocument();//印表畫布
+                m_PrintDocument.PrinterSettings.PrinterName = strPrinterDriverName;
+                m_PrintDocument.PrintPage += new PrintPageEventHandler(SingleProductPrintPage);
+                m_PrintDocument.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
+
+                int width = (int)DPI_Funs.PixelsToMillimeters(m_PT_Page.Width, m_fltSysDpi);  // 約 315
+                int height = (m_PT_Page.Height > 0) ? (int)DPI_Funs.PixelsToMillimeters(m_PT_Page.Height, m_fltSysDpi) : 50000;//500cm
 
 
-            PaperSize paperSize = new PaperSize("SingleProductPrint", (int)(width/25.4*100), (int)(height/25.4*100));//以百分之一英吋為單位
-            m_PrintDocument.DefaultPageSettings.PaperSize = paperSize;
-            m_PrintDocument.Print();//驅動PrintPage
-            //除錯用 只執行一次就跳離迴圈 break;
+                PaperSize paperSize = new PaperSize("SingleProductPrint", (int)(width / 25.4 * 100), (int)(height / 25.4 * 100));//以百分之一英吋為單位
+                m_PrintDocument.DefaultPageSettings.PaperSize = paperSize;
+                m_PrintDocument.Print();//驅動PrintPage
+            }
+
+            //除錯用 只執行一次就跳離迴圈break;
         }
     }
     private void SingleProductDrawingPage(Graphics g)//畫布實際建立函數
