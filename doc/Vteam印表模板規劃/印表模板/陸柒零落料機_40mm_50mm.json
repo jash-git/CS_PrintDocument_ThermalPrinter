@@ -7,7 +7,7 @@
 	"Y_Alignment": "Y",
 	"Index": 0,
 	"Width": 320,
-	"Height": 200,
+	"Height": 400,
 	"Spacing": 0,
 	"Rotation": 0,
 	"ZoomRatio": 1,
@@ -479,6 +479,33 @@
 									"RootName":"",
 									"ChildElements":[
 										{
+											"ElementType":"QrCode",
+											"X":0,
+											"Y":0,
+											"X_Alignment":"Center",
+											"Y_Alignment":"Increment",
+											"Index":0,
+											"Width":120,
+											"Height":120,
+											"Content":"{$product_code}-{$QrCodeCondiments}",	
+											"ErrorCorrection":"M",
+											"Rotation":0					
+										}									
+									]									
+								},
+								{
+									"ElementType":"Block",				
+									"X":0,
+									"Y":0,
+									"X_Alignment":"X",
+									"Y_Alignment":"Y",
+									"Index":6,			
+									"Width":320,
+									"Height":-1,
+									"Content":"",				
+									"RootName":"",
+									"ChildElements":[
+										{
 											"ElementType":"Text",
 											"X":0,
 											"Y":0,
@@ -487,7 +514,7 @@
 											"Index":0,
 											"Width":320,
 											"Height":40,
-											"Content":"${$subtotal} ",
+											"Content":"TWD {$subtotal} ",
 											"VerticalContentAlig":"Center",
 											"HorizontalContentAlig":"Right",
 											"ContentSize":13,

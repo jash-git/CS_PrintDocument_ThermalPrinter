@@ -153,6 +153,7 @@ namespace CS_PrintDocument_ThermalPrinter
         public string print_flag { get; set; }
         public List<SetMeal> set_meals { get; set; }
         public List<Condiment> condiments { get; set; }
+        public string QrCodeCondiments { get; set; }//為了要在標籤印出對應QrCode圖片，所準備資料變數
         public List<Printer> printers { get; set; }
         public List<MaterialList> material_list { get; set; }//材料列表
         public string CompareString { get; set; }//產品名稱;配料名稱01;配料名稱02;.....
@@ -243,6 +244,11 @@ namespace CS_PrintDocument_ThermalPrinter
         public string order_no { get; set; }
         public string order_no_from { get; set; }
         public int order_time { get; set; }
+        public string order_time_year { get; set; }
+        public string order_time_month { get; set; }
+        public string order_time_day { get; set; }
+        public string order_time_hours { get; set; }
+        public string order_time_minutes { get; set; }
         public int order_open_time { get; set; }
         public int order_state { get; set; }
         public string order_type { get; set; }

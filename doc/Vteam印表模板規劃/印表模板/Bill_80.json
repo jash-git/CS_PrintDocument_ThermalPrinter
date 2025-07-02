@@ -179,7 +179,7 @@
 					"Index":0,				
 					"Width":576,
 					"Height":8,
-					"Content":"日期: YYYY-MM-DD 時間: HH:mm",
+					"Content":"日期: {$order_time_year}-{$order_time_month}-{$order_time_day} 時間: {$order_time_hours}:{$order_time_minutes}",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
 					"ContentSize":8,

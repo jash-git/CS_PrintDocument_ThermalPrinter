@@ -146,13 +146,27 @@ public class Barcode_Funs
     using ZXing.QrCode;  
     */
 
-    public static Bitmap QrCode(String StrData)//文字轉QrCode
+    public static Bitmap QrCode(String StrData,String ErrorCorrection="H")//文字轉QrCode
     {
         // Create a BarcodeWriter instance
         var barcodeWriter = new BarcodeWriter();//ZXing.Windows.Compatibility
         barcodeWriter.Format = BarcodeFormat.QR_CODE;
         barcodeWriter.Options.Hints.Add(EncodeHintType.CHARACTER_SET, "UTF-8");  //編碼字元utf-8
-        barcodeWriter.Options.Hints.Add(EncodeHintType.ERROR_CORRECTION, ZXing.QrCode.Internal.ErrorCorrectionLevel.H); //錯誤校正等級
+        switch(ErrorCorrection)
+        {
+            case "H"://30%
+                barcodeWriter.Options.Hints.Add(EncodeHintType.ERROR_CORRECTION, ZXing.QrCode.Internal.ErrorCorrectionLevel.H); //錯誤校正等級
+                break;
+            case "Q"://25%
+                barcodeWriter.Options.Hints.Add(EncodeHintType.ERROR_CORRECTION, ZXing.QrCode.Internal.ErrorCorrectionLevel.Q); //錯誤校正等級
+                break;
+            case "M"://15%
+                barcodeWriter.Options.Hints.Add(EncodeHintType.ERROR_CORRECTION, ZXing.QrCode.Internal.ErrorCorrectionLevel.M); //錯誤校正等級
+                break;
+            case "L"://7%
+                barcodeWriter.Options.Hints.Add(EncodeHintType.ERROR_CORRECTION, ZXing.QrCode.Internal.ErrorCorrectionLevel.L); //錯誤校正等級
+                break;
+        }
         barcodeWriter.Options.Height = 300;
         barcodeWriter.Options.Width = 300;
         barcodeWriter.Options.Margin = 0; //外邊距
@@ -461,12 +475,25 @@ public class CS_PrintTemplate
             }
             else
             {
+                //---
+                //補上時間變數字串資料 因為JSON只能存取變數
+                DateTime DateTimeBuf = TimeConvert.UnixTimeStampToDateTime(m_OrderDataAll.order_time);
+                if(DateTimeBuf!=null)
+                {
+                    m_OrderDataAll.order_time_year = DateTimeBuf.ToString("yyyy");
+                    m_OrderDataAll.order_time_month = DateTimeBuf.ToString("MM");
+                    m_OrderDataAll.order_time_day = DateTimeBuf.ToString("dd");
+                    m_OrderDataAll.order_time_hours = DateTimeBuf.ToString("HH");
+                    m_OrderDataAll.order_time_minutes = DateTimeBuf.ToString("mm");
+                }
+                //---補上時間變數字串資料 因為JSON只能存取變數
+
                 m_fltSysDpi = 203 * m_PT_Page.ZoomRatio;//設定印表機DPI
                 //---
                 //字型變數定義
                 m_NormalFont = new Font(m_PT_Page.FontName, 9);//一般字 Height =3mm
                 m_BigFont = new Font(m_PT_Page.FontName, 13);//單倍字 Height =5mm
-                m_InvoiceFont = new Font(m_PT_Page.FontName, 16); ;//發票 Height =6mm
+                m_InvoiceFont = new Font(m_PT_Page.FontName, 16);//發票 Height =6mm
                 m_DoubleFont = new Font(m_PT_Page.FontName, 28);//雙倍字 Height =11mm
                 m_FourFont = new Font(m_PT_Page.FontName, 40);//四倍字 Height =13mm
                 for (int i = 0; i<m_fltFontHeight.Length ; i++)//計算出每種字型的高度Pixels
@@ -1186,7 +1213,14 @@ public class CS_PrintTemplate
                 break;
             case "Center":
                 fltStartX = -2;
-                fltXBuf = ( m_PT_Page.Width - DPI_Funs.MillimetersToPixels(4*2, m_fltSysDpi) )/2;//8mm是兩側留白(機器滾輪大小)
+                if(m_PT_Page.Height>0)
+                {
+                    fltXBuf = (m_PT_Page.Width - DPI_Funs.MillimetersToPixels(1 * 2, m_fltSysDpi)) / 2;//標籤機
+                }
+                else
+                {
+                    fltXBuf = (m_PT_Page.Width - DPI_Funs.MillimetersToPixels(4 * 2, m_fltSysDpi)) / 2;//8mm是兩側留白(機器滾輪大小)
+                }  
                 break;
         }
 
@@ -1231,7 +1265,7 @@ public class CS_PrintTemplate
                 BitmapBuf = BitmapBase64_Funs.Base64String2Image(m_strRealData);
                 break;
             case "QrCode":
-                BitmapBuf = Barcode_Funs.QrCode(m_strRealData);
+                BitmapBuf = Barcode_Funs.QrCode(m_strRealData, PT_ChildElementBuf.ErrorCorrection);
                 break;
             case "BarCode":
                 BitmapBuf = Barcode_Funs.BarCode(m_strRealData, PT_ChildElementBuf.Height, PT_ChildElementBuf.Width);
@@ -1696,6 +1730,27 @@ public class CS_PrintTemplate
                 m_OrderData = m_OrderDataAll.order_itemsDeepClone(i);//每次只拷貝一筆資料進行運算
                 m_OrderData.order_items[0].item_no = intCS_Count;//C#重新賦予編號
 
+                //---
+                //產生QrCodeCondiments變數內容
+                if (m_OrderData.order_items[0].condiments!=null)
+                {
+                    string strBuf = "";
+                    for (int k = 0;  k< m_OrderData.order_items[0].condiments.Count; k++)
+                    {
+                        if(k==0)
+                        {
+                            strBuf = m_OrderData.order_items[0].condiments[k].condiment_code;
+                        }
+                        else
+                        {
+                            strBuf +="," + m_OrderData.order_items[0].condiments[k].condiment_code;
+                        }
+                    }
+
+                    m_OrderData.order_items[0].QrCodeCondiments = strBuf;
+                }
+                //---產生QrCodeCondiments變數內容
+
                 ForLoopVarsInit();// m_ForLoopVars變數初始化
 
                 m_PrintDocument = null;
@@ -1713,7 +1768,8 @@ public class CS_PrintTemplate
                 m_PrintDocument.Print();//驅動PrintPage
             }
 
-            //除錯用 只執行一次就跳離迴圈break;
+            //除錯用 只執行一次就跳離迴圈
+            break;
         }
     }
     private void SingleProductDrawingPage(Graphics g)//畫布實際建立函數
@@ -1918,7 +1974,7 @@ class Program
     static void Main()
     {
         //報表印表機~ string strPrinterDriverName = "80mm Series Printer";//"POS-80C";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
-        //標籤機~
+        //標籤機~ 
         string strPrinterDriverName = "DT-2205";
 
         StreamReader sr00 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Input.json");
@@ -1926,8 +1982,8 @@ class Program
         
         //報表~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Bill_80.json");
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct.json");
-        //標籤~ 
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Lable_40mm_25mm.json");
+        //標籤~
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\陸柒零落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();
         
         CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderData);
