@@ -1731,10 +1731,11 @@ public class CS_PrintTemplate
                 m_OrderData.order_items[0].item_no = intCS_Count;//C#重新賦予編號
 
                 //---
-                //產生QrCodeCondiments變數內容
+                //產生QrCodeBlankingMachine變數內容
+                string strBuf = "";
                 if (m_OrderData.order_items[0].condiments!=null)
                 {
-                    string strBuf = "";
+                    
                     for (int k = 0;  k< m_OrderData.order_items[0].condiments.Count; k++)
                     {
                         if(k==0)
@@ -1746,10 +1747,25 @@ public class CS_PrintTemplate
                             strBuf +="," + m_OrderData.order_items[0].condiments[k].condiment_code;
                         }
                     }
-
-                    m_OrderData.order_items[0].QrCodeCondiments = strBuf;
                 }
-                //---產生QrCodeCondiments變數內容
+                if (m_PT_Page.Content.Contains("陸柒零落料機"))
+                {
+                    m_OrderData.order_items[0].QrCodeBlankingMachine = m_OrderData.order_items[0].product_code;
+                    if(strBuf.Length>0)
+                    {
+                        m_OrderData.order_items[0].QrCodeBlankingMachine += "-" + strBuf;
+                    }
+                }
+
+                if (m_PT_Page.Content.Contains("提點落料機"))
+                {
+                    m_OrderData.order_items[0].QrCodeBlankingMachine = m_OrderData.order_no.Replace("-", "") + "|" + m_OrderData.order_items[0].product_code;
+                    if (strBuf.Length > 0)
+                    {
+                        m_OrderData.order_items[0].QrCodeBlankingMachine += "|" + strBuf;
+                    }
+                }
+                //---產生QrCodeBlankingMachine變數內容
 
                 ForLoopVarsInit();// m_ForLoopVars變數初始化
 
@@ -1769,7 +1785,7 @@ public class CS_PrintTemplate
             }
 
             //除錯用 只執行一次就跳離迴圈
-            break;
+            //break;
         }
     }
     private void SingleProductDrawingPage(Graphics g)//畫布實際建立函數
@@ -1973,17 +1989,17 @@ class Program
     }
     static void Main()
     {
-        //報表印表機~ string strPrinterDriverName = "80mm Series Printer";//"POS-80C";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
-        //標籤機~ 
-        string strPrinterDriverName = "DT-2205";
+        //報表印表機~
+        string strPrinterDriverName = "80mm Series Printer";//"POS-80C";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+        //標籤機~ string strPrinterDriverName = "DT-2205";
 
         StreamReader sr00 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Input.json");
         string strOrderData = sr00.ReadToEnd();
         
-        //報表~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Bill_80.json");
+        //報表~
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Bill_80.json");
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct.json");
-        //標籤~
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\陸柒零落料機_40mm_50mm.json");
+        //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();
         
         CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderData);
