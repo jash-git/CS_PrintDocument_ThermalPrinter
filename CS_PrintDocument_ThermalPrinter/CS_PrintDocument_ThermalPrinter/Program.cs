@@ -1250,6 +1250,7 @@ public class CS_PrintTemplate
                     break;
             }
         }
+        fltStartX += m_PT_Page.X;//計算出X座標進行最後紙張平移運算(57mm)
         m_fltLast_X = fltStartX;
         m_fltLast_Y = fltStartY;
         //---計算元件定位點
