@@ -179,13 +179,15 @@ public class Barcode_Funs
 
         return barcodeBitmap;
     }
-    public static Bitmap BarCode(String StrData,int Height,int Width)//文字轉BarCode
+    public static Bitmap BarCode(String StrData,int Height=40,int Width=320)//文字轉BarCode
     {
         // Create a BarcodeWriter instance
         var barcodeWriter = new BarcodeWriter();//ZXing.Windows.Compatibility
         barcodeWriter.Format = BarcodeFormat.CODE_39;//電子發票規定
         barcodeWriter.Options.Height = Height;//>=5mm(203dpi->40pixel)電子發票規定
-        barcodeWriter.Options.Width = Width;
+        barcodeWriter.Options.Width = Width;//>=4cm(40mm)(203dpi->320pixel)電子發票
+        barcodeWriter.Options.PureBarcode = true; //不顯示條碼文字[false 為顯示 true為不顯示]
+        barcodeWriter.Options.Margin = 0;//左右填充
 
         // Generate the barcode as a Bitmap
         Bitmap barcodeBitmap = barcodeWriter.Write(StrData);
@@ -1219,7 +1221,16 @@ public class CS_PrintTemplate
                 }
                 else
                 {
-                    fltXBuf = (m_PT_Page.Width - DPI_Funs.MillimetersToPixels(4 * 2, m_fltSysDpi)) / 2;//8mm是兩側留白(機器滾輪大小)
+                    if (m_PT_Page.X == 0)
+                    {
+                        fltXBuf = (m_PT_Page.Width - DPI_Funs.MillimetersToPixels(4 * 2, m_fltSysDpi)) / 2;//8mm是兩側留白(機器滾輪大小)
+                    }
+                    else
+                    {
+                        fltXBuf = m_PT_Page.Width - m_PT_Page.X;//(12mm+57mm)-
+                        fltXBuf = fltXBuf - DPI_Funs.MillimetersToPixels(7, m_fltSysDpi);
+                        fltXBuf = fltXBuf / 2;
+                    }
                 }  
                 break;
         }
@@ -1998,7 +2009,7 @@ class Program
         string strOrderData = sr00.ReadToEnd();
         
         //報表~
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Work_80.json");
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Number_57.json");
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct_57.json");
         //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();
