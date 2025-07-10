@@ -179,11 +179,62 @@ public class Barcode_Funs
 
         return barcodeBitmap;
     }
-    public static Bitmap BarCode(String StrData,int Height=40,int Width=320)//文字轉BarCode
+    public static Bitmap BarCode(String StrData,int Height=40,int Width=320,string strFormat= "CODE_39")//文字轉BarCode
     {
         // Create a BarcodeWriter instance
         var barcodeWriter = new BarcodeWriter();//ZXing.Windows.Compatibility
         barcodeWriter.Format = BarcodeFormat.CODE_39;//電子發票規定
+        switch(strFormat)
+        {
+            case "AZTEC":
+                barcodeWriter.Format = BarcodeFormat.AZTEC;
+                break;
+            case "CODABAR":
+                barcodeWriter.Format = BarcodeFormat.CODABAR;
+                break;
+            case "CODE_128":
+                barcodeWriter.Format = BarcodeFormat.CODE_128;
+                break;
+            case "CODE_39":
+                barcodeWriter.Format = BarcodeFormat.CODE_39;
+                break;
+            case "CODE_93":
+                barcodeWriter.Format = BarcodeFormat.CODE_93;
+                break;
+            case "DATA_MATRIX":
+                barcodeWriter.Format = BarcodeFormat.DATA_MATRIX;
+                break;
+            case "EAN_13":
+                barcodeWriter.Format = BarcodeFormat.EAN_13;
+                break;
+            case "EAN_8":
+                barcodeWriter.Format = BarcodeFormat.EAN_8;
+                break;
+            case "ITF":
+                barcodeWriter.Format = BarcodeFormat.ITF;
+                break;
+            case "MAXICODE":
+                barcodeWriter.Format = BarcodeFormat.MAXICODE;
+                break;
+            case "PDF_417":
+                barcodeWriter.Format = BarcodeFormat.PDF_417;
+                break;
+            case "RSS_14":
+                barcodeWriter.Format = BarcodeFormat.RSS_14;
+                break;
+            case "RSS_EXPANDED":
+                barcodeWriter.Format = BarcodeFormat.RSS_EXPANDED;
+                break;
+            case "UPC_A":
+                barcodeWriter.Format = BarcodeFormat.UPC_A;
+                break;
+            case "UPC_E":
+                barcodeWriter.Format = BarcodeFormat.UPC_E;
+                break;
+            case "UPC_EAN_EXTENSION":
+                barcodeWriter.Format = BarcodeFormat.UPC_EAN_EXTENSION;
+                break;
+        }
         barcodeWriter.Options.Height = Height;//>=5mm(203dpi->40pixel)電子發票規定
         barcodeWriter.Options.Width = Width;//>=4cm(40mm)(203dpi->320pixel)電子發票
         barcodeWriter.Options.PureBarcode = true; //不顯示條碼文字[false 為顯示 true為不顯示]
@@ -213,6 +264,8 @@ public class PT_ChildElement
     public int Height { get; set; }
     public string Content { get; set; }
     public string RootName { get; set; }//Block,Rows
+    public string Conditional { get; set; }//Block,Rows
+    public string ConditionalValue { get; set; }//Block,Rows
     public List<PT_ChildElement> ChildElements { get; set; }//Block,Rows
     public int Rotation { get; set; }//Text,QrCode,BarCode,Image
     public string VerticalContentAlig { get; set; }//Text
@@ -574,7 +627,7 @@ public class CS_PrintTemplate
                         strDataPathBuf = PT_ChildElementBuf.RootName;
                     }
 
-                    if (ForLoopVarsSet(strDataPathBuf, ref intIndex, ref intNum) <= 0)
+                    if (ForLoopVarsSet(strDataPathBuf, ref intIndex, ref intNum, PT_ChildElementBuf.Conditional, PT_ChildElementBuf.ConditionalValue) <= 0)
                     {
                         blnResult = false;
                     }
@@ -594,7 +647,7 @@ public class CS_PrintTemplate
                         strDataPathBuf = PT_ChildElementBuf.RootName;
                     }
 
-                    if (ForLoopVarsSet(strDataPathBuf, ref intIndex, ref intNum) <= 0)
+                    if (ForLoopVarsSet(strDataPathBuf, ref intIndex, ref intNum, PT_ChildElementBuf.Conditional, PT_ChildElementBuf.ConditionalValue) <= 0)
                     {
                         blnResult = false;
                     }
@@ -941,7 +994,7 @@ public class CS_PrintTemplate
 
         return strResult;
     }
-    private int ForLoopVarsSet(string strPath,ref int intIndex,ref int intNum)// m_ForLoopVars變數設定
+    private int ForLoopVarsSet(string strPath,ref int intIndex,ref int intNum,string strConditional="",string strConditionalValue="")// m_ForLoopVars變數設定
     {
         int intResult = 0;
         if(m_ForLoopVars.Count==0)
@@ -1059,8 +1112,108 @@ public class CS_PrintTemplate
                 string[]strsBuf=strPath.Split('.');
                 if(strsBuf.Length > 0 )
                 {
-                    intResult = (GetOrderData(m_strDataPath, strsBuf[strsBuf.Length - 1])).Length;//不符合資料集就查是否為目前結點下的變數，並將變數長度回傳承回判斷依據
-                }             
+                    string strData = GetOrderData(m_strDataPath, strsBuf[strsBuf.Length - 1]);
+                    intResult = strData.Length;//不符合資料集就查是否為目前結點下的變數，並將變數長度回傳承回判斷依據
+
+                    //---
+                    //增加Rows/Block元件中RootName的數學和邏輯判斷機制
+                    if (intResult > 0 && strConditional!=null && strConditionalValue!=null && strConditional.Length>0 && strConditionalValue.Length>0)
+                    {
+                        bool blnResult = false;
+                        bool blnNum = false;
+                        double dblConditionalValue = 0;
+                        try
+                        {
+                            if(Convert.ToDouble(strConditionalValue.ToString())>0)
+                            {
+                                dblConditionalValue = Convert.ToDouble(strConditionalValue.ToString());
+                                blnNum = true;
+                            }              
+                        }
+                        catch 
+                        {
+                            blnNum = false;
+                        }
+
+                        try
+                        {
+                            switch (strConditional)
+                            {
+                                case ">":
+                                    if (blnNum)
+                                    {
+                                        blnResult = (Convert.ToDouble(strData) > dblConditionalValue);
+                                    }
+                                    else
+                                    {
+                                        blnResult = false;
+                                    }
+                                    break;
+                                case "<":
+                                    if (blnNum)
+                                    {
+                                        blnResult = (Convert.ToDouble(strData) < dblConditionalValue);
+                                    }
+                                    else
+                                    {
+                                        blnResult = false;
+                                    }
+                                    break;
+                                case "==":
+                                    if (blnNum)
+                                    {
+                                        blnResult = (Convert.ToDouble(strData) == dblConditionalValue);
+                                    }
+                                    else
+                                    {
+                                        blnResult = (strData == strConditionalValue);
+                                    }
+                                    break;
+                                case ">=":
+                                    if (blnNum)
+                                    {
+                                        blnResult = (Convert.ToDouble(strData) >= dblConditionalValue);
+                                    }
+                                    else
+                                    {
+                                        blnResult = false;
+                                    }
+                                    break;
+                                case "<=":
+                                    if (blnNum)
+                                    {
+                                        blnResult = (Convert.ToDouble(strData) <= dblConditionalValue);
+                                    }
+                                    else
+                                    {
+                                        blnResult = false;
+                                    }
+                                    break;
+                                case "!=":
+                                    if (blnNum)
+                                    {
+                                        blnResult = (Convert.ToDouble(strData) != dblConditionalValue);
+                                    }
+                                    else
+                                    {
+                                        blnResult = (strData != strConditionalValue);
+                                    }
+                                    break;
+                            }
+                        }
+                        catch 
+                        {
+                            blnResult = false;
+                        }
+
+
+                        if(!blnResult)
+                        {
+                            intResult = -1;
+                        }
+                    }
+                    //---增加Rows/Block元件中RootName的數學和邏輯判斷機制
+                }
                 intIndex = -1;
                 intNum = -1;
                 break;
@@ -1280,7 +1433,7 @@ public class CS_PrintTemplate
                 BitmapBuf = Barcode_Funs.QrCode(m_strRealData, PT_ChildElementBuf.ErrorCorrection);
                 break;
             case "BarCode":
-                BitmapBuf = Barcode_Funs.BarCode(m_strRealData, PT_ChildElementBuf.Height, PT_ChildElementBuf.Width);
+                BitmapBuf = Barcode_Funs.BarCode(m_strRealData, PT_ChildElementBuf.Height, PT_ChildElementBuf.Width, PT_ChildElementBuf.Format);
                 break;
         }
 

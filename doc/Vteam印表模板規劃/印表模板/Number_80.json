@@ -72,7 +72,7 @@
 					"ContentBold":"Y",
 					"VerticalSpacing":10,
 					"IntervalSymbols":"",
-					"AutoWrap":"N",							
+					"AutoWrap":"N",				
 					"Rotation":0
 				}
 			]
@@ -100,6 +100,7 @@
 					"Height":40,
 					"Content":"{$order_no}",
 					"VerticalSpacing":40,
+					"Format":"CODE_39",	
 					"Rotation":0					
 				}					
 			]			
