@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\jashv\\OneDrive\\\u684C\u9762\\GITHUB\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2BAE12AC-D24A-4398-ACD1-610B709B4340}|CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj|c:\\users\\jashv\\onedrive\\\u684C\u9762\\github\\cs_printdocument_thermalprinter\\cs_printdocument_thermalprinter\\cs_printdocument_thermalprinter\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2BAE12AC-D24A-4398-ACD1-610B709B4340}|CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj|solutionrelative:cs_printdocument_thermalprinter\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{2BAE12AC-D24A-4398-ACD1-610B709B4340}|CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj|c:\\users\\jashv\\onedrive\\\u684C\u9762\\github\\cs_printdocument_thermalprinter\\cs_printdocument_thermalprinter\\cs_printdocument_thermalprinter\\orders_new.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2BAE12AC-D24A-4398-ACD1-610B709B4340}|CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj|solutionrelative:cs_printdocument_thermalprinter\\orders_new.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2BAE12AC-D24A-4398-ACD1-610B709B4340}|CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj|c:\\users\\jashv\\onedrive\\\u684C\u9762\\github\\cs_printdocument_thermalprinter\\cs_printdocument_thermalprinter\\cs_printdocument_thermalprinter\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2BAE12AC-D24A-4398-ACD1-610B709B4340}|CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj|solutionrelative:cs_printdocument_thermalprinter\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,29 +18,30 @@
       "DocumentGroups": [
         {
           "DockedWidth": 1154,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "orders_new.cs",
               "DocumentMoniker": "C:\\Users\\jashv\\OneDrive\\\u684C\u9762\\GITHUB\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\orders_new.cs",
               "RelativeDocumentMoniker": "CS_PrintDocument_ThermalPrinter\\orders_new.cs",
               "ToolTip": "C:\\Users\\jashv\\OneDrive\\\u684C\u9762\\GITHUB\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\orders_new.cs",
               "RelativeToolTip": "CS_PrintDocument_ThermalPrinter\\orders_new.cs",
-              "ViewState": "AgIAAJUAAAAAAAAAAAAxwJsAAAArAAAAAAAAAA==",
+              "ViewState": "AgIAANkAAAAAAAAAAAAIwN8AAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-28T03:16:46.74Z"
+              "WhenOpened": "2025-05-28T03:16:46.74Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\jashv\\OneDrive\\\u684C\u9762\\GITHUB\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\Program.cs",
               "RelativeDocumentMoniker": "CS_PrintDocument_ThermalPrinter\\Program.cs",
               "ToolTip": "C:\\Users\\jashv\\OneDrive\\\u684C\u9762\\GITHUB\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\Program.cs",
               "RelativeToolTip": "CS_PrintDocument_ThermalPrinter\\Program.cs",
-              "ViewState": "AgIAAIcGAAAAAAAAAAAjwHkIAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAPIBAAAAAAAAAAAUwP8BAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-21T02:54:17.824Z",
               "EditorCaption": ""
