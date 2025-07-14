@@ -280,6 +280,7 @@ public class PT_ChildElement
     public string DisplayMode { get; set; }//Rows
     public string ErrorCorrection { get; set; }//QrCode
     public string Format { get; set; }//BarCode
+    public string SID { get; set; }//IncludePage,Embedded
 }
 public class ContainerElement
 {//存放在堆疊內的原件
@@ -312,6 +313,7 @@ public class PT_Page
     public string ExtBuzzerCmd { get; set; }
     public string PrintMode { get; set; }
     public List<PT_ChildElement> ChildElements { get; set; }
+    public List<PT_ChildElement> IncludePages { get; set; }
 }
 public class CS_PrintTemplate_Fun
 {
@@ -480,6 +482,73 @@ public class CS_PrintTemplate
 
     public bool m_blnResult;
     public string m_strResult;
+    public string PagePreprocess(bool blnFileMode=false)//「預先處理(Preprocess)
+    {
+        string strResult = "";
+        int intIndexBase = 10;
+        if((m_PT_Page.IncludePages!=null) && (m_PT_Page.IncludePages.Count>0))//判斷IncludePages有資料
+        {//進入前置轉換
+            if((m_PT_Page.ChildElements!= null) && (m_PT_Page.ChildElements.Count>0))//判斷ChildElements有資料
+            {
+                intIndexBase = m_PT_Page.ChildElements.Count * 10;//初始化新元件的Index值
+            }
+            else
+            {
+                if(m_PT_Page.ChildElements == null)
+                {
+                    m_PT_Page.ChildElements = new List<PT_ChildElement>();//初始化ChildElements
+                }
+            }
+
+            m_PT_Page.IncludePages.Sort((a, b) => a.Index.CompareTo(b.Index));//初始化排序元件
+            for (int i = 0; i < m_PT_Page.IncludePages.Count; i++)//依序取出SID
+            {
+                PT_ChildElement PT_ChildElementBuf = m_PT_Page.IncludePages[i];
+                if( (PT_ChildElementBuf.SID != null) && (PT_ChildElementBuf.SID.Length>0))
+                {
+                    string strEmbedded = "";
+                    try
+                    {
+                        if (blnFileMode)
+                        {//檔案模式
+                            StreamReader sr00 = new StreamReader(PT_ChildElementBuf.SID);
+                            strEmbedded = sr00.ReadToEnd();
+                        }
+                        else
+                        {//DB模式
+
+                        }
+                    }
+                    catch 
+                    {
+                        strEmbedded = "";
+                    }
+
+                    if(strEmbedded.Length>0)
+                    {
+                        PT_ChildElement PT_ChildElementTable = JsonSerializer.Deserialize<PT_ChildElement>(strEmbedded);//產生Embedded元件
+                        if ( PT_ChildElementTable != null )
+                        {
+                            //---
+                            //Embedded轉成Table
+                            PT_ChildElementTable.ElementType = "Table";
+                            PT_ChildElementTable.Index = intIndexBase + PT_ChildElementBuf.Index;
+                            PT_ChildElementTable.RowSpacing = 10;
+                            PT_ChildElementTable.AlwaysPrint = "Y";
+                            //---Embedded轉成Table
+
+                            m_PT_Page.ChildElements.Add(PT_ChildElementTable);//賦予新元件
+                        }
+                    }
+
+                }
+            }
+        }
+
+        strResult = JsonSerializer.Serialize(m_PT_Page);
+        return strResult;
+    }
+
     public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate,string strOrderData)//建構子 
     {
         try
@@ -504,6 +573,9 @@ public class CS_PrintTemplate
             m_PT_Page = JsonSerializer.Deserialize<PT_Page>(strPrintTemplate);
             if((m_PT_Page!=null) && (m_PT_Page.ChildElements!=null) && (m_PT_Page.ChildElements.Count>0))
             {
+                //「預先處理 (Preprocess)
+                PagePreprocess(true);
+
                 // 就地修改 ChildElements 的順序，依照 Index 遞增排序 //如果你要遞減排序，改成 b.Index.CompareTo(a.Index)
                 m_PT_Page.ChildElements.Sort((a, b) => a.Index.CompareTo(b.Index));
             }
@@ -2162,7 +2234,7 @@ class Program
         string strOrderData = sr00.ReadToEnd();
         
         //報表~
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Number_57.json");
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\IncludePage實驗\Number_57拆開主體.json");
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct_57.json");
         //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();

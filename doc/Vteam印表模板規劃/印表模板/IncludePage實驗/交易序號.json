@@ -1,0 +1,38 @@
+{
+	"ElementType": "Embedded",
+	"ChildElements": [
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 0,
+			"Width": 456,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":8,
+					"Content":"交易序號: {$order_no}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":20,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		}
+	]
+}
