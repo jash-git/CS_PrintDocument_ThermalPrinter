@@ -17,17 +17,23 @@
 	"BuzzerCmd": "",
 	"ExtBuzzerCmd": "",
 	"PrintMode":"",
-	"IncludePages":[
+	"IncludePages":[	
 		{
-			"ElementType": "IncludePage",
 			"Index": 0,
-			"SID": "C:\\Users\\jashv\\OneDrive\\桌面\\GITHUB\\CS_PrintDocument_ThermalPrinter\\doc\\Vteam印表模板規劃\\印表模板\\IncludePage實驗\\連絡電話.json"
+			"TemplateSID": "C:\\Users\\jashv\\OneDrive\\桌面\\GITHUB\\CS_PrintDocument_ThermalPrinter\\doc\\Vteam印表模板規劃\\印表模板\\IncludePage實驗\\連絡電話.json"
 		},
 		{
-			"ElementType": "IncludePage",
 			"Index": 1,
-			"SID": "C:\\Users\\jashv\\OneDrive\\桌面\\GITHUB\\CS_PrintDocument_ThermalPrinter\\doc\\Vteam印表模板規劃\\印表模板\\IncludePage實驗\\交易序號.json"
-		}
+			"TemplateSID": "C:\\Users\\jashv\\OneDrive\\桌面\\GITHUB\\CS_PrintDocument_ThermalPrinter\\doc\\Vteam印表模板規劃\\印表模板\\IncludePage實驗\\交易序號.json"
+		},
+		{
+			"Index": 2,
+			"TemplateSID": "C:\\Users\\jashv\\OneDrive\\桌面\\GITHUB\\CS_PrintDocument_ThermalPrinter\\doc\\Vteam印表模板規劃\\印表模板\\Number_57.json"
+		},
+		{
+			"Index": 3,
+			"TemplateSID": "C:\\Users\\jashv\\OneDrive\\桌面\\GITHUB\\CS_PrintDocument_ThermalPrinter\\doc\\Vteam印表模板規劃\\印表模板\\IncludePage實驗\\Number_57拆開主體.json"
+		}		
 	],
 	"ChildElements": [
 		{

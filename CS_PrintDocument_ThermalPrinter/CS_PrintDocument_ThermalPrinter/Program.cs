@@ -280,7 +280,7 @@ public class PT_ChildElement
     public string DisplayMode { get; set; }//Rows
     public string ErrorCorrection { get; set; }//QrCode
     public string Format { get; set; }//BarCode
-    public string SID { get; set; }//IncludePage,Embedded
+    public string TemplateSID { get; set; }//IncludePages
 }
 public class ContainerElement
 {//存放在堆疊內的原件
@@ -482,6 +482,23 @@ public class CS_PrintTemplate
 
     public bool m_blnResult;
     public string m_strResult;
+    public void Y_AlignmentPreprocess(PT_ChildElement PT_ChildElementMain)//元件的Y_Alignment屬性強制從 Y -> Increment
+    {
+        if ((PT_ChildElementMain.ChildElements != null) && (PT_ChildElementMain.ChildElements.Count > 0))
+        {
+            PT_ChildElementMain.ChildElements.Sort((a, b) => a.Index.CompareTo(b.Index));//使用Index排序
+            PT_ChildElement PT_ChildElementPre = PT_ChildElementMain.ChildElements[0];
+            Y_AlignmentPreprocess(PT_ChildElementPre);//遞迴往下層找
+        }
+        else
+        {
+            if(PT_ChildElementMain.Y_Alignment == "Y")
+            {
+                PT_ChildElementMain.Y_Alignment = "Increment";
+            }
+            return;
+        }
+    }
     public string PagePreprocess(bool blnFileMode=false)//「預先處理(Preprocess)
     {
         string strResult = "";
@@ -501,17 +518,17 @@ public class CS_PrintTemplate
             }
 
             m_PT_Page.IncludePages.Sort((a, b) => a.Index.CompareTo(b.Index));//初始化排序元件
-            for (int i = 0; i < m_PT_Page.IncludePages.Count; i++)//依序取出SID
+            for (int i = 0; i < m_PT_Page.IncludePages.Count; i++)//依序取出TemplateSID
             {
                 PT_ChildElement PT_ChildElementBuf = m_PT_Page.IncludePages[i];
-                if( (PT_ChildElementBuf.SID != null) && (PT_ChildElementBuf.SID.Length>0))
+                if( (PT_ChildElementBuf.TemplateSID != null) && (PT_ChildElementBuf.TemplateSID.Length>0))
                 {
                     string strEmbedded = "";
                     try
                     {
                         if (blnFileMode)
                         {//檔案模式
-                            StreamReader sr00 = new StreamReader(PT_ChildElementBuf.SID);
+                            StreamReader sr00 = new StreamReader(PT_ChildElementBuf.TemplateSID);
                             strEmbedded = sr00.ReadToEnd();
                         }
                         else
@@ -536,6 +553,16 @@ public class CS_PrintTemplate
                             PT_ChildElementTable.RowSpacing = 10;
                             PT_ChildElementTable.AlwaysPrint = "Y";
                             //---Embedded轉成Table
+
+                            //---
+                            //將第一個顯示元件的Y_Alignment屬性強制從 Y -> Increment 
+                            if ((PT_ChildElementTable.ChildElements!=null) && (PT_ChildElementTable.ChildElements.Count>0))
+                            {
+                                PT_ChildElementTable.ChildElements.Sort((a, b) => a.Index.CompareTo(b.Index));//使用Index排序
+                                PT_ChildElement PT_ChildElementPre = PT_ChildElementTable.ChildElements[0];
+                                Y_AlignmentPreprocess(PT_ChildElementPre);
+                            }
+                            //---將第一個顯示元件的Y_Alignment屬性強制從 Y -> Increment 
 
                             m_PT_Page.ChildElements.Add(PT_ChildElementTable);//賦予新元件
                         }
@@ -577,7 +604,7 @@ public class CS_PrintTemplate
                 PagePreprocess(true);
 
                 // 就地修改 ChildElements 的順序，依照 Index 遞增排序 //如果你要遞減排序，改成 b.Index.CompareTo(a.Index)
-                m_PT_Page.ChildElements.Sort((a, b) => a.Index.CompareTo(b.Index));
+                m_PT_Page.ChildElements.Sort((a, b) => a.Index.CompareTo(b.Index));//使用Index排序
             }
 
             m_OrderDataAll = JsonSerializer.Deserialize<orders_new>(strOrderData);
@@ -1336,8 +1363,8 @@ public class CS_PrintTemplate
         if((root.ChildElements!=null) && (root.ChildElements.Count>0))
         {
             // 就地修改 ChildElements 的順序，依照 Index 遞增排序 //如果你要遞減排序，改成 b.Index.CompareTo(a.Index)
-            root.ChildElements.Sort((a, b) => a.Index.CompareTo(b.Index));
-            if(!Element_Preprocess(root))
+            root.ChildElements.Sort((a, b) => a.Index.CompareTo(b.Index));//使用Index排序
+            if (!Element_Preprocess(root))
             {
                 return ElementResult;
             }
