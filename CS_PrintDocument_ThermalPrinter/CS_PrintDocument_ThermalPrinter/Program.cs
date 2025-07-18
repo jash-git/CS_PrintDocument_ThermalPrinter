@@ -133,6 +133,68 @@ public class DPI_Funs
         float inches = millimeters / 25.4f;
         return (int)(inches * dpi + 0.5f); // 使用0.5f进行四舍五入处理
     }
+
+    //---
+    // 計算在指定 DPI 下，字串所佔據的實際寬度與高度。
+    public static SizeF MeasureStringInMm(string StrText, Font font, float fltDpi)//需要利用Dpi參數建一個虛擬畫布
+    {
+        // 檢查輸入是否有效，避免不必要的錯誤
+        if (string.IsNullOrEmpty(StrText) || font == null || fltDpi <= 0)
+        {
+            return SizeF.Empty;
+        }
+
+        // 建立一個 1x1 像素的虛擬 Bitmap 作為測量畫布
+        using (var bmp = new Bitmap(1, 1))
+        {
+            // 設定畫布的解析度為目標 DPI
+            bmp.SetResolution(fltDpi, fltDpi);
+
+            // 從畫布取得 Graphics 物件，此物件會繼承畫布的 DPI 設定
+            using (var g = Graphics.FromImage(bmp))
+            {
+                // 1. 測量字串在指定 DPI 下的像素尺寸
+                SizeF sizeInPixels = g.MeasureString(StrText, font);
+
+                // 2. 將像素尺寸轉換為公釐 (mm)
+                // 轉換公式: (像素 / DPI) * 25.4
+                float fltWidthInMm = PixelsToMillimeters((int)sizeInPixels.Width, fltDpi);// (sizeInPixels.Width / fltDpi) * 25.4f;
+                float fltHeightInMm = PixelsToMillimeters((int)sizeInPixels.Height, fltDpi);//(sizeInPixels.Height / fltDpi) * 25.4f;
+
+                // 3.使用熱敏印表機實際測試落差手動校正
+                fltWidthInMm -= 7;//在熱敏印表機實際測試得到參數
+                fltHeightInMm -= 0;//雖然字型Size要-2會比較剛好，但是當字型變小文字又會太黏 所以最後還是不做調整
+
+                // 4. 回傳包含公釐尺寸的 SizeF 物件
+                return new SizeF(fltWidthInMm, fltHeightInMm);
+            }
+        }
+    }
+
+    public static SizeF MeasureStringInMm(string StrText, Font font, Graphics g)//傳入印表機映射的畫布來進行運算
+    {
+        // 檢查輸入是否有效，避免不必要的錯誤
+        if (string.IsNullOrEmpty(StrText) || font == null || g == null)
+        {
+            return SizeF.Empty;
+        }
+
+        SizeF sizeInPixels = g.MeasureString(StrText, font);
+
+        // 2. 將像素尺寸轉換為公釐 (mm)
+        // 轉換公式: (像素 / DPI) * 25.4
+        float fltWidthInMm = PixelsToMillimeters((int)sizeInPixels.Width, g.DpiX);//(sizeInPixels.Width / g.DpiX) * 25.4f;
+        float fltHeightInMm = PixelsToMillimeters((int)sizeInPixels.Height, g.DpiX);//(sizeInPixels.Height / g.DpiY) * 25.4f;
+
+        // 3.使用熱敏印表機實際測試落差手動校正
+        fltWidthInMm -= 7;//在熱敏印表機實際測試得到參數
+        fltHeightInMm -= 0;//雖然字型Size要-2會比較剛好，但是當字型變小文字又會太黏 所以最後還是不做調整
+
+        // 4. 回傳包含公釐尺寸的 SizeF 物件
+        return new SizeF(fltWidthInMm, fltHeightInMm);
+    }
+    //---計算在指定 DPI 下，字串所佔據的實際寬度與高度。
+
     //---DPI 相關函數
 }
 
@@ -2251,7 +2313,7 @@ class Program
         Console.Write("Press any key to continue...");
         Console.ReadKey(true);
     }
-    static void Main()
+    static void Main_V1()
     {
         //報表印表機~
         string strPrinterDriverName = "80mm Series Printer";//"POS-80C";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
@@ -2270,7 +2332,7 @@ class Program
         
         Pause();
     }
-    static void Main_V0()
+    static void Main()
     {
         float SysDpiX, SysDpiY;
         DPI_Funs.GetScreenDpi(out SysDpiX,out SysDpiY);
@@ -2348,47 +2410,74 @@ class Program
                 56mm : 56-3*2(設備邊界) = 50mm
                 大小紙張可列印之差: (72-50)=22mm
             */
-            g.DrawString("050", new Font("新細明體", 40, FontStyle.Bold), brush, 0, y);
-            y += DPI_Funs.MillimetersToPixels(14, 203);//14=字高+1
+            SizeF size;
+            g.DrawString("050", new Font("新細明體", 40, FontStyle.Bold), brush, 0, y);          
+            size = DPI_Funs.MeasureStringInMm ("050", new Font("新細明體", 40, FontStyle.Bold),g); // 測量 "050" 的寬與高
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);//14=字高+1
 
             g.DrawString("外帶", new Font("新細明體", 28, FontStyle.Bold), brush, 0, y);
-            y += DPI_Funs.MillimetersToPixels(12, 203);//12=字高+1
+            size = DPI_Funs.MeasureStringInMm("外帶", new Font("新細明體", 28, FontStyle.Bold), g);
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);//12=字高+1
 
             g.DrawString("電子發票證明聯", new Font("新細明體", 16), brush, 0, y);
-            y += DPI_Funs.MillimetersToPixels(7, 203);//7=字高+1
+            size = DPI_Funs.MeasureStringInMm("電子發票證明聯", new Font("新細明體", 16), g);
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);//7=字高+1
 
             g.DrawString("114年5-6月", new Font("新細明體", 16), brush, 0, y);
-            y += DPI_Funs.MillimetersToPixels(7, 203);//7=字高+1
+            size = DPI_Funs.MeasureStringInMm("114年5-6月", new Font("新細明體", 16), g);
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);//7=字高+1
 
             g.DrawString("AA-67241100(測)", new Font("新細明體", 16), brush, 0, y);
-            y += DPI_Funs.MillimetersToPixels(7, 203);//7=字高+1
+            size = DPI_Funs.MeasureStringInMm("AA-67241100(測)", new Font("新細明體", 16), g);
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);//7=字高+1
 
             g.DrawString("2025-05-05 09:27:15", font, brush, 10, y);
-            y += DPI_Funs.MillimetersToPixels(4, 203);//4=字高+1
+            size = DPI_Funs.MeasureStringInMm("2025-05-05 09:27:15", font, g);
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);//4=字高+1
 
             g.DrawString("隨機碼:7207        總計:160", font, brush, 10, y);
-            y += DPI_Funs.MillimetersToPixels(4, 203);//4=字高+1
+            size = DPI_Funs.MeasureStringInMm("隨機碼:7207        總計:160", font, g);
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);//4=字高+1
 
-            g.DrawString("文字置中測試", new Font("新細明體", 13, FontStyle.Bold), brush, DPI_Funs.MillimetersToPixels(((78-12) / 2 - (5*3)), 203), y);//紙張寬度((78-12)/2)-3個字寬(4*3)
-            y += DPI_Funs.MillimetersToPixels(6, 203);//6=字高+1
+            size = DPI_Funs.MeasureStringInMm("電子發票證明聯", new Font("新細明體", 16), g);
+            g.DrawString("電子發票證明聯", new Font("新細明體", 16), brush, DPI_Funs.MillimetersToPixels(((78 - 12) / 2 - (size.Width / 2)), 203), y);
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);//7=字高+1
 
-            g.DrawString("文字置中測試", new Font("新細明體", 13), brush, DPI_Funs.MillimetersToPixels(((78 - 12) / 2 - (5*3)), 203), y);//紙張寬度((78-12)/2)-3個字寬(3*3)
-            y += DPI_Funs.MillimetersToPixels(6, 203);//5=字高+1
+            size = DPI_Funs.MeasureStringInMm("050", new Font("新細明體", 40, FontStyle.Bold), g); // 測量 "050" 的寬與高
+            g.DrawString("050", new Font("新細明體", 40, FontStyle.Bold), brush, DPI_Funs.MillimetersToPixels(((78 - 12) / 2 - (size.Width / 2)), 203), y);
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);//14=字高+1
+
+            size = DPI_Funs.MeasureStringInMm("文字置中測試", new Font("新細明體", 13, FontStyle.Bold), g);
+            g.DrawString("文字置中測試", new Font("新細明體", 13, FontStyle.Bold), brush, DPI_Funs.MillimetersToPixels(((78-12) / 2 - (size.Width/2)), 203), y);//紙張寬度((78-12)/2)-3個字寬(4*3)
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);//6=字高+1
+
+            size = DPI_Funs.MeasureStringInMm("文字置中測試", new Font("新細明體", 13), g);
+            g.DrawString("文字置中測試", new Font("新細明體", 13), brush, DPI_Funs.MillimetersToPixels(((78 - 12) / 2 - (size.Width / 2)), 203), y);//紙張寬度((78-12)/2)-3個字寬(3*3)
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);//5=字高+1
+
+            size = DPI_Funs.MeasureStringInMm("文字置中測試", font, g);
+            g.DrawString("文字置中測試", font, brush, DPI_Funs.MillimetersToPixels(((78 - 12) / 2 - (size.Width / 2)), 203), y);//紙張寬度((78-12)/2)-3個字寬(3*3)
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);//5=字高+1
 
             // 列印標題
             g.DrawString("收據列印示範(粗體)", new Font("新細明體", 12, FontStyle.Bold), brush, 0, y);
-            y += DPI_Funs.MillimetersToPixels(5, 203);//5=字高+1
+            size = DPI_Funs.MeasureStringInMm("收據列印示範(粗體)", new Font("新細明體", 12, FontStyle.Bold), g);
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);//5=字高+1
 
             g.DrawString("收據列印示範", new Font("新細明體", 12), brush, 0, y);
-            y += DPI_Funs.MillimetersToPixels(5, 203);//5=字高+1
+            size = DPI_Funs.MeasureStringInMm("收據列印示範", new Font("新細明體", 12), g);
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);//5=字高+1
 
             // 繪製文字
             g.DrawString("商品：測試產品", font, brush, 10, y);
-            y += DPI_Funs.MillimetersToPixels(4, 203);//4=字高+1
+            size = DPI_Funs.MeasureStringInMm("商品：測試產品", font, g);
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);//4=字高+1
             g.DrawString("數量：2", font, brush, 10, y);
-            y += DPI_Funs.MillimetersToPixels(4, 203);//4=字高+1
+            size = DPI_Funs.MeasureStringInMm("數量：2", font, g);
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);//4=字高+1
             g.DrawString("總價：NT$200", font, brush, 10, y);
-            y += DPI_Funs.MillimetersToPixels(10, 203);
+            size = DPI_Funs.MeasureStringInMm("總價：NT$200", font, g.DpiX);
+            y += DPI_Funs.MillimetersToPixels(size.Height, 203);
 
             // 繪製方形區塊（模擬框）
             Pen pen = new Pen(Color.Black, 1);
