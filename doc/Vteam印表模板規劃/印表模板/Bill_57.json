@@ -67,7 +67,7 @@
 					"Height":104,
 					"Content":"{$call_num}",
 					"VerticalContentAlig":"Center",
-					"HorizontalContentAlig":"Left",
+					"HorizontalContentAlig":"Right",
 					"ContentSize":40,
 					"ContentBold":"Y",
 					"VerticalSpacing":10,

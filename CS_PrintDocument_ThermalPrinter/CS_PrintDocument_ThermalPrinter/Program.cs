@@ -12,6 +12,7 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
+
 public class TimeConvert
 {
     //https://stackoverflow.com/questions/249760/how-can-i-convert-a-unix-timestamp-to-datetime-and-vice-versa
@@ -1619,9 +1620,12 @@ public class CS_PrintTemplate
             string strHorizontalContentAlig = PT_ChildElementBuf.HorizontalContentAlig;//文字Y軸對其方式
 
             Font NowFont = null;
+            float fltNowFontWidth = 0;
             float fltNowFontHeight = 0;
             Brush brush = Brushes.Black;
 
+            /*
+            //使用固定變數 指定文字字型和文字大小
             NowFont = m_NormalFont;
             fltNowFontHeight = m_fltFontHeight[0];
             switch (PT_ChildElementBuf.ContentSize)
@@ -1647,8 +1651,26 @@ public class CS_PrintTemplate
                     fltNowFontHeight = m_fltFontHeight[0];
                     break;
             }
-            
-            if(PT_ChildElementBuf.ContentBold=="Y")
+            //*/
+
+            //*
+            //使用動態指定文字字型和文字大小
+            SizeF SizeFBuf;
+            if (PT_ChildElementBuf.ContentSize>0)
+            {
+                NowFont = new Font(m_PT_Page.FontName, (float)PT_ChildElementBuf.ContentSize);
+                SizeFBuf = g.MeasureString("合用系統", NowFont);//使用公司名作為標準測試字串
+                fltNowFontWidth = SizeFBuf.Width/4;//計算單一文字寬度
+                fltNowFontHeight = SizeFBuf.Height;//設定文字高度
+            }
+            else
+            {//防呆機制
+                NowFont = m_NormalFont;
+                fltNowFontHeight = m_fltFontHeight[0];
+            }
+            //*/
+
+            if (PT_ChildElementBuf.ContentBold=="Y")
             {
                 NowFont = new Font(NowFont, FontStyle.Bold);
             }
@@ -1657,7 +1679,7 @@ public class CS_PrintTemplate
             string[] strShowArrayData = null;
             int intWlen = Wlen(m_strRealData);//資料總字數(將中文字換成2個英文字長度)
             //float fltDataAllLength = intWlen * fltNowFontHeight;//資料總長度
-            int intOneRowWords = (int)(fltWidth / fltNowFontHeight)*2;//單列最大中文字數*2 = (英文字數量)
+            int intOneRowWords = (int) ( fltWidth / ((fltNowFontWidth>0)? fltNowFontWidth : fltNowFontHeight) ) *2;//單列最大中文字數*2 = (英文字數量)
             
             int intMaxRows = 1;//最大列數
             if((intOneRowWords < intWlen) && blnAutoWrap)
@@ -1724,7 +1746,7 @@ public class CS_PrintTemplate
                 case "Right":
                     if(intMaxRows==1)
                     {
-                        fltStartX = fltStartX + ( fltWidth - (0.65f * fltNowFontHeight * Wlen(strShowData)) );
+                        fltStartX = fltStartX + (fltWidth - g.MeasureString(strShowData, NowFont).Width) + 12;
                     }
                     else
                     {
@@ -1734,7 +1756,7 @@ public class CS_PrintTemplate
                 case "Center":
                     if (intMaxRows == 1)
                     {
-                        fltStartX = fltStartX + (fltWidth/2 - (0.65f * fltNowFontHeight * Wlen(strShowData))/2 );//0.65是實驗出來的數值: 字寬 = 0.65*字高
+                        fltStartX = fltStartX + (fltWidth/2 - g.MeasureString(strShowData, NowFont).Width/2 ) + 12;
                     }
                     else
                     {
@@ -2313,7 +2335,7 @@ class Program
         Console.Write("Press any key to continue...");
         Console.ReadKey(true);
     }
-    static void Main_V1()
+    static void Main()
     {
         //報表印表機~
         string strPrinterDriverName = "80mm Series Printer";//"POS-80C";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
@@ -2323,7 +2345,7 @@ class Program
         string strOrderData = sr00.ReadToEnd();
         
         //報表~
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\IncludePage實驗\Number_57拆開主體.json");
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Bill_80.json");
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct_57.json");
         //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();
@@ -2332,7 +2354,7 @@ class Program
         
         Pause();
     }
-    static void Main()
+    static void Main_V0()
     {
         float SysDpiX, SysDpiY;
         DPI_Funs.GetScreenDpi(out SysDpiX,out SysDpiY);
