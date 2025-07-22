@@ -236,7 +236,7 @@ namespace CS_PrintDocument_ThermalPrinter
         public string qrcode_aes_key { get; set; }
     }
 
-    public class orders_new//訂單 上傳/列印 資料結構
+    public class OrderPrintData//訂單 上傳/列印 資料結構
     {
         public string store_name { get; set; }
         public string pos_ver { get; set; }//version
@@ -317,10 +317,11 @@ namespace CS_PrintDocument_ThermalPrinter
         public string license_type { get; set; }
         public Invoice_Data invoice_data { get; set; }
         public string strQrcodeInfor { get; set; }
+        public Parms parms { get; set; }
 
         public List<Tableware> tablewares { get; set; }
 
-        public orders_new()
+        public OrderPrintData()
         {
             order_items = new List<OrderItem>();
             packages = new List<Package>();
@@ -328,14 +329,16 @@ namespace CS_PrintDocument_ThermalPrinter
             coupons = new List<J2C_Coupon>();
             invoice_data = new Invoice_Data();
             tablewares = new List<Tableware>();
+
             strQrcodeInfor = "";
+            parms = new Parms();
         }
-        public orders_new order_itemsDeepClone(int index)//深層複製
+        public OrderPrintData order_itemsDeepClone(int index)//深層複製
         {
-            orders_new orders_newBuf = (orders_new)this.MemberwiseClone();//表層屬性複製
-            orders_newBuf.order_items = new List<OrderItem>();
-            orders_newBuf.order_items.Add(this.order_items[index]);
-            return orders_newBuf;
+            OrderPrintData OrderPrintDataBuf = (OrderPrintData)this.MemberwiseClone();//表層屬性複製
+            OrderPrintDataBuf.order_items = new List<OrderItem>();
+            OrderPrintDataBuf.order_items.Add(this.order_items[index]);
+            return OrderPrintDataBuf;
         }
 
         public void mergeItems(bool blnSort = true)
@@ -383,10 +386,95 @@ namespace CS_PrintDocument_ThermalPrinter
         }
 
     }
-    public class orders_newResult
+    public class OrderPrintDataResult
     {
         public string status { get; set; }
         public string message { get; set; }
     }
 
+    public class Parms
+    {
+        public string cash_box_type { get; set; }//錢箱類型
+        public string device_model { get; set; }//設備型號
+        public string conn_type { get; set; }//連線方式
+
+        public string tcp_ip_address { get; set; }//IP
+        public Object tcp_port { get; set; }//Port
+
+        public string serial_port { get; set; }//COM port
+        public Object baud_rate { get; set; }//鮑率
+        public int follow_control { get; set; }//流量控制
+
+        public string driver_name { get; set; }//驅動名稱
+
+        public string on_off_state { get; set; }//設備狀態
+
+        public Object bill_print_count { get; set; }//列印份數
+        public string print_logo { get; set; }//企業Logo
+        public string new_bill_no_print { get; set; }//新單不列印
+        public string conn_cash_box { get; set; }//N
+        public string print_barcode { get; set; }//列印條碼
+        public string print_set_attribute { get; set; }//列印套元素
+        public string print_takeaways_info { get; set; }//列印外買訂單資訊
+        public string print_inv_receipt { get; set; }//列印發票交易明細
+        public string start_buzzer { get; set; }//開啟提示音
+        public string external_buzzer { get; set; }//外接蜂鳴器
+        public string big_callnum { get; set; }//取餐號加大
+        public string big_order_type { get; set; }//訂單類型加大
+        public string big_takeaways_no { get; set; }//外賣單號加大
+        public string big_table { get; set; }//桌號加大
+        public string label_bottom_info { get; set; }//底部列印資訊
+        public string print_product_price { get; set; }//列印商品金額
+        public string print_pickup_time { get; set; }//列印取餐時間
+        public string product_single_cut { get; set; }//一菜一切
+        public string merge_product { get; set; }//商品合併列印
+        public string product_big_gap { get; set; }//商品間距加大
+        public string single_report { get; set; }//只印簡表
+        public string no_print_price { get; set; }//不印價格
+        public string print_ticket_memo { get; set; }//列印備註
+        public string print_template { get; set; }//印表範本名稱
+        public string big_memo_font { get; set; }//備註加大
+        public string customized_code { get; set; }//客製化代碼
+        public string customized_params { get; set; }//客製化參數
+
+        public Parms()
+        {
+            on_off_state = "N";
+            print_template = "";
+
+            conn_type = "";
+
+            bill_print_count = "1";
+            new_bill_no_print = "N";//新單列印
+            print_logo = "N";
+            conn_cash_box = "N";
+            print_barcode = "N";
+            start_buzzer = "N";
+            external_buzzer = "N";
+            big_callnum = "N";
+            big_order_type = "N";
+            big_takeaways_no = "N";
+            big_table = "N";
+            print_product_price = "N";
+            product_single_cut = "N";
+            merge_product = "N";
+            product_big_gap = "N";
+            single_report = "N";
+            no_print_price = "N";
+            print_ticket_memo = "N";
+            label_bottom_info = "";//底部列印資訊
+            device_model = "";//設備型號
+
+            cash_box_type = "";
+
+            print_set_attribute = "N";
+            print_takeaways_info = "N";
+            print_inv_receipt = "N";
+            print_pickup_time = "N";
+            big_memo_font = "N";
+            customized_code = "";
+            customized_params = "";
+
+        }
+    }
 }
