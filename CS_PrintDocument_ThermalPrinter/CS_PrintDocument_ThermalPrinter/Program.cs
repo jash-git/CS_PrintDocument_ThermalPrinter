@@ -2338,7 +2338,7 @@ class Program
     static void Main()
     {
         //報表印表機~
-        string strPrinterDriverName = "POS80D";//"POS-80C";//"80mm Series Printer";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+        string strPrinterDriverName = "58mm Series Printer";//"80mm Series Printer";//"POS-58C";//"POS-80C";//"POS80D";//"POS-80C";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
         //標籤機~ string strPrinterDriverName = "DT-2205";
 
         StreamReader sr00 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Input.json");
