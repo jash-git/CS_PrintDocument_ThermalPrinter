@@ -2335,7 +2335,7 @@ class Program
         Console.Write("Press any key to continue...");
         Console.ReadKey(true);
     }
-    static void Main()
+    static void Main_V2()
     {
         //報表印表機~
         string strPrinterDriverName = "POS-80C";//"POS-58C";//"80mm Series Printer";//"58mm Series Printer";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
@@ -2352,6 +2352,80 @@ class Program
         
         CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderPrintData);
         
+        Pause();
+    }
+    static void Main()
+    {
+        //報表印表機~
+        string strPrinterDriverName = "58mm Series Printer";//"80mm Series Printer";//"POS-58C";//"POS-80C";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+                                                            //標籤機~ string strPrinterDriverName = "DT-2205";
+
+        PrintDocument printDoc = new PrintDocument();
+
+        // 指定印表機
+        bool found = false;
+        foreach (string printer in PrinterSettings.InstalledPrinters)
+        {
+            if (printer.Equals(strPrinterDriverName, StringComparison.OrdinalIgnoreCase))
+            {
+                printDoc.PrinterSettings.PrinterName = printer;
+                found = true;
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            Console.WriteLine($"找不到印表機：{strPrinterDriverName}");
+            return;
+        }
+
+        // 加入列印事件
+        printDoc.PrintPage += (sender, e) =>
+        {
+            /*
+            //https://learn.microsoft.com/zh-tw/dotnet/api/system.drawing.graphicsunit?view=windowsdesktop-9.0&viewFallbackFrom=dotnet-plat-ext-8.0
+            Display	1	
+            指定顯示裝置的測量單位。 一般來說，視訊顯示會使用像素，而印表機會使用 1/100 英吋。
+
+            Document	5	
+            指定文件單位 (1/300 英吋) 做為測量單位。
+
+            Inch	4	
+            指定英吋做為測量單位。
+
+            Millimeter	6	
+            指定公釐做為測量單位。
+
+            Pixel	2	
+            指定裝置像素做為測量單位。
+
+            Point	3	
+            指定印表機的點 (1/72 英吋) 做為測量單位。
+
+            World	0	
+            指定全局座標系統的單位做為測量單位。            
+            */
+            //e.Graphics.PageUnit = GraphicsUnit.Document;//300DPI ~ https://radio-idea.blogspot.com/2016/09/c-printdocument.html#google_vignette
+            e.Graphics.PageUnit = GraphicsUnit.Pixel;//解析度 ~ https://radio-idea.blogspot.com/2016/09/c-printdocument.html#google_vignette
+
+            // 從 BMP 檔案讀取圖片
+            using (Image img = Image.FromFile(@"C:\Users\jashv\OneDrive\桌面\680x480.png"))
+            {
+                // 根據原始圖片尺寸，直接將圖片列印到頁面
+                e.Graphics.DrawImage(img, new Rectangle(0, 0, img.Width, img.Height));
+            }
+        };
+
+        try
+        {
+            printDoc.Print();
+            Console.WriteLine("列印工作已送出！");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("列印失敗：" + ex.Message);
+        }
         Pause();
     }
     static void Main_V0()
