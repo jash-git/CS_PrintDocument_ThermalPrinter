@@ -2335,10 +2335,10 @@ class Program
         Console.Write("Press any key to continue...");
         Console.ReadKey(true);
     }
-    static void Main_V2()
+    static void Main()
     {
         //報表印表機~
-        string strPrinterDriverName = "POS-80C";//"POS-58C";//"80mm Series Printer";//"58mm Series Printer";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+        string strPrinterDriverName = "POS-58C";//"POS-80C";//"80mm Series Printer";//"58mm Series Printer";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
         //標籤機~ string strPrinterDriverName = "DT-2205";
 
         StreamReader sr00 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Input.json");
@@ -2354,11 +2354,11 @@ class Program
         
         Pause();
     }
-    static void Main()
+    static void Main_V1()
     {
         //報表印表機~
-        string strPrinterDriverName = "58mm Series Printer";//"80mm Series Printer";//"POS-58C";//"POS-80C";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
-                                                            //標籤機~ string strPrinterDriverName = "DT-2205";
+        string strPrinterDriverName = "POS-80C";//"POS-58C";//"80mm Series Printer";//"58mm Series Printer";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+                                                //標籤機~ string strPrinterDriverName = "DT-2205";
 
         PrintDocument printDoc = new PrintDocument();
 
