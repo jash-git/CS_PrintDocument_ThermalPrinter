@@ -639,7 +639,7 @@ public class CS_PrintTemplate
         return strResult;
     }
 
-    public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate,string strOrderPrintData)//建構子 
+    public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate,string strOrderPrintData,string strElectronicInvoicePrinting)//建構子 
     {
         try
         {
@@ -671,6 +671,7 @@ public class CS_PrintTemplate
             }
 
             m_OrderPrintDataAll = JsonSerializer.Deserialize<OrderPrintData>(strOrderPrintData);
+            m_OrderPrintDataAll.invoice_print_data = JsonSerializer.Deserialize<POSOrder2InvoiceB2COrder>(strElectronicInvoicePrinting);
             blnPrintTemplateCreated = (m_PT_Page != null) ? true : false;//((m_JsonDocument!=null) && (m_PT_Page!=null))?true:false;
             //---json2object
 
@@ -1009,6 +1010,26 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
+            case "invoice_print_data":
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.invoice_print_data, strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "invoice_print_data.Items":
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.invoice_print_data.Items, strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
             default:
                 try
                 {
@@ -1149,6 +1170,12 @@ public class CS_PrintTemplate
             case "invoice_data"://9
                 intDataPath = 9;
                 break;
+            case "invoice_print_data"://10
+                intDataPath = 10;
+                break;
+            case "invoice_print_data.Items"://11
+                intDataPath = 11;
+                break;
             default://以上都不符合走這個
                 intDataPath = -1;
                 break;
@@ -1268,6 +1295,16 @@ public class CS_PrintTemplate
                 intIndex = m_ForLoopVars[9].m_intIndex;
                 intResult = m_ForLoopVars[9].m_intCount;
                 intNum = 9;
+                break;
+            case "invoice_print_data"://10
+                intIndex = m_ForLoopVars[10].m_intIndex;
+                intResult = m_ForLoopVars[10].m_intCount;
+                intNum = 10;
+                break;
+            case "invoice_print_data.Items"://11
+                intIndex = m_ForLoopVars[11].m_intIndex;
+                intResult = m_ForLoopVars[11].m_intCount;
+                intNum = 11;
                 break;
             default://以上都不符合走這個
                 intResult = 0;
@@ -1397,6 +1434,8 @@ public class CS_PrintTemplate
         m_ForLoopVars.Add(new ForLoopVar("tablewares", 0));
         m_ForLoopVars.Add(new ForLoopVar("payments", 0));
         m_ForLoopVars.Add(new ForLoopVar("invoice_data", 0));
+        m_ForLoopVars.Add(new ForLoopVar("invoice_print_data", 0));//電子發票列印資料
+        m_ForLoopVars.Add(new ForLoopVar("invoice_print_data.Items", 0));//電子發票列印明細資料
 
         if (m_OrderPrintData!=null)
         {
@@ -1416,6 +1455,10 @@ public class CS_PrintTemplate
             m_ForLoopVars[8].m_intIndex = -1;//(m_ForLoopVars[8].m_intCount > 0) ? 0 : -1;
             m_ForLoopVars[9].m_intCount = 1;
             m_ForLoopVars[9].m_intIndex = 0;
+            m_ForLoopVars[10].m_intCount = (m_OrderPrintDataAll.invoice_print_data != null) ? 1 : 0;
+            m_ForLoopVars[10].m_intIndex = 1;
+            m_ForLoopVars[11].m_intCount = (m_OrderPrintDataAll.invoice_print_data.Items != null)? m_OrderPrintDataAll.invoice_print_data.Items.Count : 0;
+            m_ForLoopVars[11].m_intIndex = -1;
         }
     }
 
@@ -2349,8 +2392,10 @@ class Program
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct_57.json");
         //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();
-        
-        CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderPrintData);
+
+        StreamReader sr02 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Invoice.json");
+        string strElectronicInvoicePrinting = sr02.ReadToEnd();
+        CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderPrintData, strElectronicInvoicePrinting);
         
         Pause();
     }

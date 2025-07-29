@@ -61,7 +61,59 @@
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
-			"RootName": "",
+			"RootName": "PrintInvLogo",
+			"Conditional":"!=",
+			"ConditionalValue":"Y",	
+			"ChildElements": [
+				{
+					"ElementType":"Rows",				
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Y",
+					"Index":0,			
+					"Width":426,
+					"Height":-1,
+					"Content":"",				
+					"RootName":"invoice_print_data",
+					"DisplayMode":"Single",
+					"ChildElements":[
+						{
+							"ElementType":"Text",
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Y",
+							"Index":0,				
+							"Width":426,
+							"Height":100,
+							"Content":"{$PName}",
+							"VerticalContentAlig":"Center",
+							"HorizontalContentAlig":"Center",
+							"ContentSize":30,
+							"ContentBold":"N",
+							"VerticalSpacing":1,
+							"IntervalSymbols":"",
+							"AutoWrap":"N",
+							"Rotation":0
+						}					
+					]
+				}							
+			]
+		},			
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 0,
+			"Width": 426,
+			"Height": 100,
+			"Content": "",
+			"RootName": "PrintInvLogo",
+			"Conditional":"==",
+			"ConditionalValue":"Y",
 			"ChildElements": [
 				{
 					"ElementType": "Image",
