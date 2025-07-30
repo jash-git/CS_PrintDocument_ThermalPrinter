@@ -88,9 +88,10 @@
 							"Width":426,
 							"Height":100,
 							"Content":"{$PName}",
+							"SecondContent":"",
 							"VerticalContentAlig":"Center",
 							"HorizontalContentAlig":"Center",
-							"ContentSize":30,
+							"ContentSize":25,
 							"ContentBold":"N",
 							"VerticalSpacing":1,
 							"IntervalSymbols":"",
@@ -129,6 +130,74 @@
 				}
 			]
 		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 1,
+			"Width": 426,
+			"Height": 8,
+			"Content": "",
+			"RootName": "invoice_print_data",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"Center",
+					"Y_Alignment":"Increment",
+					"Index":1,				
+					"Width":426,
+					"Height":40,
+					"Content":"{$Invoice_Title}",
+					"SecondContent":"",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Center",
+					"ContentSize":15,
+					"ContentBold":"Y",
+					"VerticalSpacing":1,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0				
+				}					
+			]			
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 1,
+			"Width": 426,
+			"Height": 8,
+			"Content": "",
+			"RootName": "invoice_print_data",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"Center",
+					"Y_Alignment":"Increment",
+					"Index":1,				
+					"Width":426,
+					"Height":40,
+					"Content":"{$Inv_Period}",
+					"SecondContent":"",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Center",
+					"ContentSize":15,
+					"ContentBold":"Y",
+					"VerticalSpacing":1,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0				
+				}					
+			]			
+		},		
 		{
 			"ElementType": "Block",
 			"X": 0,

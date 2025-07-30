@@ -254,17 +254,22 @@ namespace CS_PrintDocument_ThermalPrinter
     {
         public string Format_Ver { get; set; }
         public string Platform_Code { get; set; }
-        public string Sandbox { get; set; }
+        public string Invoice_Title { get; set; }//電子發票證明聯 [顯示順序:2]
+        public string Reprint { get; set; }//Invoice_Title + "補印";
+        public string Invoice_NO { get; set; }//發票號碼: Track + "-" + Inv_No 
+        public string Sandbox { get; set; }//發票號碼 [顯示順序:4]: Invoice_NO + "(測)"
+        public string Invoice_DateTime { get; set; }//發票號碼 [顯示順序:5]
         public string Business_Id { get; set; }
         public string Branch_No { get; set; }
         public string Reg_Id { get; set; }
         public string Pos_Id { get; set; }
         public string Pos_No { get; set; }
-        public string PName { get; set; }
+        public string PName { get; set; }//店家名 [顯示順序:1]
         public string Operator_Id { get; set; }
         public string Operator_Name { get; set; }
         public string Order_No { get; set; }
-        public string Period { get; set; }
+        public string Inv_Period { get; set; }//發票期別 [顯示順序:3]: {Period.Substring(0,3)}年{Period.Substring(3,2)}-{(Int32.Parse(Period.Substring(3,2))+1).ToString().PadLeft(2, '0')}月
+        public string Period { get; set; }//YYYMM
         public string Track { get; set; }
         public string Inv_No { get; set; }
         public int Inv_Time { get; set; }
@@ -289,9 +294,9 @@ namespace CS_PrintDocument_ThermalPrinter
         public List<POIBOItem> Items { get; set; }
         public string Customs_Clearance_Marker_Num { get; set; }
         public string Print_Mark { get; set; }
-        public string QRCode_Value_1 { get; set; }
-        public string QRCode_Value_2 { get; set; }
-        public string BarCode_Value { get; set; }
+        public string QRCode_Value_1 { get; set; }//QRCode1 [顯示順序:7]
+        public string QRCode_Value_2 { get; set; }//QRCode2 [顯示順序:7]
+        public string BarCode_Value { get; set; }//BarCode [顯示順序:6]
         public string Invalid_Flag { get; set; }
         public string Ret_Code { get; set; }
         public string Ret_Msg { get; set; }
@@ -299,6 +304,18 @@ namespace CS_PrintDocument_ThermalPrinter
         public POSOrder2InvoiceB2COrder()
         {
             Items = new List<POIBOItem>();
+        }
+        public void SetVariable()
+        {
+            Reprint = "N";
+            Invoice_Title = (Reprint == "Y") ? "電子發票證明聯補印" : "電子發票證明聯";
+
+            Inv_Period = $"{Period.Substring(0, 3)}年{Period.Substring(3, 2)}-{(Int32.Parse(Period.Substring(3, 2)) + 1).ToString().PadLeft(2, '0')}月";
+
+            Sandbox = "Y";
+            Invoice_NO = (Sandbox == "Y") ? (Track + "-" + Inv_No) : (Track + "-" + Inv_No + "(測)");
+
+            Invoice_DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
     }
 
@@ -400,7 +417,7 @@ namespace CS_PrintDocument_ThermalPrinter
             tablewares = new List<Tableware>();
 
             strQrcodeInfor = "";
-            PrintInvLogo = "N";//列印發票LOGO
+            PrintInvLogo = "Y";//列印發票LOGO
             PrintInvReceipt = "N";//列印發票交易明細旗標  (print_config.print_inv_receipt=="Y") OR (cust_ein!="") =>Y/N
         }
         public OrderPrintData order_itemsDeepClone(int index)//深層複製

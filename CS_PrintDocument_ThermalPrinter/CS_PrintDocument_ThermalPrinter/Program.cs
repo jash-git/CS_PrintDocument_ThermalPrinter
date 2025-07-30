@@ -326,6 +326,7 @@ public class PT_ChildElement
     public int Width { get; set; }
     public int Height { get; set; }
     public string Content { get; set; }
+    public string SecondContent { get; set; }//Text ~ Content長度為0 則抓取該變數
     public string RootName { get; set; }//Block,Rows
     public string Conditional { get; set; }//Block,Rows
     public string ConditionalValue { get; set; }//Block,Rows
@@ -672,6 +673,7 @@ public class CS_PrintTemplate
 
             m_OrderPrintDataAll = JsonSerializer.Deserialize<OrderPrintData>(strOrderPrintData);
             m_OrderPrintDataAll.invoice_print_data = JsonSerializer.Deserialize<POSOrder2InvoiceB2COrder>(strElectronicInvoicePrinting);
+            m_OrderPrintDataAll.invoice_print_data.SetVariable();
             blnPrintTemplateCreated = (m_PT_Page != null) ? true : false;//((m_JsonDocument!=null) && (m_PT_Page!=null))?true:false;
             //---json2object
 
@@ -1453,10 +1455,10 @@ public class CS_PrintTemplate
             m_ForLoopVars[7].m_intIndex = -1;//(m_ForLoopVars[7].m_intCount > 0) ? 0 : -1;
             m_ForLoopVars[8].m_intCount = (m_OrderPrintData.payments != null) ? m_OrderPrintData.payments.Count : 0;
             m_ForLoopVars[8].m_intIndex = -1;//(m_ForLoopVars[8].m_intCount > 0) ? 0 : -1;
-            m_ForLoopVars[9].m_intCount = 1;
-            m_ForLoopVars[9].m_intIndex = 0;
-            m_ForLoopVars[10].m_intCount = (m_OrderPrintDataAll.invoice_print_data != null) ? 1 : 0;
-            m_ForLoopVars[10].m_intIndex = 1;
+            m_ForLoopVars[9].m_intCount = 1;//非陣列變數集 數量一率為1
+            m_ForLoopVars[9].m_intIndex = 1;//非陣列變數集 索引初始為1
+            m_ForLoopVars[10].m_intCount = (m_OrderPrintDataAll.invoice_print_data != null) ? 1 : 0;//非陣列變數集 數量一率為1
+            m_ForLoopVars[10].m_intIndex = 1;//非陣列變數集 索引初始為1
             m_ForLoopVars[11].m_intCount = (m_OrderPrintDataAll.invoice_print_data.Items != null)? m_OrderPrintDataAll.invoice_print_data.Items.Count : 0;
             m_ForLoopVars[11].m_intIndex = -1;
         }
@@ -1539,6 +1541,15 @@ public class CS_PrintTemplate
                 ForLoopVarsSet(m_strDataPath, ref intIndex, ref intNum);
             } while (intIndex<m_ForLoopVars[m_intDataPath].m_intCount);
         }
+
+        //---
+        //Text的Content長度為零 抓取SecondContent變數值
+        if ((strContentDatrBuf.Length==0) && (PT_ChildElementBuf.ElementType== "Text") && (PT_ChildElementBuf.SecondContent!=null) && (PT_ChildElementBuf.SecondContent.Length>0))
+        {
+            strContentDatrBuf = TemplateContent2Data(m_strDataPath, PT_ChildElementBuf.SecondContent);
+        }
+        //---Text的Content長度為零 抓取SecondContent變數值
+
         m_strElement2DataLog += strContentDatrBuf + ";";//PT_ChildElementBuf.Content + ";";
 
         strResult = strContentDatrBuf;
