@@ -57,7 +57,7 @@
 			"Y": 0,
 			"X_Alignment": "X",
 			"Y_Alignment": "Y",
-			"Index": 0,
+			"Index": 1,
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
@@ -108,7 +108,7 @@
 			"Y": 0,
 			"X_Alignment": "X",
 			"Y_Alignment": "Y",
-			"Index": 0,
+			"Index": 2,
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
@@ -136,7 +136,7 @@
 			"Y": 0,
 			"X_Alignment": "X",
 			"Y_Alignment": "Y",
-			"Index": 1,
+			"Index": 3,
 			"Width": 426,
 			"Height": 8,
 			"Content": "",
@@ -148,9 +148,9 @@
 					"Y":0,
 					"X_Alignment":"Center",
 					"Y_Alignment":"Increment",
-					"Index":1,				
+					"Index":0,				
 					"Width":426,
-					"Height":40,
+					"Height":45,
 					"Content":"{$Invoice_Title}",
 					"SecondContent":"",
 					"VerticalContentAlig":"Center",
@@ -170,7 +170,7 @@
 			"Y": 0,
 			"X_Alignment": "X",
 			"Y_Alignment": "Y",
-			"Index": 1,
+			"Index": 4,
 			"Width": 426,
 			"Height": 8,
 			"Content": "",
@@ -182,9 +182,9 @@
 					"Y":0,
 					"X_Alignment":"Center",
 					"Y_Alignment":"Increment",
-					"Index":1,				
+					"Index":0,				
 					"Width":426,
-					"Height":40,
+					"Height":45,
 					"Content":"{$Inv_Period}",
 					"SecondContent":"",
 					"VerticalContentAlig":"Center",
@@ -197,115 +197,6 @@
 					"Rotation":0				
 				}					
 			]			
-		},		
-		{
-			"ElementType": "Block",
-			"X": 0,
-			"Y": 0,
-			"X_Alignment": "X",
-			"Y_Alignment": "Y",
-			"Index": 2,
-			"Width": 426,
-			"Height": 8,
-			"Content": "",
-			"RootName": "",
-			"ChildElements": [
-				{
-					"ElementType":"BarCode",
-					"X":0,
-					"Y":0,
-					"X_Alignment":"Center",
-					"Y_Alignment":"Increment",
-					"Index":0,				
-					"Width":400,
-					"Height":40,
-					"Content":"{$order_no}",
-					"VerticalSpacing":40,
-					"Format":"CODE_39",
-					"Rotation":0					
-				}					
-			]			
-		},
-		{
-			"ElementType": "Block",
-			"X": 0,
-			"Y": 0,
-			"X_Alignment": "X",
-			"Y_Alignment": "Y",
-			"Index": 3,
-			"Width": 426,
-			"Height": 8,
-			"Content": "",
-			"RootName": "",
-			"ChildElements": [		
-				{
-					"ElementType":"Text",
-					"X":0,
-					"Y":0,
-					"X_Alignment":"X",
-					"Y_Alignment":"Increment",
-					"Index":0,				
-					"Width":426,
-					"Height":8,
-					"Content":"單號({$order_type_name}):{$call_num}",
-					"VerticalContentAlig":"Center",
-					"HorizontalContentAlig":"Left",
-					"ContentSize":8,
-					"ContentBold":"N",
-					"VerticalSpacing":20,
-					"IntervalSymbols":"",
-					"AutoWrap":"N",
-					"Rotation":0
-				}
-			]
-		},
-		{
-			"ElementType":"Table",
-			"X":0,
-			"Y":0,
-			"X_Alignment":"X",
-			"Y_Alignment":"Y",
-			"Index":4,				
-			"Width":426,
-			"Height":-1,
-			"Content":"",
-			"RowSpacing":1,
-			"AlwaysPrint":"N",
-			"ChildElements":[
-				{
-					"ElementType": "Block",
-					"X": 0,
-					"Y": 0,
-					"X_Alignment": "X",
-					"Y_Alignment": "Y",
-					"Index": 0,
-					"Width": 426,
-					"Height": 8,
-					"Content": "",
-					"RootName": "table_name",
-					"ChildElements": [
-						{
-							"ElementType":"Text",
-							"X":0,
-							"Y":0,
-							"X_Alignment":"X",
-							"Y_Alignment":"Increment",
-							"Index":0,				
-							"Width":426,
-							"Height":8,
-							"Content":"桌號:{$table_name}",
-							"VerticalContentAlig":"Center",
-							"HorizontalContentAlig":"Left",
-							"ContentSize":8,
-							"ContentBold":"N",
-							"VerticalSpacing":20,
-							"IntervalSymbols":"",
-							"AutoWrap":"N",
-							"Rotation":0
-						}					
-					]
-				}
-			]	
 		},
 		{
 			"ElementType": "Block",
@@ -317,7 +208,41 @@
 			"Width": 426,
 			"Height": 8,
 			"Content": "",
-			"RootName": "",
+			"RootName": "invoice_print_data",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"Center",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":426,
+					"Height":45,
+					"Content":"{$Invoice_NO}",
+					"SecondContent":"",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Center",
+					"ContentSize":15,
+					"ContentBold":"Y",
+					"VerticalSpacing":8,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0				
+				}					
+			]			
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 6,
+			"Width": 426,
+			"Height": 8,
+			"Content": "",
+			"RootName": "invoice_print_data",
 			"ChildElements": [
 				{
 					"ElementType":"Text",
@@ -328,7 +253,8 @@
 					"Index":0,				
 					"Width":426,
 					"Height":8,
-					"Content":"日期: {$order_time_year}-{$order_time_month}-{$order_time_day} 時間: {$order_time_hours}:{$order_time_minutes}",
+					"Content":"{$Invoice_DateTime}",
+					"SecondContent":"",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
 					"ContentSize":8,
@@ -336,57 +262,9 @@
 					"VerticalSpacing":20,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",
-					"Rotation":0
-				}
-			]
-		},
-		{
-			"ElementType":"Table",
-			"X":0,
-			"Y":0,
-			"X_Alignment":"X",
-			"Y_Alignment":"Y",
-			"Index":6,				
-			"Width":426,
-			"Height":-1,
-			"Content":"",
-			"RowSpacing":1,
-			"AlwaysPrint":"N",
-			"ChildElements":[
-				{
-					"ElementType": "Block",
-					"X": 0,
-					"Y": 0,
-					"X_Alignment": "X",
-					"Y_Alignment": "Y",
-					"Index": 0,
-					"Width": 426,
-					"Height": 8,
-					"Content": "",
-					"RootName": "invoice_data",
-					"ChildElements": [
-						{
-							"ElementType":"Text",
-							"X":0,
-							"Y":0,
-							"X_Alignment":"X",
-							"Y_Alignment":"Increment",
-							"Index":0,				
-							"Width":576,
-							"Height":8,
-							"Content":"發票號碼: {$inv_no}",
-							"VerticalContentAlig":"Center",
-							"HorizontalContentAlig":"Left",
-							"ContentSize":8,
-							"ContentBold":"N",
-							"VerticalSpacing":20,
-							"IntervalSymbols":"",
-							"AutoWrap":"N",
-							"Rotation":0
-						}					
-					]
-				}
-			]	
+					"Rotation":0				
+				}					
+			]			
 		},
 		{
 			"ElementType": "Block",
@@ -398,7 +276,7 @@
 			"Width": 426,
 			"Height": 8,
 			"Content": "",
-			"RootName": "",
+			"RootName": "invoice_print_data",
 			"ChildElements": [
 				{
 					"ElementType":"Text",
@@ -409,7 +287,8 @@
 					"Index":0,				
 					"Width":426,
 					"Height":8,
-					"Content":"客戶姓名: {$member_name}",
+					"Content":"隨機碼：{$Random_Code}",
+					"SecondContent":"",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
 					"ContentSize":8,
@@ -417,9 +296,29 @@
 					"VerticalSpacing":20,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",
-					"Rotation":0
-				}
-			]
+					"Rotation":0				
+				},
+				{
+					"ElementType":"Text",
+					"X":216,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Element",
+					"Index":1,				
+					"Width":426,
+					"Height":8,
+					"Content":"總計：{$Total_Amount}",
+					"SecondContent":"",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":20,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0				
+				}				
+			]			
 		},
 		{
 			"ElementType": "Block",
@@ -431,7 +330,7 @@
 			"Width": 426,
 			"Height": 8,
 			"Content": "",
-			"RootName": "",
+			"RootName": "invoice_print_data",
 			"ChildElements": [
 				{
 					"ElementType":"Text",
@@ -440,19 +339,20 @@
 					"X_Alignment":"X",
 					"Y_Alignment":"Increment",
 					"Index":0,				
-					"Width":576,
+					"Width":426,
 					"Height":8,
-					"Content":"連絡電話: {$member_phone}",
+					"Content":"賣方：{$Business_Id}",
+					"SecondContent":"",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
 					"ContentSize":8,
 					"ContentBold":"N",
-					"VerticalSpacing":20,
+					"VerticalSpacing":10,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",
-					"Rotation":0
-				}
-			]
+					"Rotation":0				
+				}				
+			]			
 		},
 		{
 			"ElementType": "Block",
@@ -464,28 +364,97 @@
 			"Width": 426,
 			"Height": 8,
 			"Content": "",
-			"RootName": "",
+			"RootName": "invoice_data",
 			"ChildElements": [
 				{
 					"ElementType":"Text",
+					"X":216,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Element",
+					"Index":0,				
+					"Width":426,
+					"Height":8,
+					"Content":"買方：{$cust_ein}",
+					"SecondContent":"",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":10,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0				
+				}			
+			]
+		},		
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 10,
+			"Width": 426,
+			"Height": 8,
+			"Content": "",
+			"RootName": "invoice_print_data",
+			"ChildElements": [
+				{
+					"ElementType":"BarCode",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"Center",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width": 480,
+					"Height":54,
+					"Content":"{$BarCode_Value}",
+					"VerticalSpacing":16,
+					"Format":"CODE_39",
+					"Rotation":0					
+				}					
+			]			
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 11,
+			"Width": 426,
+			"Height": 8,
+			"Content": "",
+			"RootName": "invoice_print_data",
+			"ChildElements": [
+				{
+					"ElementType":"QrCode",
 					"X":0,
 					"Y":0,
 					"X_Alignment":"X",
 					"Y_Alignment":"Increment",
 					"Index":0,				
-					"Width":576,
-					"Height":8,
-					"Content":"交易序號: {$order_no}",
-					"VerticalContentAlig":"Center",
-					"HorizontalContentAlig":"Left",
-					"ContentSize":8,
-					"ContentBold":"N",
-					"VerticalSpacing":20,
-					"IntervalSymbols":"",
-					"AutoWrap":"N",
-					"Rotation":0
-				}
-			]
+					"Width":160,
+					"Height":160,
+					"Content":"{$QRCode_Value_1}",
+					"ErrorCorrection":"H",
+					"Rotation":0					
+				},
+				{
+					"ElementType":"QrCode",
+					"X":220,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Element",
+					"Index":0,				
+					"Width":160,
+					"Height":160,
+					"Content":"{$QRCode_Value_2}",
+					"ErrorCorrection":"H",
+					"Rotation":0					
+				}				
+			]			
 		}		
 	]
 }

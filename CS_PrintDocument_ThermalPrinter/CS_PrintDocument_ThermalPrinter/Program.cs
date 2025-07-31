@@ -232,7 +232,8 @@ public class Barcode_Funs
         }
         barcodeWriter.Options.Height = 300;
         barcodeWriter.Options.Width = 300;
-        barcodeWriter.Options.Margin = 0; //外邊距
+        barcodeWriter.Options.Margin = 0; //外邊距(固定留白大小)
+        barcodeWriter.Options.NoPadding = true;//(資料太少時一定放大填滿)
 
         // Generate the barcode as a Bitmap
         Bitmap barcodeBitmap = barcodeWriter.Write(StrData);
@@ -301,7 +302,8 @@ public class Barcode_Funs
         barcodeWriter.Options.Height = Height;//>=5mm(203dpi->40pixel)電子發票規定
         barcodeWriter.Options.Width = Width;//>=4cm(40mm)(203dpi->320pixel)電子發票
         barcodeWriter.Options.PureBarcode = true; //不顯示條碼文字[false 為顯示 true為不顯示]
-        barcodeWriter.Options.Margin = 0;//左右填充
+        barcodeWriter.Options.Margin = 0; //外邊距(固定留白大小)
+        //barcodeWriter.Options.NoPadding = true;//(資料太少時一定放大填滿)
 
         // Generate the barcode as a Bitmap
         Bitmap barcodeBitmap = barcodeWriter.Write(StrData);

@@ -259,7 +259,7 @@ namespace CS_PrintDocument_ThermalPrinter
         public string Invoice_NO { get; set; }//發票號碼: Track + "-" + Inv_No 
         public string Sandbox { get; set; }//發票號碼 [顯示順序:4]: Invoice_NO + "(測)"
         public string Invoice_DateTime { get; set; }//發票號碼 [顯示順序:5]
-        public string Business_Id { get; set; }
+        public string Business_Id { get; set; }//賣方 [顯示順序:5]
         public string Branch_No { get; set; }
         public string Reg_Id { get; set; }
         public string Pos_Id { get; set; }
@@ -282,7 +282,7 @@ namespace CS_PrintDocument_ThermalPrinter
         public string Carrier_Code_1 { get; set; }
         public string Carrier_Code_2 { get; set; }
         public int Batch_Num { get; set; }
-        public string Random_Code { get; set; }
+        public string Random_Code { get; set; }//發票隨機碼 [顯示順序:5]
         public int Sale_Amount { get; set; }
         public int Free_Tax_Sale_Amount { get; set; }
         public int Zero_Tax_Sale_Amount { get; set; }
@@ -313,7 +313,7 @@ namespace CS_PrintDocument_ThermalPrinter
             Inv_Period = $"{Period.Substring(0, 3)}年{Period.Substring(3, 2)}-{(Int32.Parse(Period.Substring(3, 2)) + 1).ToString().PadLeft(2, '0')}月";
 
             Sandbox = "Y";
-            Invoice_NO = (Sandbox == "Y") ? (Track + "-" + Inv_No) : (Track + "-" + Inv_No + "(測)");
+            Invoice_NO = (Sandbox == "Y") ? (Track + "-" + Inv_No + "(測)") : (Track + "-" + Inv_No);
 
             Invoice_DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
