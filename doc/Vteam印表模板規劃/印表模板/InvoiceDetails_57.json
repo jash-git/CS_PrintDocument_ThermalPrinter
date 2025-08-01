@@ -1,0 +1,41 @@
+{
+	"ElementType": "Embedded",
+	"ChildElements": [
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 1,
+			"Width": 426,
+			"Height": 100,
+			"Content": "",
+			"RootName": "PrintInvReceipt",
+			"Conditional":"==",
+			"ConditionalValue":"Y",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":426,
+					"Height":20,
+					"Content":"------------------------------------------------------------------",
+					"SecondContent":"",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":20,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}				
+			]			
+		}
+	]
+}

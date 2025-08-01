@@ -17,6 +17,12 @@
 	"BuzzerCmd": "",
 	"ExtBuzzerCmd": "",
 	"PrintMode":"",
+	"IncludePages":[	
+		{
+			"Index": 0,
+			"TemplateSID": "C:\\Users\\jashv\\OneDrive\\桌面\\GITHUB\\CS_PrintDocument_ThermalPrinter\\doc\\Vteam印表模板規劃\\印表模板\\InvoiceDetails_57.json"
+		}	
+	],	
 	"ChildElements": [
 		{
 			"ElementType": "Block",
@@ -454,6 +460,74 @@
 					"ErrorCorrection":"H",
 					"Rotation":0					
 				}				
+			]			
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 12,
+			"Width": 426,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":426,
+					"Height":40,
+					"Content":"店家: {$store_name}",
+					"SecondContent":"",
+					"VerticalContentAlig":"Down",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":8,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0				
+				}					
+			]			
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 13,
+			"Width": 426,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":426,
+					"Height":8,
+					"Content":"機號: {$terminal_sid}",
+					"SecondContent":"",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":8,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0				
+				}					
 			]			
 		}		
 	]

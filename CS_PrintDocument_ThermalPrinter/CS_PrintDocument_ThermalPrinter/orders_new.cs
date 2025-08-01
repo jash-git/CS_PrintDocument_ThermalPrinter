@@ -418,7 +418,7 @@ namespace CS_PrintDocument_ThermalPrinter
 
             strQrcodeInfor = "";
             PrintInvLogo = "Y";//列印發票LOGO
-            PrintInvReceipt = "N";//列印發票交易明細旗標  (print_config.print_inv_receipt=="Y") OR (cust_ein!="") =>Y/N
+            PrintInvReceipt = "Y";//列印發票交易明細旗標  (print_config.print_inv_receipt=="Y") OR (cust_ein!="") =>Y/N
         }
         public OrderPrintData order_itemsDeepClone(int index)//深層複製
         {
