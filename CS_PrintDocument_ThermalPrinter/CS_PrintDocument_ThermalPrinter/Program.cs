@@ -674,7 +674,7 @@ public class CS_PrintTemplate
             }
 
             m_OrderPrintDataAll = JsonSerializer.Deserialize<OrderPrintData>(strOrderPrintData);
-            m_OrderPrintDataAll.invoice_print_data = JsonSerializer.Deserialize<POSOrder2InvoiceB2COrder>(strElectronicInvoicePrinting);
+            m_OrderPrintDataAll.invoice_print_data = JsonSerializer.Deserialize< InvoicePrintData>(strElectronicInvoicePrinting);
             m_OrderPrintDataAll.invoice_print_data.SetVariable();
             blnPrintTemplateCreated = (m_PT_Page != null) ? true : false;//((m_JsonDocument!=null) && (m_PT_Page!=null))?true:false;
             //---json2object
@@ -1027,7 +1027,7 @@ public class CS_PrintTemplate
             case "invoice_print_data.Items":
                 try
                 {
-                    strResult = GetFieldValueByName(m_OrderPrintDataAll.invoice_print_data.Items, strVarName).ToString();
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.invoice_print_data.Items[m_ForLoopVars[11].m_intIndex], strVarName).ToString();
                 }
                 catch
                 {
@@ -1306,7 +1306,8 @@ public class CS_PrintTemplate
                 intNum = 10;
                 break;
             case "invoice_print_data.Items"://11
-                intIndex = m_ForLoopVars[11].m_intIndex;
+                intIndex = m_ForLoopVars[11].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
+                m_ForLoopVars[11].m_intIndex = ((m_ForLoopVars[11].m_intIndex + 1) >= m_ForLoopVars[11].m_intCount) ? (m_ForLoopVars[11].m_intCount - 1) : (m_ForLoopVars[11].m_intIndex + 1);
                 intResult = m_ForLoopVars[11].m_intCount;
                 intNum = 11;
                 break;

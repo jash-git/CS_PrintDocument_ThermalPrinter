@@ -50,7 +50,7 @@
 					"HorizontalContentAlig":"Right",
 					"ContentSize":1,
 					"ContentBold":"Y",
-					"VerticalSpacing":10,
+					"VerticalSpacing":1,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",	
 					"Rotation":0

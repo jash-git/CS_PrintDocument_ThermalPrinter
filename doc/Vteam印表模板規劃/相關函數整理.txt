@@ -23,7 +23,7 @@ public class CS_PrintTemplate//主要資料元件
 		private object? GetFieldValueByName(object obj, string fieldName)//從JSON記憶體給定元素名稱字串取回對應員素質
 	private string TemplateContent2Data(string strDataPath,string strContent)//模板Content轉實際顯示資料
 	private void ForLoopVarsInit()// m_ForLoopVars變數初始化
-	private void ForLoopVarsSet(string strPath)// m_ForLoopVars變數設定
+	private int ForLoopVarsSet(string strPath,ref int intIndex,ref int intNum,string strConditional="",string strConditionalValue="")// m_ForLoopVars變數設定
 	privat string GetStackPath()//取得堆疊物件的資料集路徑
 	private PT_ChildElement GetDataElement(PT_ChildElement root)//取得資料物件
 	private void Element2Data(PT_ChildElement PT_ChildElementBuf)//元件轉資料
