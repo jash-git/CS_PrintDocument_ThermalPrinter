@@ -44,8 +44,8 @@
 					"Y_Alignment":"Y",
 					"Index":0,			
 					"Width":370,
-					"Height":104,
-					"Content":".",
+					"Height":8,
+					"Content":"",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Right",
 					"ContentSize":1,
@@ -528,6 +528,39 @@
 					"AutoWrap":"N",
 					"Rotation":0				
 				}					
+			]			
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 14,
+			"Width": 426,
+			"Height": 100,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":620,
+					"X_Alignment":"X",
+					"Y_Alignment":"Y",
+					"Index":0,			
+					"Width":370,
+					"Height":8,
+					"Content":".",
+					"VerticalContentAlig":"Down",
+					"HorizontalContentAlig":"Right",
+					"ContentSize":1,
+					"ContentBold":"Y",
+					"VerticalSpacing":38,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",	
+					"Rotation":0
+				}			
 			]			
 		}		
 	]
