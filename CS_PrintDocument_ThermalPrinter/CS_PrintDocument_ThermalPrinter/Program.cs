@@ -2395,14 +2395,14 @@ class Program
     static void Main()
     {
         //報表印表機~
-        string strPrinterDriverName = "POS-58C";//"POS-80C";//"80mm Series Printer";//"58mm Series Printer";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+        string strPrinterDriverName = "POS-80C";//"POS-58C";//"80mm Series Printer";//"58mm Series Printer";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
         //標籤機~ string strPrinterDriverName = "DT-2205";
 
         StreamReader sr00 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Input.json");
         string strOrderPrintData = sr00.ReadToEnd();
         
         //報表~
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Bill_57.json");//InvalidInvoice_57.json
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SMART_80.json");//InvalidInvoice_57.json
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct_57.json");
         //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();

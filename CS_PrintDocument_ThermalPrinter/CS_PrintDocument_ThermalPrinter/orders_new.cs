@@ -289,7 +289,6 @@ namespace CS_PrintDocument_ThermalPrinter
         public int Tax_Type { get; set; }
         public double Tax_Rate { get; set; }
         public int Tax_Amount { get; set; }
-        public int Pretax_Amount { get; set; }
         public int Total_Amount { get; set; }
         public int Item_Count { get; set; }
         public List<POIBOItem> Items { get; set; }
@@ -318,13 +317,6 @@ namespace CS_PrintDocument_ThermalPrinter
 
             Invoice_DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-            Tax_Amount = 0;
-            for (int i = 0; i < Items.Count; i++) 
-            {
-                Tax_Amount += Items[i].Tax_Fee;
-            }
-
-            Pretax_Amount = Total_Amount - Tax_Amount;
         }
     }
 
