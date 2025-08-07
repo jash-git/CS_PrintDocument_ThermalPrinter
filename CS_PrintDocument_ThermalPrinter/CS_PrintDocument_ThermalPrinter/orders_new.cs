@@ -236,7 +236,7 @@ namespace CS_PrintDocument_ThermalPrinter
         public string qrcode_aes_key { get; set; }
     }
 
-    public class POIBOItem //電子發票列印明細資料
+    public class InvoicePrintDataItem //電子發票列印明細資料 [POIBOItem]
     {
         public int Sequence_Num { get; set; }
         public string Product_Code { get; set; }
@@ -246,6 +246,7 @@ namespace CS_PrintDocument_ThermalPrinter
         public int Price { get; set; }
         public int Amount { get; set; }
         public int Tax_Type { get; set; }
+        public string Tax_Code { get; set; }//Tax_Type(1,2,3,4) 其中1和4="TX" 其他為""
         public double Tax_Rate { get; set; }
         public int Tax_Fee { get; set; }
         public string Remark { get; set; }
@@ -287,11 +288,12 @@ namespace CS_PrintDocument_ThermalPrinter
         public int Free_Tax_Sale_Amount { get; set; }
         public int Zero_Tax_Sale_Amount { get; set; }
         public int Tax_Type { get; set; }
+        public string Tax_Code { get; set; }//Tax_Type(1,2,3,4) 其中1和4="TX" 其他為""
         public double Tax_Rate { get; set; }
         public int Tax_Amount { get; set; }
         public int Total_Amount { get; set; }
         public int Item_Count { get; set; }
-        public List<POIBOItem> Items { get; set; }
+        public List<InvoicePrintDataItem> Items { get; set; }
         public string Customs_Clearance_Marker_Num { get; set; }
         public string Print_Mark { get; set; }
         public string QRCode_Value_1 { get; set; }//QRCode1 [顯示順序:7]
@@ -303,7 +305,7 @@ namespace CS_PrintDocument_ThermalPrinter
 
         public InvoicePrintData()
         {
-            Items = new List<POIBOItem>();
+            Items = new List<InvoicePrintDataItem>();
         }
         public void SetVariable()
         {
@@ -317,6 +319,17 @@ namespace CS_PrintDocument_ThermalPrinter
 
             Invoice_DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
+            //----
+            //Tax_Code 設定
+            Tax_Code = ((Tax_Type==1) || (Tax_Type==4))? "TX" : "";
+            if( (Items!=null) && (Items.Count>0) )
+            {
+                for (int i = 0; i < Items.Count; i++)
+                {
+                    Items[i].Tax_Code = ((Items[i].Tax_Type == 1) || (Items[i].Tax_Type == 4)) ? "TX" : "";
+                }
+            }
+            //---Tax_Code 設定
         }
     }
 

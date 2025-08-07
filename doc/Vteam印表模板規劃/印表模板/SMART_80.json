@@ -1,5 +1,5 @@
 {
-	"Content": "Smart_80mm X=0,P_W=(80)mm,三欄W:376,80,80,一欄W:500",
+	"Content": "Smart_80mm X=0,P_W=(80)mm,三欄W:456,90,90,一欄W:500",
 	"ElementType": "Page",
 	"X": 0,
 	"Y": 0,
@@ -742,7 +742,55 @@
 											]
 										}										
 									]
-								}									
+								},
+								{
+									"ElementType":"Rows",				
+									"X":0,
+									"Y":0,
+									"X_Alignment":"X",
+									"Y_Alignment":"Y",
+									"Index":1,			
+									"Width":640,
+									"Height":-1,
+									"Content":"",				
+									"RootName":"material_list",
+									"DisplayMode":"Merge",
+									"ChildElements":[
+										{
+											"ElementType":"Block",				
+											"X":0,
+											"Y":0,
+											"X_Alignment":"X",
+											"Y_Alignment":"Y",
+											"Index":0,			
+											"Width":640,
+											"Height":-1,
+											"Content":"",				
+											"RootName":"",
+											"ChildElements":[
+												{
+													"ElementType":"Text",
+													"X":40,
+													"Y":0,
+													"X_Alignment":"X",
+													"Y_Alignment":"Increment",
+													"Index":0,
+													"Width":500,
+													"Height":0,
+													"Content":"{$material_name}{$material_value}{$material_unit}",
+													"VerticalContentAlig":"Center",
+													"HorizontalContentAlig":"Left",
+													"ContentSize":13,
+													"ContentBold":"N",
+													"VerticalSpacing":1,
+													"IntervalSymbols":";",
+													"AutoWrap":"Y",
+													"Rotation":0					
+												}									
+											]	
+										}						
+									]
+								}								
 							]
 						},
 						{

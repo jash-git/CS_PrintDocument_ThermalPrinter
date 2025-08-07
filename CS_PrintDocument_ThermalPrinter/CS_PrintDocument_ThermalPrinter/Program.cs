@@ -1034,6 +1034,16 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
+            case "order_items.material_list":
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderPrintData.order_items[m_ForLoopVars[0].m_intIndex].material_list[m_ForLoopVars[12].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
             default:
                 try
                 {
@@ -1180,6 +1190,9 @@ public class CS_PrintTemplate
             case "invoice_print_data.Items"://11
                 intDataPath = 11;
                 break;
+            case "order_items.material_list"://12
+                intDataPath = 12;
+                break;
             default://以上都不符合走這個
                 intDataPath = -1;
                 break;
@@ -1311,6 +1324,23 @@ public class CS_PrintTemplate
                 intResult = m_ForLoopVars[11].m_intCount;
                 intNum = 11;
                 break;
+            case "order_items.material_list"://12
+                if (m_ForLoopVars[12].m_intIndex == -1)
+                {
+                    if (m_ForLoopVars[0].m_intCount > 0)
+                    {
+                        m_ForLoopVars[12].m_intCount = m_OrderPrintData.order_items[m_ForLoopVars[0].m_intIndex].material_list.Count;
+                        m_ForLoopVars[12].m_intIndex = (m_ForLoopVars[12].m_intCount > 0) ? 0 : -1;
+                    }
+                }
+                else
+                {
+                    intIndex = m_ForLoopVars[12].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
+                    m_ForLoopVars[12].m_intIndex = ((m_ForLoopVars[12].m_intIndex + 1) >= m_ForLoopVars[12].m_intCount) ? (m_ForLoopVars[12].m_intCount - 1) : (m_ForLoopVars[12].m_intIndex + 1);
+                }
+                intResult = m_ForLoopVars[12].m_intCount;
+                intNum = 12;
+                break;
             default://以上都不符合走這個
                 intResult = 0;
                 string[]strsBuf=strPath.Split('.');
@@ -1441,6 +1471,7 @@ public class CS_PrintTemplate
         m_ForLoopVars.Add(new ForLoopVar("invoice_data", 0));
         m_ForLoopVars.Add(new ForLoopVar("invoice_print_data", 0));//電子發票列印資料
         m_ForLoopVars.Add(new ForLoopVar("invoice_print_data.Items", 0));//電子發票列印明細資料
+        m_ForLoopVars.Add(new ForLoopVar("order_items.material_list", 0));//SMART
 
         if (m_OrderPrintData!=null)
         {
@@ -2010,6 +2041,8 @@ public class CS_PrintTemplate
                                 m_ForLoopVars[3].m_intCount = -1;
                                 m_ForLoopVars[4].m_intIndex = -1;
                                 m_ForLoopVars[4].m_intCount = -1;
+                                m_ForLoopVars[12].m_intIndex = -1;
+                                m_ForLoopVars[12].m_intCount = -1;
                             }
                             if (intNum == 1)//order_items.condiments
                             {
@@ -2273,6 +2306,8 @@ public class CS_PrintTemplate
                                 m_ForLoopVars[3].m_intCount = -1;
                                 m_ForLoopVars[4].m_intIndex = -1;
                                 m_ForLoopVars[4].m_intCount = -1;
+                                m_ForLoopVars[12].m_intIndex = -1;
+                                m_ForLoopVars[12].m_intCount = -1;
                             }
                             if (intNum == 1)//order_items.condiments
                             {
@@ -2402,7 +2437,7 @@ class Program
         string strOrderPrintData = sr00.ReadToEnd();
         
         //報表~
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SMART_80.json");//InvalidInvoice_57.json
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Invoice_57.json");//InvalidInvoice_57.json
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct_57.json");
         //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();
