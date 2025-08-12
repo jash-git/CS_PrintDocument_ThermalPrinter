@@ -642,7 +642,7 @@ public class CS_PrintTemplate
         return strResult;
     }
 
-    public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate,string strOrderPrintData,string strElectronicInvoicePrinting)//建構子 
+    public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate,string strOrderPrintData,string strElectronicInvoicePrinting,string strReportData)//建構子 
     {
         try
         {
@@ -674,8 +674,16 @@ public class CS_PrintTemplate
             }
 
             m_OrderPrintDataAll = JsonSerializer.Deserialize<OrderPrintData>(strOrderPrintData);
-            m_OrderPrintDataAll.invoice_print_data = JsonSerializer.Deserialize< InvoicePrintData>(strElectronicInvoicePrinting);
+            
+            m_OrderPrintDataAll.invoice_print_data = JsonSerializer.Deserialize<InvoicePrintData>(strElectronicInvoicePrinting);
             m_OrderPrintDataAll.invoice_print_data.SetVariable();
+
+            if ((strReportData != null) && (strReportData.Length>0))  
+            {
+                m_OrderPrintDataAll.report_print_data = JsonSerializer.Deserialize<report_print_data>(strReportData);
+                m_OrderPrintDataAll.report_print_data.SetVariable();
+            }
+            
             blnPrintTemplateCreated = (m_PT_Page != null) ? true : false;//((m_JsonDocument!=null) && (m_PT_Page!=null))?true:false;
             //---json2object
 
@@ -895,8 +903,8 @@ public class CS_PrintTemplate
         bool blnfindRoot = false;//已經找過根節點旗標
         switch(strDataPath)
         {
-            case "":
-            case ".":
+            case ""://0
+            case "."://0
                 blnfindRoot = true;//已經找過根節點旗標
                 try
                 {
@@ -907,7 +915,7 @@ public class CS_PrintTemplate
                     strResult = "";
                 }            
                 break;
-            case "order_items":
+            case "order_items"://0
                 try
                 {
                     if((m_ForLoopVars[0].m_intIndex>=0) && (m_ForLoopVars[0].m_intIndex< m_ForLoopVars[0].m_intCount))
@@ -924,7 +932,7 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
-            case "order_items.condiments":
+            case "order_items.condiments"://1
                 try
                 {
                     strResult = GetFieldValueByName(m_OrderPrintData.order_items[m_ForLoopVars[0].m_intIndex].condiments[m_ForLoopVars[1].m_intIndex], strVarName).ToString();
@@ -934,7 +942,7 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
-            case "order_items.set_meals":
+            case "order_items.set_meals"://2
                 try
                 {
                     strResult = GetFieldValueByName(m_OrderPrintData.order_items[m_ForLoopVars[0].m_intIndex].set_meals[m_ForLoopVars[2].m_intIndex], strVarName).ToString();
@@ -944,7 +952,7 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
-            case "order_items.set_meals.product":
+            case "order_items.set_meals.product"://3
                 try
                 {
                     strResult = GetFieldValueByName(m_OrderPrintData.order_items[m_ForLoopVars[0].m_intIndex].set_meals[m_ForLoopVars[2].m_intIndex].product[m_ForLoopVars[3].m_intIndex], strVarName).ToString();
@@ -954,7 +962,7 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
-            case "order_items.set_meals.product.condiments":
+            case "order_items.set_meals.product.condiments"://4
                 try
                 {
                     strResult = GetFieldValueByName(m_OrderPrintData.order_items[m_ForLoopVars[0].m_intIndex].set_meals[m_ForLoopVars[2].m_intIndex].product[m_ForLoopVars[3].m_intIndex].condiments[m_ForLoopVars[4].m_intIndex], strVarName).ToString();
@@ -964,7 +972,7 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
-            case "packages":
+            case "packages"://5
                 try
                 {
                     strResult = GetFieldValueByName(m_OrderPrintData.packages[m_ForLoopVars[5].m_intIndex], strVarName).ToString();
@@ -974,7 +982,7 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
-            case "coupons":
+            case "coupons"://6
                 try
                 {
                     strResult = GetFieldValueByName(m_OrderPrintData.coupons[m_ForLoopVars[6].m_intIndex], strVarName).ToString();
@@ -984,7 +992,7 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
-            case "tablewares":
+            case "tablewares"://7
                 try
                 {
                     strResult = GetFieldValueByName(m_OrderPrintData.tablewares[m_ForLoopVars[7].m_intIndex], strVarName).ToString();
@@ -994,7 +1002,7 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
-            case "payments":
+            case "payments"://8
                 try
                 {
                     strResult = GetFieldValueByName(m_OrderPrintData.payments[m_ForLoopVars[8].m_intIndex], strVarName).ToString();
@@ -1004,7 +1012,7 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
-            case "invoice_data":
+            case "invoice_data"://9
                 try
                 {
                     strResult = GetFieldValueByName(m_OrderPrintData.invoice_data, strVarName).ToString();
@@ -1014,7 +1022,7 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
-            case "invoice_print_data":
+            case "invoice_print_data"://10
                 try
                 {
                     strResult = GetFieldValueByName(m_OrderPrintDataAll.invoice_print_data, strVarName).ToString();
@@ -1024,7 +1032,7 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
-            case "invoice_print_data.Items":
+            case "invoice_print_data.Items"://11
                 try
                 {
                     strResult = GetFieldValueByName(m_OrderPrintDataAll.invoice_print_data.Items[m_ForLoopVars[11].m_intIndex], strVarName).ToString();
@@ -1034,10 +1042,20 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
-            case "order_items.material_list":
+            case "order_items.material_list"://12
                 try
                 {
                     strResult = GetFieldValueByName(m_OrderPrintData.order_items[m_ForLoopVars[0].m_intIndex].material_list[m_ForLoopVars[12].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "report_print_data"://13
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.report_print_data, strVarName).ToString();
                 }
                 catch
                 {
@@ -1193,6 +1211,9 @@ public class CS_PrintTemplate
             case "order_items.material_list"://12
                 intDataPath = 12;
                 break;
+            case "report_print_data"://13
+                intDataPath = 13;
+                break;
             default://以上都不符合走這個
                 intDataPath = -1;
                 break;
@@ -1341,6 +1362,11 @@ public class CS_PrintTemplate
                 intResult = m_ForLoopVars[12].m_intCount;
                 intNum = 12;
                 break;
+            case "report_print_data"://13
+                intIndex = m_ForLoopVars[13].m_intIndex;
+                intResult = m_ForLoopVars[13].m_intCount;
+                intNum = 13;
+                break;
             default://以上都不符合走這個
                 intResult = 0;
                 string[]strsBuf=strPath.Split('.');
@@ -1472,6 +1498,14 @@ public class CS_PrintTemplate
         m_ForLoopVars.Add(new ForLoopVar("invoice_print_data", 0));//電子發票列印資料
         m_ForLoopVars.Add(new ForLoopVar("invoice_print_data.Items", 0));//電子發票列印明細資料
         m_ForLoopVars.Add(new ForLoopVar("order_items.material_list", 0));//SMART
+        m_ForLoopVars.Add(new ForLoopVar("report_print_data", 0));//13
+        m_ForLoopVars.Add(new ForLoopVar("report_print_data.payment_info", 0));//14
+        m_ForLoopVars.Add(new ForLoopVar("report_print_data.coupon_info", 0));//15
+        m_ForLoopVars.Add(new ForLoopVar("report_print_data.expense_info", 0));//16
+        m_ForLoopVars.Add(new ForLoopVar("report_print_data.inv_summery_info", 0));//17
+        m_ForLoopVars.Add(new ForLoopVar("report_print_data.inv_summery_info.details", 0));//18
+        m_ForLoopVars.Add(new ForLoopVar("report_print_data.category_sale_info", 0));//19
+        m_ForLoopVars.Add(new ForLoopVar("report_print_data.promotions_info", 0));//20
 
         if (m_OrderPrintData!=null)
         {
@@ -1495,6 +1529,23 @@ public class CS_PrintTemplate
             m_ForLoopVars[10].m_intIndex = 1;//非陣列變數集 索引初始為1
             m_ForLoopVars[11].m_intCount = (m_OrderPrintDataAll.invoice_print_data.Items != null)? m_OrderPrintDataAll.invoice_print_data.Items.Count : 0;
             m_ForLoopVars[11].m_intIndex = -1;
+            m_ForLoopVars[13].m_intCount = (m_OrderPrintDataAll.report_print_data != null) ? 1 : 0;//非陣列變數集 數量一率為1
+            m_ForLoopVars[13].m_intIndex = 1;//非陣列變數集 索引初始為1
+            m_ForLoopVars[14].m_intCount = (m_OrderPrintDataAll.report_print_data.payment_info != null) ? m_OrderPrintDataAll.report_print_data.payment_info.Count : 0;
+            m_ForLoopVars[14].m_intIndex = -1;
+            m_ForLoopVars[15].m_intCount = (m_OrderPrintDataAll.report_print_data.coupon_info != null) ? m_OrderPrintDataAll.report_print_data.coupon_info.Count : 0;
+            m_ForLoopVars[15].m_intIndex = -1;
+            m_ForLoopVars[16].m_intCount = (m_OrderPrintDataAll.report_print_data.expense_info != null) ? m_OrderPrintDataAll.report_print_data.expense_info.Count : 0;
+            m_ForLoopVars[16].m_intIndex = -1;
+            m_ForLoopVars[17].m_intCount = (m_OrderPrintDataAll.report_print_data.inv_summery_info != null) ? 1 : 0;
+            m_ForLoopVars[17].m_intIndex = 1;//非陣列變數集 索引初始為1
+            m_ForLoopVars[18].m_intCount = (m_OrderPrintDataAll.report_print_data.inv_summery_info.details != null) ? m_OrderPrintDataAll.report_print_data.inv_summery_info.details.Count : 0;
+            m_ForLoopVars[18].m_intIndex = -1;
+            m_ForLoopVars[19].m_intCount = (m_OrderPrintDataAll.report_print_data.category_sale_info != null) ? m_OrderPrintDataAll.report_print_data.category_sale_info.Count : 0;
+            m_ForLoopVars[19].m_intIndex = -1;
+            m_ForLoopVars[20].m_intCount = (m_OrderPrintDataAll.report_print_data.promotions_info != null) ? m_OrderPrintDataAll.report_print_data.promotions_info.Count : 0;
+            m_ForLoopVars[20].m_intIndex = -1;
+
         }
     }
 
@@ -1971,6 +2022,7 @@ public class CS_PrintTemplate
         m_strDataPath = "";
         for (int i = 0;i< m_PT_Page.ChildElements.Count;i++)//依序處理Page的內容
         {
+            /*
             //---
             //Debug code
             if(i==22)
@@ -1978,6 +2030,7 @@ public class CS_PrintTemplate
                 bool blncheckpoint = true;
             }
             //---Debug code
+            //*/
 
             PT_ChildElement PT_ChildElementBuf = GetDataElement(m_PT_Page.ChildElements[i]);
             if (PT_ChildElementBuf != null)
@@ -2068,6 +2121,10 @@ public class CS_PrintTemplate
                                 m_ForLoopVars[4].m_intCount = -1;
                             }
                             if (intNum == 4)//order_items.set_meals.product.condiments
+                            {
+
+                            }
+                            if(intNum == 13)//report_print_data
                             {
 
                             }
@@ -2444,7 +2501,11 @@ class Program
 
         StreamReader sr02 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Invoice.json");
         string strElectronicInvoicePrinting = sr02.ReadToEnd();
-        CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderPrintData, strElectronicInvoicePrinting);
+
+        StreamReader sr03 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Report.json");
+        string strReportData = sr03.ReadToEnd();
+
+        CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderPrintData, strElectronicInvoicePrinting, strReportData);
         
         Pause();
     }

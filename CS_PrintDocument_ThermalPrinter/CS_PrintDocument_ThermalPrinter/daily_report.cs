@@ -195,7 +195,7 @@ namespace CS_PrintDocument_ThermalPrinter
         public int amount { get; set; }
     }
 
-    public class daily_report
+    public class report_print_data //daily_report
     {
         public string store_name { get; set; }
 
@@ -203,11 +203,31 @@ namespace CS_PrintDocument_ThermalPrinter
         public string device_code { get; set; }
         public string report_no { get; set; }
         public long report_time { get; set; }
+        public string report_time_year { get; set; }
+        public string report_time_month { get; set; }
+        public string report_time_day { get; set; }
+        public string report_time_hours { get; set; }
+        public string report_time_minutes { get; set; }
         public long business_day { get; set; }
+        public string business_day_year { get; set; }
+        public string business_day_month { get; set; }
+        public string business_day_day { get; set; }
+        public string business_day_hours { get; set; }
+        public string business_day_minutes { get; set; }
         public string class_name { get; set; }
         public string employee_no { get; set; }
         public long order_start_time { get; set; }
+        public string order_start_time_year { get; set; }
+        public string order_start_time_month { get; set; }
+        public string order_start_time_day { get; set; }
+        public string order_start_time_hours { get; set; }
+        public string order_start_time_minutes { get; set; }
         public long order_end_time { get; set; }
+        public string order_end_time_year { get; set; }
+        public string order_end_time_month { get; set; }
+        public string order_end_time_day { get; set; }
+        public string order_end_time_hours { get; set; }
+        public string order_end_time_minutes { get; set; }
         public int order_count { get; set; }
         public int discount_total { get; set; }
         public int promotion_total { get; set; }
@@ -243,9 +263,11 @@ namespace CS_PrintDocument_ThermalPrinter
         public List<DRCategorySalesStatistics> category_sale_info { get; set; }//商品類別銷售統計
         public List<DRPromotions_Info> promotions_info { get; set; }//優惠資料統計的內容
         public string report_type { get; set; }
+        public string report_type_name { get; set; }
         public int company_sid { get; set; }
         public string terminal_sid { get; set; }
-        public daily_report()
+        public decimal amount_actually_received { get; set; }//實收金額
+        public report_print_data()
         {
             category_sale_info = new List<DRCategorySalesStatistics>();
             inv_summery_info = new DRInvSummeryInfo();
@@ -253,6 +275,56 @@ namespace CS_PrintDocument_ThermalPrinter
             coupon_info = new List<DRCouponInfo>();
             payment_info = new List<DRPaymentInfo>();
             promotions_info = new List<DRPromotions_Info>();
+        }
+
+        public void SetVariable()
+        {
+            report_type_name = (report_type == "Ｃ") ? "交班報表" : "關帳報表";
+
+            //---
+            //補上時間變數字串資料 因為JSON只能存取變數
+            DateTime DateTimeBuf = TimeConvert.UnixTimeStampToDateTime(report_time);
+            if (DateTimeBuf != null)
+            {
+                report_time_year = DateTimeBuf.ToString("yyyy");
+                report_time_month = DateTimeBuf.ToString("MM");
+                report_time_day = DateTimeBuf.ToString("dd");
+                report_time_hours = DateTimeBuf.ToString("HH");
+                report_time_minutes = DateTimeBuf.ToString("mm");
+            }
+
+            DateTimeBuf = TimeConvert.UnixTimeStampToDateTime(order_start_time);
+            if (DateTimeBuf != null)
+            {
+                order_start_time_year = DateTimeBuf.ToString("yyyy");
+                order_start_time_month = DateTimeBuf.ToString("MM");
+                order_start_time_day = DateTimeBuf.ToString("dd");
+                order_start_time_hours = DateTimeBuf.ToString("HH");
+                order_start_time_minutes = DateTimeBuf.ToString("mm");
+            }
+
+            DateTimeBuf = TimeConvert.UnixTimeStampToDateTime(order_end_time);
+            if (DateTimeBuf != null)
+            {
+                order_end_time_year = DateTimeBuf.ToString("yyyy");
+                order_end_time_month = DateTimeBuf.ToString("MM");
+                order_end_time_day = DateTimeBuf.ToString("dd");
+                order_end_time_hours = DateTimeBuf.ToString("HH");
+                order_end_time_minutes = DateTimeBuf.ToString("mm");
+            }
+
+            DateTimeBuf = TimeConvert.UnixTimeStampToDateTime(business_day);
+            if (DateTimeBuf != null)
+            {
+                business_day_year = DateTimeBuf.ToString("yyyy");
+                business_day_month = DateTimeBuf.ToString("MM");
+                business_day_day = DateTimeBuf.ToString("dd");
+                business_day_hours = DateTimeBuf.ToString("HH");
+                business_day_minutes = DateTimeBuf.ToString("mm");
+            }
+            //---補上時間變數字串資料 因為JSON只能存取變數
+
+            amount_actually_received = collection_payment + sale_amount;//實收金額
         }
     }
 
