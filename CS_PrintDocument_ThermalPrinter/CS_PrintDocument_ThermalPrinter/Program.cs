@@ -1062,6 +1062,76 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
+            case "report_print_data.payment_info"://14
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.report_print_data.payment_info[m_ForLoopVars[14].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "report_print_data.coupon_info"://15
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.report_print_data.coupon_info[m_ForLoopVars[15].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "report_print_data.expense_info"://16
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.report_print_data.expense_info[m_ForLoopVars[16].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "report_print_data.inv_summery_info"://17
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.report_print_data.inv_summery_info, strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "report_print_data.inv_summery_info.details"://18
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.report_print_data.inv_summery_info.details[m_ForLoopVars[18].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "report_print_data.category_sale_info"://19
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.report_print_data.category_sale_info[m_ForLoopVars[19].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "report_print_data.promotions_info"://20
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.report_print_data.promotions_info[m_ForLoopVars[20].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
             default:
                 try
                 {
@@ -1213,6 +1283,27 @@ public class CS_PrintTemplate
                 break;
             case "report_print_data"://13
                 intDataPath = 13;
+                break;
+            case "report_print_data.payment_info"://14
+                intDataPath = 14;
+                break;
+            case "report_print_data.coupon_info"://15
+                intDataPath = 15;
+                break;
+            case "report_print_data.expense_info"://16
+                intDataPath = 16;
+                break;
+            case "report_print_data.inv_summery_info"://17
+                intDataPath = 17;
+                break;
+            case "report_print_data.inv_summery_info.details"://18
+                intDataPath = 18;
+                break;
+            case "report_print_data.category_sale_info"://19
+                intDataPath = 19;
+                break;
+            case "report_print_data.promotions_info"://20
+                intDataPath = 20;
                 break;
             default://以上都不符合走這個
                 intDataPath = -1;
@@ -1366,6 +1457,47 @@ public class CS_PrintTemplate
                 intIndex = m_ForLoopVars[13].m_intIndex;
                 intResult = m_ForLoopVars[13].m_intCount;
                 intNum = 13;
+                break;
+            case "report_print_data.payment_info"://14
+                intIndex = m_ForLoopVars[14].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
+                m_ForLoopVars[14].m_intIndex = ((m_ForLoopVars[14].m_intIndex + 1) >= m_ForLoopVars[14].m_intCount) ? (m_ForLoopVars[14].m_intCount - 1) : (m_ForLoopVars[14].m_intIndex + 1);
+                intResult = m_ForLoopVars[14].m_intCount;
+                intNum = 14;
+                break;
+            case "report_print_data.coupon_info"://15
+                intIndex = m_ForLoopVars[15].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
+                m_ForLoopVars[15].m_intIndex = ((m_ForLoopVars[15].m_intIndex + 1) >= m_ForLoopVars[15].m_intCount) ? (m_ForLoopVars[15].m_intCount - 1) : (m_ForLoopVars[15].m_intIndex + 1);
+                intResult = m_ForLoopVars[15].m_intCount;
+                intNum = 15;
+                break;
+            case "report_print_data.expense_info"://16
+                intIndex = m_ForLoopVars[16].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
+                m_ForLoopVars[16].m_intIndex = ((m_ForLoopVars[16].m_intIndex + 1) >= m_ForLoopVars[16].m_intCount) ? (m_ForLoopVars[16].m_intCount - 1) : (m_ForLoopVars[16].m_intIndex + 1);
+                intResult = m_ForLoopVars[16].m_intCount;
+                intNum = 16;
+                break;
+            case "report_print_data.inv_summery_info"://17
+                intIndex = m_ForLoopVars[17].m_intIndex;
+                intResult = m_ForLoopVars[17].m_intCount;
+                intNum = 17;
+                break;
+            case "report_print_data.inv_summery_info.details"://18
+                intIndex = m_ForLoopVars[18].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
+                m_ForLoopVars[18].m_intIndex = ((m_ForLoopVars[18].m_intIndex + 1) >= m_ForLoopVars[18].m_intCount) ? (m_ForLoopVars[18].m_intCount - 1) : (m_ForLoopVars[18].m_intIndex + 1);
+                intResult = m_ForLoopVars[18].m_intCount;
+                intNum = 18;
+                break;
+            case "report_print_data.category_sale_info"://19
+                intIndex = m_ForLoopVars[19].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
+                m_ForLoopVars[19].m_intIndex = ((m_ForLoopVars[19].m_intIndex + 1) >= m_ForLoopVars[19].m_intCount) ? (m_ForLoopVars[19].m_intCount - 1) : (m_ForLoopVars[19].m_intIndex + 1);
+                intResult = m_ForLoopVars[19].m_intCount;
+                intNum = 19;
+                break;
+            case "report_print_data.promotions_info"://20
+                intIndex = m_ForLoopVars[20].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
+                m_ForLoopVars[20].m_intIndex = ((m_ForLoopVars[20].m_intIndex + 1) >= m_ForLoopVars[20].m_intCount) ? (m_ForLoopVars[20].m_intCount - 1) : (m_ForLoopVars[20].m_intIndex + 1);
+                intResult = m_ForLoopVars[20].m_intCount;
+                intNum = 20;
                 break;
             default://以上都不符合走這個
                 intResult = 0;
@@ -2022,10 +2154,10 @@ public class CS_PrintTemplate
         m_strDataPath = "";
         for (int i = 0;i< m_PT_Page.ChildElements.Count;i++)//依序處理Page的內容
         {
-            /*
+            //*
             //---
             //Debug code
-            if(i==22)
+            if(i==41)
             {
                 bool blncheckpoint = true;
             }
