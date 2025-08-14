@@ -2343,6 +2343,607 @@
 					]
 				}				
 			]		
+		},
+		{
+			"ElementType":"Table",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",
+			"Index":42,				
+			"Width":640,
+			"Height":-1,
+			"Content":"",
+			"RowSpacing":1,
+			"AlwaysPrint":"N",
+			"ChildElements":[
+				{
+					"ElementType":"Rows",				
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Y",
+					"Index":0,			
+					"Width":640,
+					"Height":-1,
+					"Content":"",				
+					"RootName":"report_print_data",
+					"DisplayMode":"Single",
+					"ChildElements":[
+						{
+							"ElementType":"Rows",				
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Y",
+							"Index":0,			
+							"Width":640,
+							"Height":-1,
+							"Content":"",				
+							"RootName":"inv_summery_info",
+							"DisplayMode":"Single",
+							"ChildElements":[
+								{
+									"ElementType": "Block",
+									"X": 0,
+									"Y": 0,
+									"X_Alignment": "X",
+									"Y_Alignment": "Y",
+									"Index": 0,
+									"Width": 640,
+									"Height":-1,
+									"Content": "",
+									"RootName": "sale_quantity",
+									"Conditional":">",
+									"ConditionalValue":"0",
+									"ChildElements": [
+										{
+											"ElementType":"Text",
+											"X":0,
+											"Y":0,
+											"X_Alignment":"X",
+											"Y_Alignment":"Increment",
+											"Index":0,				
+											"Width":500,
+											"Height":-1,
+											"Content":"發票開立張數 : {$sale_quantity}",
+											"VerticalContentAlig":"Center",
+											"HorizontalContentAlig":"Left",
+											"ContentSize":9,
+											"ContentBold":"N",
+											"VerticalSpacing":1,
+											"IntervalSymbols":"",
+											"AutoWrap":"N",
+											"Rotation":0
+										}										
+									]
+								},
+								{
+									"ElementType": "Block",
+									"X": 0,
+									"Y": 0,
+									"X_Alignment": "X",
+									"Y_Alignment": "Y",
+									"Index": 1,
+									"Width": 640,
+									"Height":-1,
+									"Content": "",
+									"RootName": "sale_quantity",
+									"Conditional":">",
+									"ConditionalValue":"0",
+									"ChildElements": [
+										{
+											"ElementType":"Text",
+											"X":0,
+											"Y":0,
+											"X_Alignment":"X",
+											"Y_Alignment":"Increment",
+											"Index":0,				
+											"Width":500,
+											"Height":-1,
+											"Content":"發票開立金額 : {$sale_amount}",
+											"VerticalContentAlig":"Center",
+											"HorizontalContentAlig":"Left",
+											"ContentSize":9,
+											"ContentBold":"N",
+											"VerticalSpacing":1,
+											"IntervalSymbols":"",
+											"AutoWrap":"N",
+											"Rotation":0
+										}										
+									]
+								},
+								{
+									"ElementType": "Block",
+									"X": 0,
+									"Y": 0,
+									"X_Alignment": "X",
+									"Y_Alignment": "Y",
+									"Index": 2,
+									"Width": 640,
+									"Height":-1,
+									"Content": "",
+									"RootName": "sale_quantity",
+									"Conditional":">",
+									"ConditionalValue":"0",
+									"ChildElements": [
+										{
+											"ElementType":"Text",
+											"X":0,
+											"Y":0,
+											"X_Alignment":"X",
+											"Y_Alignment":"Increment",
+											"Index":0,				
+											"Width":500,
+											"Height":-1,
+											"Content":"發票開立清單 : ",
+											"VerticalContentAlig":"Center",
+											"HorizontalContentAlig":"Left",
+											"ContentSize":9,
+											"ContentBold":"N",
+											"VerticalSpacing":1,
+											"IntervalSymbols":"",
+											"AutoWrap":"N",
+											"Rotation":0
+										}										
+									]
+								},
+								{
+									"ElementType":"Rows",				
+									"X":0,
+									"Y":0,
+									"X_Alignment":"X",
+									"Y_Alignment":"Y",
+									"Index":3,			
+									"Width":640,
+									"Height":-1,
+									"Content":"",				
+									"RootName":"sale_details",
+									"DisplayMode":"Single",
+									"ChildElements":[
+										{
+											"ElementType": "Block",
+											"X": 0,
+											"Y": 0,
+											"X_Alignment": "X",
+											"Y_Alignment": "Y",
+											"Index": 0,
+											"Width": 640,
+											"Height":-1,
+											"Content": "",
+											"RootName": "",
+											"ChildElements": [
+												{
+													"ElementType":"Text",
+													"X":0,
+													"Y":0,
+													"X_Alignment":"X",
+													"Y_Alignment":"Increment",
+													"Index":0,				
+													"Width":500,
+													"Height":-1,
+													"Content":" {$track}{$begin_no} - {$track}{$end_no}",
+													"VerticalContentAlig":"Center",
+													"HorizontalContentAlig":"Left",
+													"ContentSize":9,
+													"ContentBold":"N",
+													"VerticalSpacing":1,
+													"IntervalSymbols":"",
+													"AutoWrap":"N",
+													"Rotation":0
+												}										
+											]
+										}									
+									]
+								},
+								{
+									"ElementType": "Block",
+									"X": 0,
+									"Y": 0,
+									"X_Alignment": "X",
+									"Y_Alignment": "Y",
+									"Index": 4,
+									"Width": 640,
+									"Height":-1,
+									"Content": "",
+									"RootName": "sale_quantity",
+									"Conditional":">",
+									"ConditionalValue":"0",
+									"ChildElements": [
+										{
+											"ElementType":"Text",
+											"X":0,
+											"Y":0,
+											"X_Alignment":"X",
+											"Y_Alignment":"Increment",
+											"Index":0,				
+											"Width":500,
+											"Height":-1,
+											"Content":"------------------------------------------------------------------------------",
+											"VerticalContentAlig":"Center",
+											"HorizontalContentAlig":"Left",
+											"ContentSize":9,
+											"ContentBold":"N",
+											"VerticalSpacing":1,
+											"IntervalSymbols":"",
+											"AutoWrap":"N",
+											"Rotation":0
+										}										
+									]
+								},
+								{
+									"ElementType": "Block",
+									"X": 0,
+									"Y": 0,
+									"X_Alignment": "X",
+									"Y_Alignment": "Y",
+									"Index": 5,
+									"Width": 640,
+									"Height":-1,
+									"Content": "",
+									"RootName": "sale_quantity",
+									"Conditional":">",
+									"ConditionalValue":"0",
+									"ChildElements": [
+										{
+											"ElementType":"Text",
+											"X":0,
+											"Y":0,
+											"X_Alignment":"X",
+											"Y_Alignment":"Increment",
+											"Index":0,				
+											"Width":500,
+											"Height":-1,
+											"Content":"發票作廢張數 : {$cancel_quantity}",
+											"VerticalContentAlig":"Center",
+											"HorizontalContentAlig":"Left",
+											"ContentSize":9,
+											"ContentBold":"N",
+											"VerticalSpacing":1,
+											"IntervalSymbols":"",
+											"AutoWrap":"N",
+											"Rotation":0
+										}										
+									]
+								},
+								{
+									"ElementType": "Block",
+									"X": 0,
+									"Y": 0,
+									"X_Alignment": "X",
+									"Y_Alignment": "Y",
+									"Index": 6,
+									"Width": 640,
+									"Height":-1,
+									"Content": "",
+									"RootName": "sale_quantity",
+									"Conditional":">",
+									"ConditionalValue":"0",
+									"ChildElements": [
+										{
+											"ElementType":"Text",
+											"X":0,
+											"Y":0,
+											"X_Alignment":"X",
+											"Y_Alignment":"Increment",
+											"Index":0,				
+											"Width":500,
+											"Height":-1,
+											"Content":"發票作廢金額 : {$cancel_amount}",
+											"VerticalContentAlig":"Center",
+											"HorizontalContentAlig":"Left",
+											"ContentSize":9,
+											"ContentBold":"N",
+											"VerticalSpacing":1,
+											"IntervalSymbols":"",
+											"AutoWrap":"N",
+											"Rotation":0
+										}										
+									]
+								},
+								{
+									"ElementType": "Block",
+									"X": 0,
+									"Y": 0,
+									"X_Alignment": "X",
+									"Y_Alignment": "Y",
+									"Index": 7,
+									"Width": 640,
+									"Height":-1,
+									"Content": "",
+									"RootName": "sale_quantity",
+									"Conditional":">",
+									"ConditionalValue":"0",
+									"ChildElements": [
+										{
+											"ElementType":"Text",
+											"X":0,
+											"Y":0,
+											"X_Alignment":"X",
+											"Y_Alignment":"Increment",
+											"Index":0,				
+											"Width":500,
+											"Height":-1,
+											"Content":"發票作廢清單 : ",
+											"VerticalContentAlig":"Center",
+											"HorizontalContentAlig":"Left",
+											"ContentSize":9,
+											"ContentBold":"N",
+											"VerticalSpacing":1,
+											"IntervalSymbols":"",
+											"AutoWrap":"N",
+											"Rotation":0
+										}										
+									]
+								},
+								{
+									"ElementType":"Rows",				
+									"X":0,
+									"Y":0,
+									"X_Alignment":"X",
+									"Y_Alignment":"Y",
+									"Index":8,			
+									"Width":640,
+									"Height":-1,
+									"Content":"",				
+									"RootName":"cancel_details",
+									"DisplayMode":"Single",
+									"ChildElements":[
+										{
+											"ElementType": "Block",
+											"X": 0,
+											"Y": 0,
+											"X_Alignment": "X",
+											"Y_Alignment": "Y",
+											"Index": 0,
+											"Width": 640,
+											"Height":-1,
+											"Content": "",
+											"RootName": "",
+											"ChildElements": [
+												{
+													"ElementType":"Text",
+													"X":0,
+													"Y":0,
+													"X_Alignment":"X",
+													"Y_Alignment":"Increment",
+													"Index":0,				
+													"Width":500,
+													"Height":-1,
+													"Content":" {$track}{$begin_no} - {$track}{$end_no}",
+													"VerticalContentAlig":"Center",
+													"HorizontalContentAlig":"Left",
+													"ContentSize":9,
+													"ContentBold":"N",
+													"VerticalSpacing":1,
+													"IntervalSymbols":"",
+													"AutoWrap":"N",
+													"Rotation":0
+												}										
+											]
+										}									
+									]
+								},
+								{
+									"ElementType": "Block",
+									"X": 0,
+									"Y": 0,
+									"X_Alignment": "X",
+									"Y_Alignment": "Y",
+									"Index": 9,
+									"Width": 640,
+									"Height":-1,
+									"Content": "",
+									"RootName": "",
+									"ChildElements": [
+										{
+											"ElementType":"Text",
+											"X":0,
+											"Y":0,
+											"X_Alignment":"X",
+											"Y_Alignment":"Increment",
+											"Index":0,				
+											"Width":500,
+											"Height":-1,
+											"Content":"==========================================================================================",
+											"VerticalContentAlig":"Center",
+											"HorizontalContentAlig":"Left",
+											"ContentSize":9,
+											"ContentBold":"N",
+											"VerticalSpacing":1,
+											"IntervalSymbols":"",
+											"AutoWrap":"N",
+											"Rotation":0
+										}
+									]
+								}								
+							]
+						}					
+					]
+				}				
+			]		
+		},
+		{
+			"ElementType":"Table",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",
+			"Index":43,				
+			"Width":640,
+			"Height":-1,
+			"Content":"",
+			"RowSpacing":1,
+			"AlwaysPrint":"N",
+			"ChildElements":[
+				{
+					"ElementType": "Block",
+					"X": 0,
+					"Y": 0,
+					"X_Alignment": "X",
+					"Y_Alignment": "Y",
+					"Index": 0,
+					"Width": 640,
+					"Height":-1,
+					"Content": "",
+					"RootName": "",
+					"ChildElements": [
+						{
+							"ElementType":"Text",
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Increment",
+							"Index":0,				
+							"Width":500,
+							"Height":-1,
+							"Content":"【商品類別銷售統計】",
+							"VerticalContentAlig":"Center",
+							"HorizontalContentAlig":"Left",
+							"ContentSize":9,
+							"ContentBold":"N",
+							"VerticalSpacing":1,
+							"IntervalSymbols":"",
+							"AutoWrap":"N",
+							"Rotation":0
+						}										
+					]
+				},
+				{
+					"ElementType":"Rows",				
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Y",
+					"Index":1,			
+					"Width":640,
+					"Height":-1,
+					"Content":"",				
+					"RootName":"report_print_data",
+					"DisplayMode":"Single",
+					"ChildElements":[
+						{
+							"ElementType":"Rows",				
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Y",
+							"Index":0,			
+							"Width":640,
+							"Height":-1,
+							"Content":"",				
+							"RootName":"category_sale_info",
+							"DisplayMode":"Single",
+							"ChildElements":[
+								{
+									"ElementType": "Block",
+									"X": 0,
+									"Y": 0,
+									"X_Alignment": "X",
+									"Y_Alignment": "Y",
+									"Index": 0,
+									"Width": 640,
+									"Height": 8,
+									"Content": "",
+									"RootName": "",
+									"ChildElements": [
+										{
+											"ElementType":"Text",
+											"X":0,
+											"Y":0,
+											"X_Alignment":"X",
+											"Y_Alignment":"Increment",
+											"Index":0,				
+											"Width":376,
+											"Height":24,
+											"Content":"  {$category_name} : ",
+											"VerticalContentAlig":"Center",
+											"HorizontalContentAlig":"Left",
+											"ContentSize":9,
+											"VerticalSpacing":1,
+											"IntervalSymbols":"",
+											"AutoWrap":"N",
+											"ContentBold":"N",
+											"Rotation":0
+										},
+										{
+											"ElementType":"Text",
+											"X":394,
+											"Y":0,
+											"X_Alignment":"X",
+											"Y_Alignment":"Element",
+											"Index":1,				
+											"Width":80,
+											"Height":24,
+											"Content":"{$quantity}",
+											"VerticalContentAlig":"Center",
+											"HorizontalContentAlig":"Left",
+											"ContentSize":9,
+											"VerticalSpacing":1,
+											"IntervalSymbols":"",
+											"AutoWrap":"N",
+											"ContentBold":"N",
+											"Rotation":0
+										},
+										{
+											"ElementType":"Text",
+											"X":482,
+											"Y":0,
+											"X_Alignment":"X",
+											"Y_Alignment":"Element",
+											"Index":2,				
+											"Width":80,
+											"Height":24,
+											"Content":"{$subtotal}",
+											"VerticalContentAlig":"Center",
+											"HorizontalContentAlig":"Right",
+											"ContentSize":9,
+											"VerticalSpacing":1,
+											"IntervalSymbols":"",
+											"AutoWrap":"N",
+											"ContentBold":"N",
+											"Rotation":0
+										}
+									]
+								}							
+							]
+						}
+					]
+				},
+				{
+					"ElementType": "Block",
+					"X": 0,
+					"Y": 0,
+					"X_Alignment": "X",
+					"Y_Alignment": "Y",
+					"Index": 2,
+					"Width": 640,
+					"Height":-1,
+					"Content": "",
+					"RootName": "",
+					"ChildElements": [
+						{
+							"ElementType":"Text",
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Increment",
+							"Index":0,				
+							"Width":500,
+							"Height":-1,
+							"Content":"==========================================================================================",
+							"VerticalContentAlig":"Center",
+							"HorizontalContentAlig":"Left",
+							"ContentSize":9,
+							"ContentBold":"N",
+							"VerticalSpacing":1,
+							"IntervalSymbols":"",
+							"AutoWrap":"N",
+							"Rotation":0
+						}
+					]
+				}				
+			]
 		}		
 	]
 }

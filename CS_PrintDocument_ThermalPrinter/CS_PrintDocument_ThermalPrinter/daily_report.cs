@@ -152,9 +152,13 @@ namespace CS_PrintDocument_ThermalPrinter
         public int invalid_amount { get; set; }//電子發票用
 
         public List<DRDetail> details { get; set; }
+        public List<DRDetail> sale_details { get; set; }//報表列印用
+        public List<DRDetail> cancel_details { get; set; }//報表列印用
         public DRInvSummeryInfo()
         {
             details = new List<DRDetail>();
+            sale_details = new List<DRDetail>();
+            cancel_details = new List<DRDetail>();
         }
     }
 
@@ -325,7 +329,30 @@ namespace CS_PrintDocument_ThermalPrinter
             //---補上時間變數字串資料 因為JSON只能存取變數
 
             amount_actually_received = collection_payment + sale_amount;//實收金額
-        }
+
+            if ((inv_summery_info.details != null) && (inv_summery_info.details.Count > 0))
+            {
+                if(inv_summery_info.sale_details==null)
+                {
+                    inv_summery_info.sale_details=new List<DRDetail>();
+                }
+                if (inv_summery_info.cancel_details == null)
+                {
+                    inv_summery_info.cancel_details = new List<DRDetail>();
+                }
+                for (int i=0;i< inv_summery_info.details.Count;i++)
+                {
+                    switch(inv_summery_info.details[i].inv_type)
+                    {
+                        case 1:
+                            inv_summery_info.sale_details.Add(inv_summery_info.details[i]);
+                            break;
+                        case 2:
+                            inv_summery_info.cancel_details.Add(inv_summery_info.details[i]);
+                            break;
+                    }
+                }
+        }   }
     }
 
 }

@@ -1102,30 +1102,40 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
-            case "report_print_data.inv_summery_info.details"://18
+            case "report_print_data.inv_summery_info.sale_details"://18
                 try
                 {
-                    strResult = GetFieldValueByName(m_OrderPrintDataAll.report_print_data.inv_summery_info.details[m_ForLoopVars[18].m_intIndex], strVarName).ToString();
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.report_print_data.inv_summery_info.sale_details[m_ForLoopVars[18].m_intIndex], strVarName).ToString();
                 }
                 catch
                 {
                     strResult = "";
                 }
                 break;
-            case "report_print_data.category_sale_info"://19
+            case "report_print_data.inv_summery_info.cancel_details"://19
                 try
                 {
-                    strResult = GetFieldValueByName(m_OrderPrintDataAll.report_print_data.category_sale_info[m_ForLoopVars[19].m_intIndex], strVarName).ToString();
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.report_print_data.inv_summery_info.cancel_details[m_ForLoopVars[19].m_intIndex], strVarName).ToString();
                 }
                 catch
                 {
                     strResult = "";
                 }
                 break;
-            case "report_print_data.promotions_info"://20
+            case "report_print_data.category_sale_info"://20
                 try
                 {
-                    strResult = GetFieldValueByName(m_OrderPrintDataAll.report_print_data.promotions_info[m_ForLoopVars[20].m_intIndex], strVarName).ToString();
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.report_print_data.category_sale_info[m_ForLoopVars[20].m_intIndex], strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "report_print_data.promotions_info"://21
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.report_print_data.promotions_info[m_ForLoopVars[21].m_intIndex], strVarName).ToString();
                 }
                 catch
                 {
@@ -1296,14 +1306,17 @@ public class CS_PrintTemplate
             case "report_print_data.inv_summery_info"://17
                 intDataPath = 17;
                 break;
-            case "report_print_data.inv_summery_info.details"://18
+            case "report_print_data.inv_summery_info.sale_details"://18
                 intDataPath = 18;
                 break;
-            case "report_print_data.category_sale_info"://19
+            case "report_print_data.inv_summery_info.cancel_details"://19
                 intDataPath = 19;
                 break;
-            case "report_print_data.promotions_info"://20
+            case "report_print_data.category_sale_info"://20
                 intDataPath = 20;
+                break;
+            case "report_print_data.promotions_info"://21
+                intDataPath = 21;
                 break;
             default://以上都不符合走這個
                 intDataPath = -1;
@@ -1481,23 +1494,29 @@ public class CS_PrintTemplate
                 intResult = m_ForLoopVars[17].m_intCount;
                 intNum = 17;
                 break;
-            case "report_print_data.inv_summery_info.details"://18
+            case "report_print_data.inv_summery_info.sale_details"://18
                 intIndex = m_ForLoopVars[18].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                 m_ForLoopVars[18].m_intIndex = ((m_ForLoopVars[18].m_intIndex + 1) >= m_ForLoopVars[18].m_intCount) ? (m_ForLoopVars[18].m_intCount - 1) : (m_ForLoopVars[18].m_intIndex + 1);
                 intResult = m_ForLoopVars[18].m_intCount;
                 intNum = 18;
                 break;
-            case "report_print_data.category_sale_info"://19
+            case "report_print_data.inv_summery_info.cancel_details"://19
                 intIndex = m_ForLoopVars[19].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                 m_ForLoopVars[19].m_intIndex = ((m_ForLoopVars[19].m_intIndex + 1) >= m_ForLoopVars[19].m_intCount) ? (m_ForLoopVars[19].m_intCount - 1) : (m_ForLoopVars[19].m_intIndex + 1);
                 intResult = m_ForLoopVars[19].m_intCount;
                 intNum = 19;
                 break;
-            case "report_print_data.promotions_info"://20
+            case "report_print_data.category_sale_info"://20
                 intIndex = m_ForLoopVars[20].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
                 m_ForLoopVars[20].m_intIndex = ((m_ForLoopVars[20].m_intIndex + 1) >= m_ForLoopVars[20].m_intCount) ? (m_ForLoopVars[20].m_intCount - 1) : (m_ForLoopVars[20].m_intIndex + 1);
                 intResult = m_ForLoopVars[20].m_intCount;
                 intNum = 20;
+                break;
+            case "report_print_data.promotions_info"://21
+                intIndex = m_ForLoopVars[21].m_intIndex + 1;//判斷用不用防呆害怕超過陣列範圍
+                m_ForLoopVars[21].m_intIndex = ((m_ForLoopVars[21].m_intIndex + 1) >= m_ForLoopVars[21].m_intCount) ? (m_ForLoopVars[21].m_intCount - 1) : (m_ForLoopVars[21].m_intIndex + 1);
+                intResult = m_ForLoopVars[21].m_intCount;
+                intNum = 21;
                 break;
             default://以上都不符合走這個
                 intResult = 0;
@@ -1516,11 +1535,8 @@ public class CS_PrintTemplate
                         double dblConditionalValue = 0;
                         try
                         {
-                            if(Convert.ToDouble(strConditionalValue.ToString())>0)
-                            {
-                                dblConditionalValue = Convert.ToDouble(strConditionalValue.ToString());
-                                blnNum = true;
-                            }              
+                            dblConditionalValue = Convert.ToDouble(strConditionalValue.ToString());
+                            blnNum = true;
                         }
                         catch 
                         {
@@ -1635,9 +1651,10 @@ public class CS_PrintTemplate
         m_ForLoopVars.Add(new ForLoopVar("report_print_data.coupon_info", 0));//15
         m_ForLoopVars.Add(new ForLoopVar("report_print_data.expense_info", 0));//16
         m_ForLoopVars.Add(new ForLoopVar("report_print_data.inv_summery_info", 0));//17
-        m_ForLoopVars.Add(new ForLoopVar("report_print_data.inv_summery_info.details", 0));//18
-        m_ForLoopVars.Add(new ForLoopVar("report_print_data.category_sale_info", 0));//19
-        m_ForLoopVars.Add(new ForLoopVar("report_print_data.promotions_info", 0));//20
+        m_ForLoopVars.Add(new ForLoopVar("report_print_data.inv_summery_info.sale_details", 0));//18
+        m_ForLoopVars.Add(new ForLoopVar("report_print_data.inv_summery_info.cancel_details", 0));//19
+        m_ForLoopVars.Add(new ForLoopVar("report_print_data.category_sale_info", 0));//20
+        m_ForLoopVars.Add(new ForLoopVar("report_print_data.promotions_info", 0));//21
 
         if (m_OrderPrintData!=null)
         {
@@ -1671,12 +1688,14 @@ public class CS_PrintTemplate
             m_ForLoopVars[16].m_intIndex = -1;
             m_ForLoopVars[17].m_intCount = (m_OrderPrintDataAll.report_print_data.inv_summery_info != null) ? 1 : 0;
             m_ForLoopVars[17].m_intIndex = 1;//非陣列變數集 索引初始為1
-            m_ForLoopVars[18].m_intCount = (m_OrderPrintDataAll.report_print_data.inv_summery_info.details != null) ? m_OrderPrintDataAll.report_print_data.inv_summery_info.details.Count : 0;
+            m_ForLoopVars[18].m_intCount = (m_OrderPrintDataAll.report_print_data.inv_summery_info.sale_details != null) ? m_OrderPrintDataAll.report_print_data.inv_summery_info.sale_details.Count : 0;
             m_ForLoopVars[18].m_intIndex = -1;
-            m_ForLoopVars[19].m_intCount = (m_OrderPrintDataAll.report_print_data.category_sale_info != null) ? m_OrderPrintDataAll.report_print_data.category_sale_info.Count : 0;
+            m_ForLoopVars[19].m_intCount = (m_OrderPrintDataAll.report_print_data.inv_summery_info.cancel_details != null) ? m_OrderPrintDataAll.report_print_data.inv_summery_info.cancel_details.Count : 0;
             m_ForLoopVars[19].m_intIndex = -1;
-            m_ForLoopVars[20].m_intCount = (m_OrderPrintDataAll.report_print_data.promotions_info != null) ? m_OrderPrintDataAll.report_print_data.promotions_info.Count : 0;
+            m_ForLoopVars[20].m_intCount = (m_OrderPrintDataAll.report_print_data.category_sale_info != null) ? m_OrderPrintDataAll.report_print_data.category_sale_info.Count : 0;
             m_ForLoopVars[20].m_intIndex = -1;
+            m_ForLoopVars[21].m_intCount = (m_OrderPrintDataAll.report_print_data.promotions_info != null) ? m_OrderPrintDataAll.report_print_data.promotions_info.Count : 0;
+            m_ForLoopVars[21].m_intIndex = -1;
 
         }
     }
@@ -2157,7 +2176,7 @@ public class CS_PrintTemplate
             //*
             //---
             //Debug code
-            if(i==41)
+            if(i==43)
             {
                 bool blncheckpoint = true;
             }
