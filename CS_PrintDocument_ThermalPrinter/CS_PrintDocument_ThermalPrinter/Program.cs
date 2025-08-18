@@ -642,7 +642,7 @@ public class CS_PrintTemplate
         return strResult;
     }
 
-    public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate,string strOrderPrintData,string strElectronicInvoicePrinting,string strReportData)//建構子 
+    public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate,string strOrderPrintData,string strElectronicInvoicePrinting,string strReportData,string strEasyCardBillData)//建構子 
     {
         try
         {
@@ -683,7 +683,12 @@ public class CS_PrintTemplate
                 m_OrderPrintDataAll.report_print_data = JsonSerializer.Deserialize<report_print_data>(strReportData);
                 m_OrderPrintDataAll.report_print_data.SetVariable();
             }
-            
+
+            if((strEasyCardBillData != null) && (strEasyCardBillData.Length>0))
+            {
+                m_OrderPrintDataAll.easycard_bill_data = JsonSerializer.Deserialize<EasyCardAPIMsg>(strEasyCardBillData);
+            }
+
             blnPrintTemplateCreated = (m_PT_Page != null) ? true : false;//((m_JsonDocument!=null) && (m_PT_Page!=null))?true:false;
             //---json2object
 
@@ -2645,7 +2650,7 @@ class Program
         string strOrderPrintData = sr00.ReadToEnd();
         
         //報表~
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\REPORT_57.json");//InvalidInvoice_57.json
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\QrCode_57.json");//InvalidInvoice_57.json
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct_57.json");
         //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();
@@ -2656,7 +2661,10 @@ class Program
         StreamReader sr03 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Report.json");
         string strReportData = sr03.ReadToEnd();
 
-        CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderPrintData, strElectronicInvoicePrinting, strReportData);
+        StreamReader sr04 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\EasyCardAPIMsg.json");
+        string strEasyCardBillData = sr04.ReadToEnd();
+
+        CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderPrintData, strElectronicInvoicePrinting, strReportData, strEasyCardBillData);
         
         Pause();
     }

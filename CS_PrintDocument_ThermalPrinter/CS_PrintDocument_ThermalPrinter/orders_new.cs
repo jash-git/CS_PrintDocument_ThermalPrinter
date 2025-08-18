@@ -420,6 +420,8 @@ namespace CS_PrintDocument_ThermalPrinter
         public List<Tableware> tablewares { get; set; }
         public InvoicePrintData invoice_print_data { get; set; }//電子發票列印資料
         public report_print_data report_print_data { get; set; }//報表列印資料
+        public EasyCardAPIMsg easycard_bill_data { get; set; }//列印悠遊卡收據
+
         public OrderPrintData()
         {
             order_items = new List<OrderItem>();
