@@ -686,7 +686,8 @@ public class CS_PrintTemplate
 
             if((strEasyCardBillData != null) && (strEasyCardBillData.Length>0))
             {
-                m_OrderPrintDataAll.easycard_bill_data = JsonSerializer.Deserialize<EasyCardAPIMsg>(strEasyCardBillData);
+                m_OrderPrintDataAll.easycard_print_bill_data = JsonSerializer.Deserialize<easycard_print_bill_data>(strEasyCardBillData);
+                m_OrderPrintDataAll.easycard_print_bill_data.SetVariable();
             }
 
             blnPrintTemplateCreated = (m_PT_Page != null) ? true : false;//((m_JsonDocument!=null) && (m_PT_Page!=null))?true:false;
@@ -1147,6 +1148,26 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
+            case "easycard_print_bill_data"://22
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.easycard_print_bill_data, strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "easycard_print_bill_data.Card_Info"://23
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.easycard_print_bill_data.Card_Info, strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
             default:
                 try
                 {
@@ -1322,6 +1343,12 @@ public class CS_PrintTemplate
                 break;
             case "report_print_data.promotions_info"://21
                 intDataPath = 21;
+                break;
+            case "easycard_print_bill_data"://22
+                intDataPath = 22;
+                break;
+            case "easycard_print_bill_data.Card_Info"://23
+                intDataPath = 23;
                 break;
             default://以上都不符合走這個
                 intDataPath = -1;
@@ -1523,6 +1550,16 @@ public class CS_PrintTemplate
                 intResult = m_ForLoopVars[21].m_intCount;
                 intNum = 21;
                 break;
+            case "easycard_print_bill_data"://22
+                intIndex = m_ForLoopVars[22].m_intIndex;
+                intResult = m_ForLoopVars[22].m_intCount;
+                intNum = 22;
+                break;
+            case "easycard_print_bill_data.Card_Info"://23
+                intIndex = m_ForLoopVars[23].m_intIndex;
+                intResult = m_ForLoopVars[23].m_intCount;
+                intNum = 23;
+                break;
             default://以上都不符合走這個
                 intResult = 0;
                 string[]strsBuf=strPath.Split('.');
@@ -1660,6 +1697,8 @@ public class CS_PrintTemplate
         m_ForLoopVars.Add(new ForLoopVar("report_print_data.inv_summery_info.cancel_details", 0));//19
         m_ForLoopVars.Add(new ForLoopVar("report_print_data.category_sale_info", 0));//20
         m_ForLoopVars.Add(new ForLoopVar("report_print_data.promotions_info", 0));//21
+        m_ForLoopVars.Add(new ForLoopVar("easycard_print_bill_data", 0));//22
+        m_ForLoopVars.Add(new ForLoopVar("easycard_print_bill_data.Card_Info", 0));//23
 
         if (m_OrderPrintData!=null)
         {
@@ -1681,27 +1720,30 @@ public class CS_PrintTemplate
             m_ForLoopVars[9].m_intIndex = 1;//非陣列變數集 索引初始為1
             m_ForLoopVars[10].m_intCount = (m_OrderPrintDataAll.invoice_print_data != null) ? 1 : 0;//非陣列變數集 數量一率為1
             m_ForLoopVars[10].m_intIndex = 1;//非陣列變數集 索引初始為1
-            m_ForLoopVars[11].m_intCount = (m_OrderPrintDataAll.invoice_print_data.Items != null)? m_OrderPrintDataAll.invoice_print_data.Items.Count : 0;
+            m_ForLoopVars[11].m_intCount = (m_OrderPrintDataAll.report_print_data != null) && (m_OrderPrintDataAll.invoice_print_data.Items != null)? m_OrderPrintDataAll.invoice_print_data.Items.Count : 0;
             m_ForLoopVars[11].m_intIndex = -1;
             m_ForLoopVars[13].m_intCount = (m_OrderPrintDataAll.report_print_data != null) ? 1 : 0;//非陣列變數集 數量一率為1
             m_ForLoopVars[13].m_intIndex = 1;//非陣列變數集 索引初始為1
-            m_ForLoopVars[14].m_intCount = (m_OrderPrintDataAll.report_print_data.payment_info != null) ? m_OrderPrintDataAll.report_print_data.payment_info.Count : 0;
+            m_ForLoopVars[14].m_intCount = (m_OrderPrintDataAll.report_print_data != null) && (m_OrderPrintDataAll.report_print_data.payment_info != null) ? m_OrderPrintDataAll.report_print_data.payment_info.Count : 0;
             m_ForLoopVars[14].m_intIndex = -1;
-            m_ForLoopVars[15].m_intCount = (m_OrderPrintDataAll.report_print_data.coupon_info != null) ? m_OrderPrintDataAll.report_print_data.coupon_info.Count : 0;
+            m_ForLoopVars[15].m_intCount = (m_OrderPrintDataAll.report_print_data != null) && (m_OrderPrintDataAll.report_print_data.coupon_info != null) ? m_OrderPrintDataAll.report_print_data.coupon_info.Count : 0;
             m_ForLoopVars[15].m_intIndex = -1;
-            m_ForLoopVars[16].m_intCount = (m_OrderPrintDataAll.report_print_data.expense_info != null) ? m_OrderPrintDataAll.report_print_data.expense_info.Count : 0;
+            m_ForLoopVars[16].m_intCount = (m_OrderPrintDataAll.report_print_data != null) && (m_OrderPrintDataAll.report_print_data.expense_info != null) ? m_OrderPrintDataAll.report_print_data.expense_info.Count : 0;
             m_ForLoopVars[16].m_intIndex = -1;
-            m_ForLoopVars[17].m_intCount = (m_OrderPrintDataAll.report_print_data.inv_summery_info != null) ? 1 : 0;
+            m_ForLoopVars[17].m_intCount = (m_OrderPrintDataAll.report_print_data != null) && (m_OrderPrintDataAll.report_print_data.inv_summery_info != null) ? 1 : 0;
             m_ForLoopVars[17].m_intIndex = 1;//非陣列變數集 索引初始為1
-            m_ForLoopVars[18].m_intCount = (m_OrderPrintDataAll.report_print_data.inv_summery_info.sale_details != null) ? m_OrderPrintDataAll.report_print_data.inv_summery_info.sale_details.Count : 0;
+            m_ForLoopVars[18].m_intCount = (m_OrderPrintDataAll.report_print_data != null) && (m_OrderPrintDataAll.report_print_data.inv_summery_info.sale_details != null) ? m_OrderPrintDataAll.report_print_data.inv_summery_info.sale_details.Count : 0;
             m_ForLoopVars[18].m_intIndex = -1;
-            m_ForLoopVars[19].m_intCount = (m_OrderPrintDataAll.report_print_data.inv_summery_info.cancel_details != null) ? m_OrderPrintDataAll.report_print_data.inv_summery_info.cancel_details.Count : 0;
+            m_ForLoopVars[19].m_intCount = (m_OrderPrintDataAll.report_print_data != null) && (m_OrderPrintDataAll.report_print_data.inv_summery_info.cancel_details != null) ? m_OrderPrintDataAll.report_print_data.inv_summery_info.cancel_details.Count : 0;
             m_ForLoopVars[19].m_intIndex = -1;
-            m_ForLoopVars[20].m_intCount = (m_OrderPrintDataAll.report_print_data.category_sale_info != null) ? m_OrderPrintDataAll.report_print_data.category_sale_info.Count : 0;
+            m_ForLoopVars[20].m_intCount = (m_OrderPrintDataAll.report_print_data != null) && (m_OrderPrintDataAll.report_print_data.category_sale_info != null) ? m_OrderPrintDataAll.report_print_data.category_sale_info.Count : 0;
             m_ForLoopVars[20].m_intIndex = -1;
-            m_ForLoopVars[21].m_intCount = (m_OrderPrintDataAll.report_print_data.promotions_info != null) ? m_OrderPrintDataAll.report_print_data.promotions_info.Count : 0;
+            m_ForLoopVars[21].m_intCount = (m_OrderPrintDataAll.report_print_data!=null) && (m_OrderPrintDataAll.report_print_data.promotions_info != null) ? m_OrderPrintDataAll.report_print_data.promotions_info.Count : 0;
             m_ForLoopVars[21].m_intIndex = -1;
-
+            m_ForLoopVars[22].m_intCount = (m_OrderPrintDataAll.easycard_print_bill_data != null) ? 1 : 0;
+            m_ForLoopVars[22].m_intIndex = 1;//非陣列變數集 索引初始為1
+            m_ForLoopVars[23].m_intCount = (m_OrderPrintDataAll.easycard_print_bill_data != null) && (m_OrderPrintDataAll.easycard_print_bill_data.Card_Info != null) ? 1 : 0;
+            m_ForLoopVars[23].m_intIndex = 1;//非陣列變數集 索引初始為1
         }
     }
 
@@ -2650,7 +2692,7 @@ class Program
         string strOrderPrintData = sr00.ReadToEnd();
         
         //報表~
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\QrCode_57.json");//InvalidInvoice_57.json
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\EasyCardBILL_57.json");//InvalidInvoice_57.json
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct_57.json");
         //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();

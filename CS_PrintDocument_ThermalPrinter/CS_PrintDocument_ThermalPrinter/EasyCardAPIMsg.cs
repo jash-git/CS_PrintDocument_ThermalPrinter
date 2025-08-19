@@ -66,13 +66,18 @@ namespace CS_PrintDocument_ThermalPrinter
         public string Serial_Num { get; set; }
     }
 
-    public class EasyCardAPIMsg//遊遊卡 交易當下回饋 交易資訊
+    public class easycard_print_bill_data // [EasyCardAPIMsg] //遊遊卡 交易當下回饋 交易資訊
     {
         public string SID { get; set; }
         public string Message_Type { get; set; }
         public string Trans_Code { get; set; }
         public string Trans_Date { get; set; }
-        public int Trans_Time { get; set; }
+        public string trans_time_year { get; set; }
+        public string trans_time_month { get; set; }
+        public string trans_time_day { get; set; }
+        public string trans_time_hours { get; set; }
+        public string trans_time_minutes { get; set; }
+        public long Trans_Time { get; set; }
         public int Trans_Amount { get; set; }
         public int Auto_Add_Value { get; set; }
         public string TMLocationID { get; set; }
@@ -92,6 +97,19 @@ namespace CS_PrintDocument_ThermalPrinter
         public string Retry_Nex_Flag { get; set; }
         public string Trans_Success { get; set; }
         public string Trans_Msg { get; set; }
+
+        public void SetVariable()
+        {
+            DateTime DateTimeBuf = TimeConvert.UnixTimeStampToDateTime(Trans_Time);
+            if (DateTimeBuf != null)
+            {
+                trans_time_year = DateTimeBuf.ToString("yyyy");
+                trans_time_month = DateTimeBuf.ToString("MM");
+                trans_time_day = DateTimeBuf.ToString("dd");
+                trans_time_hours = DateTimeBuf.ToString("HH");
+                trans_time_minutes = DateTimeBuf.ToString("mm");
+            }
+        }
     }
 
     //----
