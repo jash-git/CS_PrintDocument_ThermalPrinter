@@ -421,6 +421,7 @@ namespace CS_PrintDocument_ThermalPrinter
         public InvoicePrintData invoice_print_data { get; set; }//電子發票列印資料
         public report_print_data report_print_data { get; set; }//報表列印資料
         public easycard_print_bill_data easycard_print_bill_data { get; set; }//列印悠遊卡收據
+        public easycard_print_checkout_data easycard_print_checkout_data {  get; set; }//列印悠遊卡 結帳資訊
 
         public OrderPrintData()
         {

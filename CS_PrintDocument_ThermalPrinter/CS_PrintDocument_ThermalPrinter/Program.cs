@@ -642,7 +642,7 @@ public class CS_PrintTemplate
         return strResult;
     }
 
-    public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate,string strOrderPrintData,string strElectronicInvoicePrinting,string strReportData,string strEasyCardBillData)//建構子 
+    public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate,string strOrderPrintData,string strElectronicInvoicePrinting,string strReportData,string strEasyCardBillData,string strEasyCardCheckoutData)//建構子 
     {
         try
         {
@@ -688,6 +688,12 @@ public class CS_PrintTemplate
             {
                 m_OrderPrintDataAll.easycard_print_bill_data = JsonSerializer.Deserialize<easycard_print_bill_data>(strEasyCardBillData);
                 m_OrderPrintDataAll.easycard_print_bill_data.SetVariable();
+            }
+
+            if((strEasyCardCheckoutData!=null) &&(strEasyCardCheckoutData.Length>0))
+            {
+                m_OrderPrintDataAll.easycard_print_checkout_data = JsonSerializer.Deserialize<easycard_print_checkout_data>(strEasyCardCheckoutData);
+                m_OrderPrintDataAll.easycard_print_checkout_data.SetVariable();
             }
 
             blnPrintTemplateCreated = (m_PT_Page != null) ? true : false;//((m_JsonDocument!=null) && (m_PT_Page!=null))?true:false;
@@ -1168,6 +1174,26 @@ public class CS_PrintTemplate
                     strResult = "";
                 }
                 break;
+            case "easycard_print_checkout_data"://24
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.easycard_print_checkout_data, strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
+            case "easycard_print_checkout_data.Checkout_Info"://25
+                try
+                {
+                    strResult = GetFieldValueByName(m_OrderPrintDataAll.easycard_print_checkout_data.Checkout_Info, strVarName).ToString();
+                }
+                catch
+                {
+                    strResult = "";
+                }
+                break;
             default:
                 try
                 {
@@ -1349,6 +1375,12 @@ public class CS_PrintTemplate
                 break;
             case "easycard_print_bill_data.Card_Info"://23
                 intDataPath = 23;
+                break;
+            case "easycard_print_checkout_data"://24
+                intDataPath = 24;
+                break;
+            case "easycard_print_checkout_data.Checkout_Info"://25
+                intDataPath = 25;
                 break;
             default://以上都不符合走這個
                 intDataPath = -1;
@@ -1560,6 +1592,16 @@ public class CS_PrintTemplate
                 intResult = m_ForLoopVars[23].m_intCount;
                 intNum = 23;
                 break;
+            case "easycard_print_checkout_data"://24
+                intIndex = m_ForLoopVars[24].m_intIndex;
+                intResult = m_ForLoopVars[24].m_intCount;
+                intNum = 24;
+                break;
+            case "easycard_print_checkout_data.Checkout_Info"://25
+                intIndex = m_ForLoopVars[25].m_intIndex;
+                intResult = m_ForLoopVars[25].m_intCount;
+                intNum = 25;
+                break;
             default://以上都不符合走這個
                 intResult = 0;
                 string[]strsBuf=strPath.Split('.');
@@ -1699,7 +1741,8 @@ public class CS_PrintTemplate
         m_ForLoopVars.Add(new ForLoopVar("report_print_data.promotions_info", 0));//21
         m_ForLoopVars.Add(new ForLoopVar("easycard_print_bill_data", 0));//22
         m_ForLoopVars.Add(new ForLoopVar("easycard_print_bill_data.Card_Info", 0));//23
-
+        m_ForLoopVars.Add(new ForLoopVar("easycard_print_checkout_data", 0));//24
+        m_ForLoopVars.Add(new ForLoopVar("easycard_print_checkout_data.Checkout_Info", 0));//25
         if (m_OrderPrintData!=null)
         {
             m_ForLoopVars[0].m_intCount = (m_OrderPrintData.order_items!=null)? m_OrderPrintData.order_items.Count : 0;
@@ -1744,6 +1787,10 @@ public class CS_PrintTemplate
             m_ForLoopVars[22].m_intIndex = 1;//非陣列變數集 索引初始為1
             m_ForLoopVars[23].m_intCount = (m_OrderPrintDataAll.easycard_print_bill_data != null) && (m_OrderPrintDataAll.easycard_print_bill_data.Card_Info != null) ? 1 : 0;
             m_ForLoopVars[23].m_intIndex = 1;//非陣列變數集 索引初始為1
+            m_ForLoopVars[24].m_intCount = (m_OrderPrintDataAll.easycard_print_bill_data != null) ? 1 : 0;
+            m_ForLoopVars[24].m_intIndex = 1;//非陣列變數集 索引初始為1
+            m_ForLoopVars[25].m_intCount = (m_OrderPrintDataAll.easycard_print_bill_data != null) && (m_OrderPrintDataAll.easycard_print_bill_data.Card_Info != null) ? 1 : 0;
+            m_ForLoopVars[25].m_intIndex = 1;//非陣列變數集 索引初始為1
         }
     }
 
@@ -2692,7 +2739,7 @@ class Program
         string strOrderPrintData = sr00.ReadToEnd();
         
         //報表~
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\EasyCardBILL_57.json");//InvalidInvoice_57.json
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\EasyCardCHECKOUT_57.json");//InvalidInvoice_57.json
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct_57.json");
         //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();
@@ -2706,7 +2753,10 @@ class Program
         StreamReader sr04 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\EasyCardAPIMsg.json");
         string strEasyCardBillData = sr04.ReadToEnd();
 
-        CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderPrintData, strElectronicInvoicePrinting, strReportData, strEasyCardBillData);
+        StreamReader sr05 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\EasyCardCHECKOUT.json");
+        string strEasyCardCheckoutData = sr05.ReadToEnd();
+
+        CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderPrintData, strElectronicInvoicePrinting, strReportData, strEasyCardBillData, strEasyCardCheckoutData);
         
         Pause();
     }
