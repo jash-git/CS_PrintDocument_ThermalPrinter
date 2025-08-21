@@ -9,6 +9,7 @@
       "CS_PrintDocument_ThermalPrinter/1.0.0": {
         "dependencies": {
           "System.Drawing.Common": "9.0.4",
+          "System.Text.Encoding.CodePages": "9.0.8",
           "ZXing.Net": "0.16.10",
           "ZXing.Net.Bindings.Windows.Compatibility": "0.16.13"
         },
@@ -44,6 +45,22 @@
           "lib/net8.0/System.Private.Windows.Core.dll": {
             "assemblyVersion": "9.0.0.0",
             "fileVersion": "9.0.425.16312"
+          }
+        }
+      },
+      "System.Text.Encoding.CodePages/9.0.8": {
+        "runtime": {
+          "lib/net8.0/System.Text.Encoding.CodePages.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.825.36511"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net8.0/System.Text.Encoding.CodePages.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.825.36511"
           }
         }
       },
@@ -88,6 +105,13 @@
       "sha512": "sha512-SbtusMUT1bCxZ14904ZPo2GZyelze0rwUni9wXrp8KX9Zlsda8idqpxra1RBvOA85WM0wW+fCI4GLrlCTYiE6A==",
       "path": "system.drawing.common/9.0.4",
       "hashPath": "system.drawing.common.9.0.4.nupkg.sha512"
+    },
+    "System.Text.Encoding.CodePages/9.0.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-saQP8rTuTrZ7haWrf1Vfr2ft39N+AEbUdCEwOTvjN4SOgX+G1gQTWQZGnDe4x4uJDivjgLt0Y6Xzsfm0wW80FA==",
+      "path": "system.text.encoding.codepages/9.0.8",
+      "hashPath": "system.text.encoding.codepages.9.0.8.nupkg.sha512"
     },
     "ZXing.Net/0.16.10": {
       "type": "package",

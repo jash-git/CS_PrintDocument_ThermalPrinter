@@ -12,6 +12,7 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
+using System.Runtime.InteropServices;
 
 public class TimeConvert
 {
@@ -565,6 +566,75 @@ public class CS_PrintTemplate
             return;
         }
     }
+
+    public String Base64_encode(String StrData)
+    {
+        //https://www.base64encode.net/
+        String StrAns;
+        StrAns = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(StrData));
+        return StrAns;
+    }
+    public String Base64_decode(String StrData)
+    {
+        //https://www.base64decode.net/
+        String StrAns;
+        byte[] data = System.Convert.FromBase64String(StrData);
+        StrAns = System.Text.ASCIIEncoding.ASCII.GetString(data);
+        return StrAns;
+    }
+    public void SentESCCommand(string strPrinterDriverName)//傳送ESC指令
+    {
+        List<string> listCmds = new List<string>();
+        if (m_PT_Page.StartBuzzer != null && m_PT_Page.StartBuzzer == "Y" && m_PT_Page.BuzzerCmd != null && m_PT_Page.BuzzerCmd.Length > 0)
+        {
+            listCmds.Add(Base64_decode(m_PT_Page.BuzzerCmd));
+        }
+        if (m_PT_Page.ExternalBuzzer != null && m_PT_Page.ExternalBuzzer == "Y" && m_PT_Page.ExtBuzzerCmd != null && m_PT_Page.ExtBuzzerCmd.Length > 0)
+        {
+            listCmds.Add(Base64_decode(m_PT_Page.ExtBuzzerCmd));
+        }
+
+        if(listCmds.Count>0)//有指令執行列印
+        {
+            Int32 dwError = 0, dwWritten = 0;
+            IntPtr hPrinter = new IntPtr(0);
+
+            DOCINFOA di = new DOCINFOA();
+            di.pDocName = "My C#.NET RAW Document";
+            di.pDataType = "RAW";
+            if (PrinterAPI.OpenPrinter(strPrinterDriverName, out hPrinter, IntPtr.Zero))
+            {
+                // 啟動文檔列印                    
+                if (PrinterAPI.StartDocPrinter(hPrinter, 1, di))
+                {
+                    // 開始列印                        
+                    if (PrinterAPI.StartPagePrinter(hPrinter))
+                    {
+                        for (int i = 0; i < listCmds.Count; i++)
+                        {
+                            byte[] bytes = Encoding.GetEncoding("big5").GetBytes(listCmds[i]);
+
+                            Int32 dwCount = bytes.Length;
+                            // 非託管指針              
+                            IntPtr pBytes = Marshal.AllocHGlobal(dwCount);
+                            // 將託管位元組陣列複製到非託管記憶體指標          
+                            Marshal.Copy(bytes, 0, pBytes, dwCount);
+
+                            // 向印表機輸出位元組  
+                            PrinterAPI.WritePrinter(hPrinter, pBytes, dwCount, out dwWritten);
+                        }
+
+                        PrinterAPI.EndPagePrinter(hPrinter);
+                    }
+
+                    PrinterAPI.EndDocPrinter(hPrinter);
+                }
+
+                PrinterAPI.ClosePrinter(hPrinter);
+            }
+        }
+
+    }
     public string PagePreprocess(bool blnFileMode=false)//「預先處理(Preprocess)
     {
         string strResult = "";
@@ -664,9 +734,10 @@ public class CS_PrintTemplate
             //json2object
             // m_JsonDocument = JsonDocument.Parse(strPrintTemplate);
             m_PT_Page = JsonSerializer.Deserialize<PT_Page>(strPrintTemplate);
-            if((m_PT_Page!=null) && (m_PT_Page.ChildElements!=null) && (m_PT_Page.ChildElements.Count>0))
+            if(blnPrinterFound && (m_PT_Page!=null) && (m_PT_Page.ChildElements!=null) && (m_PT_Page.ChildElements.Count>0))
             {
                 //「預先處理 (Preprocess)
+                SentESCCommand(strPrinterDriverName);
                 PagePreprocess(true);
 
                 // 就地修改 ChildElements 的順序，依照 Index 遞增排序 //如果你要遞減排序，改成 b.Index.CompareTo(a.Index)
@@ -772,7 +843,6 @@ public class CS_PrintTemplate
                         SingleProductPrint(strPrinterDriverName);//一菜一切
                     }            
                 }
-
             }//if (!(blnPrinterFound & blnPrintTemplateCreated))-else
 
         }
@@ -2731,6 +2801,8 @@ class Program
     }
     static void Main()
     {
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);//載入.net Big5編解碼函數庫(System.Text.Encoding.CodePages)
+
         //報表印表機~
         string strPrinterDriverName = "POS-80C";//"POS-58C";//"80mm Series Printer";//"58mm Series Printer";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
         //標籤機~ string strPrinterDriverName = "DT-2205";
@@ -2739,7 +2811,7 @@ class Program
         string strOrderPrintData = sr00.ReadToEnd();
         
         //報表~
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\EasyCardCHECKOUT_57.json");//InvalidInvoice_57.json
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\BILL_57.json");//EasyCardCHECKOUT_57.json
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct_57.json");
         //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();
@@ -2762,6 +2834,8 @@ class Program
     }
     static void Main_V1()
     {
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);//載入.net Big5編解碼函數庫(System.Text.Encoding.CodePages)
+
         //報表印表機~
         string strPrinterDriverName = "POS-80C";//"POS-58C";//"80mm Series Printer";//"58mm Series Printer";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
                                                 //標籤機~ string strPrinterDriverName = "DT-2205";
@@ -2836,6 +2910,8 @@ class Program
     }
     static void Main_V0()
     {
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);//載入.net Big5編解碼函數庫(System.Text.Encoding.CodePages)
+        
         float SysDpiX, SysDpiY;
         DPI_Funs.GetScreenDpi(out SysDpiX,out SysDpiY);
         Bitmap bmp1 = Barcode_Funs.QrCode("相關網站: https://github.com/micjahn/ZXing.Net/issues/458");

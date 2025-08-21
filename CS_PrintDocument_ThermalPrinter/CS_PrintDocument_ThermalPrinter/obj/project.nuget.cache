@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "/ez/qKSB6Qc=",
+  "dgSpecHash": "mUPGaK/d8rM=",
   "success": true,
   "projectFilePath": "C:\\Users\\jashv\\OneDrive\\桌面\\GITHUB\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter\\CS_PrintDocument_ThermalPrinter.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jashv\\.nuget\\packages\\microsoft.win32.systemevents\\9.0.4\\microsoft.win32.systemevents.9.0.4.nupkg.sha512",
     "C:\\Users\\jashv\\.nuget\\packages\\system.drawing.common\\9.0.4\\system.drawing.common.9.0.4.nupkg.sha512",
+    "C:\\Users\\jashv\\.nuget\\packages\\system.text.encoding.codepages\\9.0.8\\system.text.encoding.codepages.9.0.8.nupkg.sha512",
     "C:\\Users\\jashv\\.nuget\\packages\\zxing.net\\0.16.10\\zxing.net.0.16.10.nupkg.sha512",
     "C:\\Users\\jashv\\.nuget\\packages\\zxing.net.bindings.windows.compatibility\\0.16.13\\zxing.net.bindings.windows.compatibility.0.16.13.nupkg.sha512"
   ],

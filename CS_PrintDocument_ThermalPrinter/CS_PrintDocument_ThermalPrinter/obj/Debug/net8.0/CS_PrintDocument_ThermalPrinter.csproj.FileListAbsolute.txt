@@ -41,3 +41,5 @@ C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\CS_PrintDo
 C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\CS_PrintDocument_ThermalPrinter\CS_PrintDocument_ThermalPrinter\obj\Debug\net8.0\CS_PrintDocument_ThermalPrinter.pdb
 C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\CS_PrintDocument_ThermalPrinter\CS_PrintDocument_ThermalPrinter\obj\Debug\net8.0\CS_PrintDocument_ThermalPrinter.genruntimeconfig.cache
 C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\CS_PrintDocument_ThermalPrinter\CS_PrintDocument_ThermalPrinter\obj\Debug\net8.0\ref\CS_PrintDocument_ThermalPrinter.dll
+C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\CS_PrintDocument_ThermalPrinter\CS_PrintDocument_ThermalPrinter\bin\Debug\net8.0\System.Text.Encoding.CodePages.dll
+C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\CS_PrintDocument_ThermalPrinter\CS_PrintDocument_ThermalPrinter\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Text.Encoding.CodePages.dll

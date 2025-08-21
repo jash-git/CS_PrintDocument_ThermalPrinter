@@ -55,6 +55,10 @@
               "target": "Package",
               "version": "[9.0.4, )"
             },
+            "System.Text.Encoding.CodePages": {
+              "target": "Package",
+              "version": "[9.0.8, )"
+            },
             "ZXing.Net": {
               "target": "Package",
               "version": "[0.16.10, )"
