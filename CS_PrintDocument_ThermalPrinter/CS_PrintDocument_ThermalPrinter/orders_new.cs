@@ -423,6 +423,24 @@ namespace CS_PrintDocument_ThermalPrinter
         public easycard_print_bill_data easycard_print_bill_data { get; set; }//列印悠遊卡收據
         public easycard_print_checkout_data easycard_print_checkout_data {  get; set; }//列印悠遊卡 結帳資訊
 
+        public void SetVariable(string strterminal_sid, string strpos_no,string strpos_ver)
+        {
+            if (terminal_sid.Length==0 && strterminal_sid!=null && strterminal_sid.Length>0)
+            {
+                terminal_sid = strterminal_sid;
+            }
+
+            if (pos_no.Length == 0 && strpos_no != null && strpos_no.Length > 0)
+            {
+                pos_no = strpos_no;
+            }
+            
+            if (pos_ver.Length == 0 && strpos_ver != null && strpos_ver.Length > 0)
+            {
+                pos_ver = strpos_ver;
+            }
+        }
+
         public OrderPrintData()
         {
             order_items = new List<OrderItem>();
@@ -432,6 +450,9 @@ namespace CS_PrintDocument_ThermalPrinter
             invoice_data = new Invoice_Data();
             tablewares = new List<Tableware>();
 
+            terminal_sid = "";
+            pos_no = "";
+            pos_ver = "";
             strQrcodeInfor = "";
             PrintInvLogo = "Y";//列印發票LOGO
             PrintInvReceipt = "Y";//列印發票交易明細旗標  (print_config.print_inv_receipt=="Y") OR (cust_ein!="") =>Y/N

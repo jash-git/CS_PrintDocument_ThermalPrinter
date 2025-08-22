@@ -744,15 +744,31 @@ public class CS_PrintTemplate
                 m_PT_Page.ChildElements.Sort((a, b) => a.Index.CompareTo(b.Index));//使用Index排序
             }
 
-            m_OrderPrintDataAll = JsonSerializer.Deserialize<OrderPrintData>(strOrderPrintData);
-            
-            m_OrderPrintDataAll.invoice_print_data = JsonSerializer.Deserialize<InvoicePrintData>(strElectronicInvoicePrinting);
-            m_OrderPrintDataAll.invoice_print_data.SetVariable();
+
+            if ((strOrderPrintData != null) && (strOrderPrintData.Length > 0))
+            {
+                m_OrderPrintDataAll = JsonSerializer.Deserialize<OrderPrintData>(strOrderPrintData);
+            }
+            else
+            {
+                m_OrderPrintDataAll = new OrderPrintData();
+            }
+
+
+            if ((strElectronicInvoicePrinting != null) && (strElectronicInvoicePrinting.Length > 0))
+            {
+                m_OrderPrintDataAll.invoice_print_data = JsonSerializer.Deserialize<InvoicePrintData>(strElectronicInvoicePrinting);
+                m_OrderPrintDataAll.invoice_print_data.SetVariable();
+            }
 
             if ((strReportData != null) && (strReportData.Length>0))  
             {
                 m_OrderPrintDataAll.report_print_data = JsonSerializer.Deserialize<report_print_data>(strReportData);
                 m_OrderPrintDataAll.report_print_data.SetVariable();
+                string strterminal_sid = m_OrderPrintDataAll.report_print_data.terminal_sid;
+                string strpos_no = "";
+                string strpos_ver = m_OrderPrintDataAll.report_print_data.pos_ver;
+                m_OrderPrintDataAll.SetVariable(strterminal_sid, strpos_no, strpos_ver);
             }
 
             if((strEasyCardBillData != null) && (strEasyCardBillData.Length>0))
@@ -2811,7 +2827,7 @@ class Program
         string strOrderPrintData = sr00.ReadToEnd();
         
         //報表~
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\BILL_57.json");//EasyCardCHECKOUT_57.json
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\EasyCardCHECKOUT_57.json");//EasyCardCHECKOUT_57.json
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct_57.json");
         //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();

@@ -12,9 +12,9 @@
 	"Rotation": 0,
 	"ZoomRatio": 1,
 	"FontName": "新細明體",
-	"StartBuzzer": "Y",
+	"StartBuzzer": "N",
 	"ExternalBuzzer": "N",
-	"BuzzerCmd": "G0IDBA==",
+	"BuzzerCmd": "",
 	"ExtBuzzerCmd": "",
 	"PrintMode":"",
 	"ChildElements": [
