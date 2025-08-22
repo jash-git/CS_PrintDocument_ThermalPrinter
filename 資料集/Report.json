@@ -1,0 +1,101 @@
+{
+	"store_name": "VTEAM-茶飲店",
+	"pos_ver": "2.0.0.0",
+	"device_code": "247A5790B83AD5111122FE5E293A560DD065A392E5EF2211115DA38B0975A742",
+	"report_no": "DR-202504010",
+	"report_time": 1744262300,
+	"business_day": 1744214400,
+	"class_name": "早班",
+	"employee_no": "vteam-1",
+	"order_start_time": 1744261763,
+	"order_end_time": 1744262273,
+	"order_count": 2,
+	"discount_total": 10,
+	"promotion_total": 0,
+	"coupon_total": 0,
+	"tax_total": 8,
+	"service_total": 0,
+	"stock_push_amount": 0,
+	"stock_pull_amount": 0,
+	"sale_total": 160,
+	"sale_amount": 140,
+	"sale_item_count": 4,
+	"sale_item_avg_cost": 40,
+	"payment_cash_total": 140,
+	"expense_cash_total": 0,
+	"trans_reversal": 0,
+	"over_paid": 0,
+	"cash_total": 140,
+	"cancel_count": 0,
+	"cancel_total": 0,
+	"other_cancel_count": 0,
+	"other_cancel_total": 0,
+	"refund_cash_total": 0,
+	"delivery_total": 0,
+	"user_sid": 1,
+	"invoice_amount": 140,
+	"point_discount": -10,
+	"collection_payment": 0,
+	"payment_info": [
+		{
+			"payment_sid": 28,
+			"payment_code": "CASH",
+			"payment_name": "現金",
+			"payment_amount": 140,
+			"total_count": 2
+		}
+	],
+	"coupon_info": [],
+	"expense_info": [],
+	"inv_summery_info": {
+		"report_no": "DR-202504010",
+		"report_time": 1744262302,
+		"pos_ver": "2.0.0.0",
+		"device_code": "247A5790B83AD5111122FE5E293A560DD065A392E5EF2211115DA38B0975A742",
+		"business_id": "42897648",
+		"branch_no": "1",
+		"pos_no": "1",
+		"total_upload_inv": 2,
+		"total_upload_cancel_inv": 0,
+		"sale_quantity": 2,
+		"sale_amount": 140,
+		"cancel_quantity": 0,
+		"invalid_quantity": 0,
+		"cancel_amount": 0,
+		"invalid_amount": 0,
+		"details": [
+			{
+				"inv_type": 1,
+				"period": "11404",
+				"track": "XB",
+				"begin_no": "67241661",
+				"end_no": "67241662",
+				"quantity": 2,
+				"amount": 140
+			}
+		]
+	},
+	"category_sale_info": [
+		{
+			"category_code": "1002",
+			"category_name": "七盞茗茶",
+			"sort": 1,
+			"discount_fee": 10,
+			"quantity": 4,
+			"subtotal": 160,
+			"amount": 150
+		}
+	],
+	"promotions_info": [
+		{
+			"type": "DCD",
+			"code": "ALLOWANCE",
+			"name": "    折讓-5",
+			"quantity": 2,
+			"amount": 10
+		}
+	],
+	"report_type": "D",
+	"company_sid": 7,
+	"terminal_sid": "VT-POS-A01-00612"
+}
