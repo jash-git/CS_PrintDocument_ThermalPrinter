@@ -1,0 +1,111 @@
+{
+	"ElementType": "Embedded",
+	"ChildElements": [	
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 0,
+			"Width": 378,
+			"Height": -1,
+			"Content": "",
+			"RootName": "",
+			"Conditional":"",
+			"ConditionalValue":"",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Y",
+					"Index":0,				
+					"Width":378,
+					"Height":50,
+					"Content":"Version: {$pos_ver}",
+					"SecondContent":"",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":0,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}			
+			]
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 1,
+			"Width": 378,
+			"Height": -1,
+			"Content": "",
+			"RootName": "",
+			"Conditional":"",
+			"ConditionalValue":"",
+			"ChildElements": [		
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":378,
+					"Height":8,
+					"Content":"設備編號: {$terminal_sid}",
+					"SecondContent":"",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":20,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}			
+			]
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 5,
+			"Width": 378,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":378,
+					"Height":8,
+					"Content":"列印時間: {$print_time_year}-{$print_time_month}-{$print_time_day} {$print_time_hours}:{$print_time_minutes}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":20,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		}		
+	]
+
+}

@@ -414,9 +414,13 @@ namespace CS_PrintDocument_ThermalPrinter
         public string license_type { get; set; }
         public Invoice_Data invoice_data { get; set; }
         public string strQrcodeInfor { get; set; }
-        public string PrintInvLogo { get; set; }//列印發票LOGO
+        public string PrintLogo { get; set; }//列印LOGO
         public string PrintInvReceipt { get; set; }//列印發票交易明細旗標  (print_config.print_inv_receipt=="Y") OR (cust_ein!="") =>Y/N
-
+        public string print_time_year { get; set; }
+        public string print_time_month { get; set; }
+        public string print_time_day { get; set; }
+        public string print_time_hours { get; set; }
+        public string print_time_minutes { get; set; }
         public List<Tableware> tablewares { get; set; }
         public InvoicePrintData invoice_print_data { get; set; }//電子發票列印資料
         public report_print_data report_print_data { get; set; }//報表列印資料
@@ -454,7 +458,7 @@ namespace CS_PrintDocument_ThermalPrinter
             pos_no = "";
             pos_ver = "";
             strQrcodeInfor = "";
-            PrintInvLogo = "Y";//列印發票LOGO
+            PrintLogo = "Y";//列印發票LOGO
             PrintInvReceipt = "Y";//列印發票交易明細旗標  (print_config.print_inv_receipt=="Y") OR (cust_ein!="") =>Y/N
         }
         public OrderPrintData order_itemsDeepClone(int index)//深層複製

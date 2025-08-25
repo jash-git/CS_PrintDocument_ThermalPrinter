@@ -1,5 +1,5 @@
 {
-	"Content": "EasyCardBILL_57mm,P_W=57mm,三欄W:218,80,80,一欄W:378",
+	"Content": "EasyCardCHECKOUT_57mm,P_W=57mm,三欄W:218,80,80,一欄W:378",
 	"ElementType": "Page",
 	"X": 0,
 	"Y": 0,
@@ -28,7 +28,7 @@
 			"Width": 456,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintInvLogo",
+			"RootName": "PrintLogo",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
@@ -56,7 +56,7 @@
 			"Width": 456,
 			"Height": 104,
 			"Content": "",
-			"RootName": "PrintInvLogo",
+			"RootName": "PrintLogo",
 			"Conditional":"!=",
 			"ConditionalValue":"Y",	
 			"ChildElements": [
@@ -82,7 +82,7 @@
 							"Index":0,			
 							"Width":378,
 							"Height":104,
-							"Content":"{$PName}",
+							"Content":"{$store_name}",
 							"VerticalContentAlig":"Center",
 							"HorizontalContentAlig":"Center",
 							"ContentSize":25,
@@ -117,10 +117,10 @@
 					"Index":0,			
 					"Width":378,
 					"Height":-1,
-					"Content":"悠遊卡交易憑證(顧客聯)",
+					"Content":"悠遊卡結帳憑證",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Center",
-					"ContentSize":12,
+					"ContentSize":13,
 					"ContentBold":"Y",
 					"VerticalSpacing":5,
 					"IntervalSymbols":"",
@@ -139,7 +139,7 @@
 			"Width": 378,
 			"Height": -1,
 			"Content": "",
-			"RootName": "easycard_print_bill_data",
+			"RootName": "easycard_print_checkout_data",
 			"ChildElements": [		
 				{
 					"ElementType":"Text",
@@ -172,7 +172,7 @@
 			"Width": 378,
 			"Height": -1,
 			"Content": "",
-			"RootName": "easycard_print_bill_data",
+			"RootName": "easycard_print_checkout_data",
 			"ChildElements": [		
 				{
 					"ElementType":"Text",
@@ -205,7 +205,7 @@
 			"Width": 378,
 			"Height": -1,
 			"Content": "",
-			"RootName": "easycard_print_bill_data",
+			"RootName": "easycard_print_checkout_data",
 			"ChildElements": [		
 				{
 					"ElementType":"Text",
@@ -271,7 +271,7 @@
 			"Width": 378,
 			"Height": 8,
 			"Content": "",
-			"RootName": "easycard_print_bill_data",
+			"RootName": "easycard_print_checkout_data",
 			"ChildElements": [
 				{
 					"ElementType":"Text",
@@ -304,7 +304,7 @@
 			"Width": 378,
 			"Height": 8,
 			"Content": "",
-			"RootName": "easycard_print_bill_data.Card_Info",
+			"RootName": "easycard_print_checkout_data",
 			"ChildElements": [
 				{
 					"ElementType":"Text",
@@ -315,7 +315,7 @@
 					"Index":0,				
 					"Width":378,
 					"Height":-1,
-					"Content":"悠遊卡卡號: {$Receipt_Card_ID}",
+					"Content":"平帳:",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
 					"ContentSize":9,
@@ -337,40 +337,7 @@
 			"Width": 378,
 			"Height": 8,
 			"Content": "",
-			"RootName": "easycard_print_bill_data",
-			"ChildElements": [
-				{
-					"ElementType":"Text",
-					"X":0,
-					"Y":0,
-					"X_Alignment":"X",
-					"Y_Alignment":"Increment",
-					"Index":0,				
-					"Width":378,
-					"Height":-1,
-					"Content":"交易類別: {$Precessing_Name}",
-					"VerticalContentAlig":"Center",
-					"HorizontalContentAlig":"Left",
-					"ContentSize":9,
-					"ContentBold":"N",
-					"VerticalSpacing":0,
-					"IntervalSymbols":"",
-					"AutoWrap":"N",
-					"Rotation":0
-				}
-			]
-		},
-		{
-			"ElementType": "Block",
-			"X": 0,
-			"Y": 0,
-			"X_Alignment": "X",
-			"Y_Alignment": "Y",
-			"Index": 9,
-			"Width": 378,
-			"Height": 8,
-			"Content": "",
-			"RootName": "easycard_print_bill_data",
+			"RootName": "easycard_print_checkout_data",
 			"ChildElements": [
 				{
 					"ElementType":"Text",
@@ -399,11 +366,11 @@
 			"Y": 0,
 			"X_Alignment": "X",
 			"Y_Alignment": "Y",
-			"Index": 10,
+			"Index": 9,
 			"Width": 378,
 			"Height": 8,
 			"Content": "",
-			"RootName": "easycard_print_bill_data",
+			"RootName": "easycard_print_checkout_data",
 			"ChildElements": [
 				{
 					"ElementType":"Text",
@@ -432,11 +399,11 @@
 			"Y": 0,
 			"X_Alignment": "X",
 			"Y_Alignment": "Y",
-			"Index": 11,
+			"Index": 10,
 			"Width": 378,
 			"Height": 8,
 			"Content": "",
-			"RootName": "easycard_print_bill_data",
+			"RootName": "",
 			"ChildElements": [
 				{
 					"ElementType":"Text",
@@ -445,14 +412,47 @@
 					"X_Alignment":"X",
 					"Y_Alignment":"Increment",
 					"Index":0,				
-					"Width":378,
-					"Height":-1,
-					"Content":"RRN: {$RRN}",
+					"Width":576,
+					"Height":8,
+					"Content":"------------------------------------------------------------------------------------------",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
-					"ContentSize":9,
+					"ContentSize":8,
 					"ContentBold":"N",
-					"VerticalSpacing":0,
+					"VerticalSpacing":10,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 11,
+			"Width": 378,
+			"Height": 8,
+			"Content": "",
+			"RootName": "easycard_print_checkout_data.Checkout_Info",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":8,
+					"Content":"購貨筆數: {$Sale_Count}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":20,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",
 					"Rotation":0
@@ -469,7 +469,7 @@
 			"Width": 378,
 			"Height": 8,
 			"Content": "",
-			"RootName": "easycard_print_bill_data.Card_Info",
+			"RootName": "easycard_print_checkout_data.Checkout_Info",
 			"ChildElements": [
 				{
 					"ElementType":"Text",
@@ -478,14 +478,14 @@
 					"X_Alignment":"X",
 					"Y_Alignment":"Increment",
 					"Index":0,				
-					"Width":378,
-					"Height":-1,
-					"Content":"交易前餘額: {$Befer_Amount}",
+					"Width":576,
+					"Height":8,
+					"Content":"購貨總額: ${$Sale_Amount}",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
-					"ContentSize":9,
+					"ContentSize":8,
 					"ContentBold":"N",
-					"VerticalSpacing":0,
+					"VerticalSpacing":20,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",
 					"Rotation":0
@@ -502,7 +502,7 @@
 			"Width": 378,
 			"Height": 8,
 			"Content": "",
-			"RootName": "easycard_print_bill_data",
+			"RootName": "easycard_print_checkout_data.Checkout_Info",
 			"ChildElements": [
 				{
 					"ElementType":"Text",
@@ -511,14 +511,14 @@
 					"X_Alignment":"X",
 					"Y_Alignment":"Increment",
 					"Index":0,				
-					"Width":378,
-					"Height":-1,
-					"Content":"自動加值金額: {$Auto_Add_Value}",
+					"Width":576,
+					"Height":8,
+					"Content":"退貨筆數: {$Refund_Count}",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
-					"ContentSize":9,
+					"ContentSize":8,
 					"ContentBold":"N",
-					"VerticalSpacing":0,
+					"VerticalSpacing":20,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",
 					"Rotation":0
@@ -535,7 +535,7 @@
 			"Width": 378,
 			"Height": 8,
 			"Content": "",
-			"RootName": "easycard_print_bill_data",
+			"RootName": "easycard_print_checkout_data.Checkout_Info",
 			"ChildElements": [
 				{
 					"ElementType":"Text",
@@ -544,14 +544,14 @@
 					"X_Alignment":"X",
 					"Y_Alignment":"Increment",
 					"Index":0,				
-					"Width":378,
-					"Height":-1,
-					"Content":"交易金額: {$Trans_Amount}",
+					"Width":576,
+					"Height":8,
+					"Content":"退貨總額: ${$Refund_Amount}",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
-					"ContentSize":9,
+					"ContentSize":8,
 					"ContentBold":"N",
-					"VerticalSpacing":0,
+					"VerticalSpacing":20,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",
 					"Rotation":0
@@ -568,7 +568,7 @@
 			"Width": 378,
 			"Height": 8,
 			"Content": "",
-			"RootName": "easycard_print_bill_data.Card_Info",
+			"RootName": "easycard_print_checkout_data.Checkout_Info",
 			"ChildElements": [
 				{
 					"ElementType":"Text",
@@ -577,19 +577,184 @@
 					"X_Alignment":"X",
 					"Y_Alignment":"Increment",
 					"Index":0,				
-					"Width":378,
-					"Height":-1,
-					"Content":"交易後餘額: {$Balance_Amount}",
+					"Width":576,
+					"Height":8,
+					"Content":"自動加值筆數: {$Auto_Add_Value_Count}",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Left",
-					"ContentSize":9,
+					"ContentSize":8,
 					"ContentBold":"N",
-					"VerticalSpacing":0,
+					"VerticalSpacing":20,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",
 					"Rotation":0
 				}
 			]
-		}	
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 16,
+			"Width": 378,
+			"Height": 8,
+			"Content": "",
+			"RootName": "easycard_print_checkout_data.Checkout_Info",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":8,
+					"Content":"自動加值總額: ${$Auto_Add_Value_Amount}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":20,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 17,
+			"Width": 378,
+			"Height": 8,
+			"Content": "",
+			"RootName": "easycard_print_checkout_data.Checkout_Info",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":8,
+					"Content":"購貨類總筆數: {$Trans_Count}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":20,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 18,
+			"Width": 378,
+			"Height": 8,
+			"Content": "",
+			"RootName": "easycard_print_checkout_data.Checkout_Info",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":8,
+					"Content":"購貨類總金額: ${$Trans_Amount}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":10,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 19,
+			"Width": 378,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":8,
+					"Content":"------------------------------------------------------------------------------------------",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":10,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 20,
+			"Width": 378,
+			"Height": 8,
+			"Content": "",
+			"RootName": "easycard_print_checkout_data",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":576,
+					"Height":8,
+					"Content":"購貨類總淨額: ${$Net_Total}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":10,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		}		
 	]
 }

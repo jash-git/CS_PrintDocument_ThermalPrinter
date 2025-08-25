@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Data;
 
 public class TimeConvert
 {
@@ -545,6 +546,7 @@ public class CS_PrintTemplate
     private string m_strRealData = "";//目前真實資料
     private string m_strDisplayMode = "Single";//顯示模式: Single/Merge ~ 元件預先處理被更動
     private int m_intPages = 1;//此範本一次要列印次數(一菜一切)
+    private string m_strPrinterDriverName;
     //---運算系統變數
 
     public bool m_blnResult;
@@ -712,7 +714,7 @@ public class CS_PrintTemplate
         return strResult;
     }
 
-    public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate,string strOrderPrintData,string strElectronicInvoicePrinting,string strReportData,string strEasyCardBillData,string strEasyCardCheckoutData)//建構子 
+    public CS_PrintTemplate(string strPrinterDriverName,string strPrintTemplate,string strDataSet,string strDataSetType="")//建構子 
     {
         try
         {
@@ -725,6 +727,7 @@ public class CS_PrintTemplate
                 if (printer.Equals(strPrinterDriverName, StringComparison.OrdinalIgnoreCase))
                 {
                     blnPrinterFound = true;
+                    m_strPrinterDriverName = strPrinterDriverName;
                     break;
                 }
             }
@@ -745,6 +748,30 @@ public class CS_PrintTemplate
             }
 
 
+            string strOrderPrintData = "";
+            string strElectronicInvoicePrinting = "";
+            string strReportData = "";
+            string strEasyCardBillData = "";
+            string strEasyCardCheckoutData = "";
+            switch (strDataSetType)
+            {
+                case "INVOICE":
+                    strElectronicInvoicePrinting = strDataSet;
+                    break;
+                case "REPORT":
+                    strReportData = strDataSet;
+                    break;
+                case "EASYCARDBILL":
+                    strEasyCardBillData = strDataSet;
+                    break;
+                case "EASYCARDCHECKOUT":
+                    strEasyCardCheckoutData = strDataSet;
+                    break;
+                default://以上都不符合走這個
+                    strOrderPrintData = strDataSet;
+                    break;
+            }
+
             if ((strOrderPrintData != null) && (strOrderPrintData.Length > 0))
             {
                 m_OrderPrintDataAll = JsonSerializer.Deserialize<OrderPrintData>(strOrderPrintData);
@@ -753,7 +780,6 @@ public class CS_PrintTemplate
             {
                 m_OrderPrintDataAll = new OrderPrintData();
             }
-
 
             if ((strElectronicInvoicePrinting != null) && (strElectronicInvoicePrinting.Length > 0))
             {
@@ -815,6 +841,16 @@ public class CS_PrintTemplate
                     m_OrderPrintDataAll.order_time_hours = DateTimeBuf.ToString("HH");
                     m_OrderPrintDataAll.order_time_minutes = DateTimeBuf.ToString("mm");
                 }
+
+                DateTimeBuf = DateTime.Now;
+                if (DateTimeBuf != null)
+                {
+                    m_OrderPrintDataAll.print_time_year = DateTimeBuf.ToString("yyyy");
+                    m_OrderPrintDataAll.print_time_month = DateTimeBuf.ToString("MM");
+                    m_OrderPrintDataAll.print_time_day = DateTimeBuf.ToString("dd");
+                    m_OrderPrintDataAll.print_time_hours = DateTimeBuf.ToString("HH");
+                    m_OrderPrintDataAll.print_time_minutes = DateTimeBuf.ToString("mm");
+                }
                 //---補上時間變數字串資料 因為JSON只能存取變數
 
                 m_fltSysDpi = 203 * m_PT_Page.ZoomRatio;//設定印表機DPI
@@ -848,17 +884,6 @@ public class CS_PrintTemplate
                     m_intPages = 1;//一般模式
                 }
 
-                if(m_intPages==1)
-                {
-                    NormalPrint(strPrinterDriverName);//一般列印模式
-                }
-                else
-                {//一菜一切
-                    if(m_intPages>0)
-                    {
-                        SingleProductPrint(strPrinterDriverName);//一菜一切
-                    }            
-                }
             }//if (!(blnPrinterFound & blnPrintTemplateCreated))-else
 
         }
@@ -868,6 +893,38 @@ public class CS_PrintTemplate
             m_strResult = $"建構子運行失敗;{ex.Message}";
         }
 
+    }
+
+    public void Printing(string strpos_ver = "",string strpos_no="", string strterminal_sid="",string strprintlogo="Y")
+    {
+        try
+        {
+            m_OrderPrintDataAll.SetVariable(strterminal_sid, strpos_no, strpos_ver);
+            m_OrderPrintDataAll.PrintLogo = strprintlogo;
+            m_blnResult = true;
+        }
+        catch (Exception ex)
+        {
+            m_blnResult = false;
+            m_strResult = $"PrintPage運行失敗;{ex.Message}";
+        }
+
+        if(!m_blnResult)
+        {
+            return;
+        }
+
+        if (m_intPages == 1)
+        {
+            NormalPrint();//一般列印模式
+        }
+        else
+        {//一菜一切
+            if (m_intPages > 0)
+            {
+                SingleProductPrint();//一菜一切
+            }
+        }
     }
 
     //---
@@ -1849,7 +1906,7 @@ public class CS_PrintTemplate
             m_ForLoopVars[9].m_intIndex = 1;//非陣列變數集 索引初始為1
             m_ForLoopVars[10].m_intCount = (m_OrderPrintDataAll.invoice_print_data != null) ? 1 : 0;//非陣列變數集 數量一率為1
             m_ForLoopVars[10].m_intIndex = 1;//非陣列變數集 索引初始為1
-            m_ForLoopVars[11].m_intCount = (m_OrderPrintDataAll.report_print_data != null) && (m_OrderPrintDataAll.invoice_print_data.Items != null)? m_OrderPrintDataAll.invoice_print_data.Items.Count : 0;
+            m_ForLoopVars[11].m_intCount = (m_OrderPrintDataAll.invoice_print_data != null) && (m_OrderPrintDataAll.invoice_print_data.Items != null)? m_OrderPrintDataAll.invoice_print_data.Items.Count : 0;
             m_ForLoopVars[11].m_intIndex = -1;
             m_ForLoopVars[13].m_intCount = (m_OrderPrintDataAll.report_print_data != null) ? 1 : 0;//非陣列變數集 數量一率為1
             m_ForLoopVars[13].m_intIndex = 1;//非陣列變數集 索引初始為1
@@ -1873,9 +1930,9 @@ public class CS_PrintTemplate
             m_ForLoopVars[22].m_intIndex = 1;//非陣列變數集 索引初始為1
             m_ForLoopVars[23].m_intCount = (m_OrderPrintDataAll.easycard_print_bill_data != null) && (m_OrderPrintDataAll.easycard_print_bill_data.Card_Info != null) ? 1 : 0;
             m_ForLoopVars[23].m_intIndex = 1;//非陣列變數集 索引初始為1
-            m_ForLoopVars[24].m_intCount = (m_OrderPrintDataAll.easycard_print_bill_data != null) ? 1 : 0;
+            m_ForLoopVars[24].m_intCount = (m_OrderPrintDataAll.easycard_print_checkout_data != null) ? 1 : 0;
             m_ForLoopVars[24].m_intIndex = 1;//非陣列變數集 索引初始為1
-            m_ForLoopVars[25].m_intCount = (m_OrderPrintDataAll.easycard_print_bill_data != null) && (m_OrderPrintDataAll.easycard_print_bill_data.Card_Info != null) ? 1 : 0;
+            m_ForLoopVars[25].m_intCount = (m_OrderPrintDataAll.easycard_print_checkout_data != null) && (m_OrderPrintDataAll.easycard_print_checkout_data.Checkout_Info != null) ? 1 : 0;
             m_ForLoopVars[25].m_intIndex = 1;//非陣列變數集 索引初始為1
         }
     }
@@ -2324,11 +2381,11 @@ public class CS_PrintTemplate
     
     //---
     //一般列印
-    private void NormalPrint(string strPrinterDriverName)//一般列印模式
+    private void NormalPrint()//一般列印模式
     {
         m_PrintDocument = null;
         m_PrintDocument = new PrintDocument();//印表畫布
-        m_PrintDocument.PrinterSettings.PrinterName = strPrinterDriverName;
+        m_PrintDocument.PrinterSettings.PrinterName = m_strPrinterDriverName;
         m_PrintDocument.PrintPage += new PrintPageEventHandler(PrintPage);
         m_PrintDocument.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
 
@@ -2543,7 +2600,7 @@ public class CS_PrintTemplate
 
     //---
     //一菜一切
-    private void SingleProductPrint(string strPrinterDriverName)
+    private void SingleProductPrint()
     {
         int intCS_Count = 0;//C# 紀錄第幾項商品變數
         for (int i = 0; i < m_OrderPrintDataAll.order_items.Count; i++)
@@ -2597,7 +2654,7 @@ public class CS_PrintTemplate
 
                 m_PrintDocument = null;
                 m_PrintDocument = new PrintDocument();//印表畫布
-                m_PrintDocument.PrinterSettings.PrinterName = strPrinterDriverName;
+                m_PrintDocument.PrinterSettings.PrinterName = m_strPrinterDriverName;
                 m_PrintDocument.PrintPage += new PrintPageEventHandler(SingleProductPrintPage);
                 m_PrintDocument.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
 
@@ -2819,18 +2876,20 @@ class Program
     {
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);//載入.net Big5編解碼函數庫(System.Text.Encoding.CodePages)
 
-        //報表印表機~
+        //印表機驅動名稱
         string strPrinterDriverName = "POS-80C";//"POS-58C";//"80mm Series Printer";//"58mm Series Printer";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
         //標籤機~ string strPrinterDriverName = "DT-2205";
 
-        StreamReader sr00 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Input.json");
-        string strOrderPrintData = sr00.ReadToEnd();
-        
-        //報表~
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\EasyCardCHECKOUT_57.json");//EasyCardCHECKOUT_57.json
+        //範本
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Number_80.json");//EasyCardCHECKOUT_57.json
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct_57.json");
         //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();
+
+
+        //資料集
+        StreamReader sr00 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Input.json");
+        string strOrderPrintData = sr00.ReadToEnd();
 
         StreamReader sr02 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Invoice.json");
         string strElectronicInvoicePrinting = sr02.ReadToEnd();
@@ -2844,8 +2903,8 @@ class Program
         StreamReader sr05 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\EasyCardCHECKOUT.json");
         string strEasyCardCheckoutData = sr05.ReadToEnd();
 
-        CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderPrintData, strElectronicInvoicePrinting, strReportData, strEasyCardBillData, strEasyCardCheckoutData);
-        
+        CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderPrintData); //INVOICE、REPORT、EASYCARDBILL、EASYCARDCHECKOUT
+        CPT.Printing("3.0.0.0", "VTPOS202000002", "VT-POS-2020-00002", "N");
         Pause();
     }
     static void Main_V1()

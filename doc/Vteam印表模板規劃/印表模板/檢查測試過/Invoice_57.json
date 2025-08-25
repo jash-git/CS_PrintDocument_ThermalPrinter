@@ -67,7 +67,7 @@
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintInvLogo",
+			"RootName": "PrintLogo",
 			"Conditional":"!=",
 			"ConditionalValue":"Y",	
 			"ChildElements": [
@@ -118,7 +118,7 @@
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintInvLogo",
+			"RootName": "PrintLogo",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
