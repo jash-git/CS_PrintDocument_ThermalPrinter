@@ -37,7 +37,7 @@
 					"X_Alignment":"X",
 					"Y_Alignment":"Y",
 					"Index":0,
-					"Width":160,
+					"Width":320,
 					"Height":24,
 					"Content":"{$order_type_name}({$item_count} - {$item_no})",
 					"VerticalContentAlig":"Center",
@@ -61,7 +61,7 @@
 			"Width": 320,
 			"Height": -1,
 			"Content": "",
-			"RootName": "order_items",
+			"RootName": "",
 			"ChildElements": [
 				{
 					"ElementType":"Text",
@@ -70,7 +70,7 @@
 					"X_Alignment":"X",
 					"Y_Alignment":"Y",
 					"Index":0,
-					"Width":320,
+					"Width":290,
 					"Height":24,
 					"Content":"\"{$call_num}\"",
 					"VerticalContentAlig":"Center",
@@ -175,7 +175,7 @@
 											"Y_Alignment":"Increment",
 											"Index":0,
 											"Width":320,
-											"Height":24,
+											"Height":-1,
 											"Content":"{$product_name}",
 											"VerticalContentAlig":"Center",
 											"HorizontalContentAlig":"Left",
@@ -216,7 +216,7 @@
 											"ContentBold":"N",
 											"VerticalSpacing":1,
 											"IntervalSymbols":"",
-											"AutoWrap":"Y",									
+											"AutoWrap":"N",									
 											"Rotation":0					
 										}									
 									]									
@@ -254,7 +254,7 @@
 													"Y_Alignment":"Increment",
 													"Index":0,
 													"Width":296,
-													"Height":24,
+													"Height":-1,
 													"Content":"{$condiment_name}(${$price})",
 													"VerticalContentAlig":"Center",
 													"HorizontalContentAlig":"Left",
@@ -485,8 +485,8 @@
 											"X_Alignment":"X",
 											"Y_Alignment":"Increment",
 											"Index":0,
-											"Width":320,
-											"Height":40,
+											"Width":270,
+											"Height":-1,
 											"Content":"${$subtotal} ",
 											"VerticalContentAlig":"Center",
 											"HorizontalContentAlig":"Right",
@@ -494,7 +494,7 @@
 											"ContentBold":"N",
 											"VerticalSpacing":1,
 											"IntervalSymbols":"",
-											"AutoWrap":"Y",									
+											"AutoWrap":"N",									
 											"Rotation":0					
 										}									
 									]									
