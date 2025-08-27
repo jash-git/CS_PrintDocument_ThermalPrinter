@@ -1,5 +1,5 @@
 {
-	"Content": "ScanCodeSummary_80mm X=0,P_W=(80)mm,三欄W:376,80,80,一欄W:500",
+	"Content": "Bill_80mm X=0,P_W=(80)mm,三欄W:376,80,80,一欄W:500",
 	"ElementType": "Page",
 	"X": 0,
 	"Y": 0,
@@ -20,9 +20,9 @@
 	"IncludePages":[	
 		{
 			"Index": 0,
-			"TemplateSID": "C:\\Users\\jashv\\OneDrive\\桌面\\GITHUB\\CS_PrintDocument_ThermalPrinter\\doc\\Vteam印表模板規劃\\印表模板\\Footer.json"
+			"TemplateSID": "dea37190-82e4-11f0-8df5-ff3b19ded749"
 		}	
-	],	
+	],		
 	"ChildElements": [
 		{
 			"ElementType": "Block",
@@ -122,13 +122,13 @@
 					"Y_Alignment":"Increment",
 					"Index":0,			
 					"Width":500,
-					"Height":-1,
-					"Content":"掃碼點單({$order_type_name})",
+					"Height":104,
+					"Content":"{$call_num}",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Center",
-					"ContentSize":13,
+					"ContentSize":40,
 					"ContentBold":"Y",
-					"VerticalSpacing":1,
+					"VerticalSpacing":10,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",							
 					"Rotation":0
@@ -151,17 +151,17 @@
 					"ElementType":"Text",
 					"X":0,
 					"Y":0,
-					"X_Alignment":"Center",
+					"X_Alignment":"X",
 					"Y_Alignment":"Increment",
 					"Index":0,				
 					"Width":500,
-					"Height":-1,
-					"Content":"【工作單匯總表】",
+					"Height":8,
+					"Content":"單號({$order_type_name}):{$call_num}",
 					"VerticalContentAlig":"Center",
-					"HorizontalContentAlig":"Center",
-					"ContentSize":13,
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
 					"ContentBold":"N",
-					"VerticalSpacing":1,
+					"VerticalSpacing":20,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",
 					"Rotation":0
@@ -1417,89 +1417,6 @@
 				}				
 			]
 		},
-		{
-			"ElementType":"Table",
-			"X":0,
-			"Y":0,
-			"X_Alignment":"X",
-			"Y_Alignment":"Y",
-			"Index":20,				
-			"Width":640,
-			"Height":-1,
-			"Content":"",
-			"RowSpacing":1,
-			"AlwaysPrint":"N",
-			"ChildElements":[
-				{
-					"ElementType": "Block",
-					"X": 0,
-					"Y": 0,
-					"X_Alignment": "X",
-					"Y_Alignment": "Y",
-					"Index": 0,
-					"Width": 640,
-					"Height": 8,
-					"Content": "",
-					"RootName": "point_discount",
-					"Conditional": "!=",
-					"ConditionalValue": "0",
-					"ChildElements": [
-						{
-							"ElementType":"Text",
-							"X":0,
-							"Y":0,
-							"X_Alignment":"X",
-							"Y_Alignment":"Increment",
-							"Index":0,				
-							"Width":500,
-							"Height":40,
-							"Content":"點數折抵金額 : -{$point_discount}",
-							"VerticalContentAlig":"Center",
-							"HorizontalContentAlig":"Left",
-							"ContentSize":13,
-							"ContentBold":"N",
-							"VerticalSpacing":1,
-							"IntervalSymbols":"",
-							"AutoWrap":"N",
-							"Rotation":0
-						}			
-					]
-				},
-				{
-					"ElementType": "Block",
-					"X": 0,
-					"Y": 0,
-					"X_Alignment": "X",
-					"Y_Alignment": "Y",
-					"Index": 1,
-					"Width": 640,
-					"Height": 8,
-					"Content": "",
-					"RootName": "",
-					"ChildElements": [
-						{
-							"ElementType":"Text",
-							"X":0,
-							"Y":0,
-							"X_Alignment":"X",
-							"Y_Alignment":"Increment",
-							"Index":0,				
-							"Width":500,
-							"Height":8,
-							"Content":"------------------------------------------------------------------------------------------",
-							"VerticalContentAlig":"Center",
-							"HorizontalContentAlig":"Left",
-							"ContentSize":8,
-							"ContentBold":"N",
-							"VerticalSpacing":10,
-							"IntervalSymbols":"",
-							"AutoWrap":"N",
-							"Rotation":0
-						}				
-					]
-				}				
-			]
-		},		
 		{
 			"ElementType": "Block",
 			"X": 0,

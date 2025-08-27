@@ -670,7 +670,9 @@ public class CS_PrintTemplate
                             strEmbedded = sr00.ReadToEnd();
                         }
                         else
-                        {//DB模式
+                        {//DB模式 ~
+                         //json_Footer ~ SELECT template_name,template_value FROM printer_template WHERE SID = "dea37190-82e4-11f0-8df5-ff3b19ded749";
+                         //json_InvoiceDetails_57 ~ SELECT template_name,template_value FROM printer_template WHERE SID = "2a46b1b0-82f3-11f0-af43-578ded228293";
 
                         }
                     }

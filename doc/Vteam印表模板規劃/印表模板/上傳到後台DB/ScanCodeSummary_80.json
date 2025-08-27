@@ -1,5 +1,5 @@
 {
-	"Content": "Work_80mm X=0,P_W=(80)mm,三欄W:376,80,80,一欄W:500",
+	"Content": "ScanCodeSummary_80mm X=0,P_W=(80)mm,三欄W:376,80,80,一欄W:500",
 	"ElementType": "Page",
 	"X": 0,
 	"Y": 0,
@@ -20,7 +20,7 @@
 	"IncludePages":[	
 		{
 			"Index": 0,
-			"TemplateSID": "C:\\Users\\jashv\\OneDrive\\桌面\\GITHUB\\CS_PrintDocument_ThermalPrinter\\doc\\Vteam印表模板規劃\\印表模板\\Footer.json"
+			"TemplateSID": "dea37190-82e4-11f0-8df5-ff3b19ded749"
 		}	
 	],	
 	"ChildElements": [
@@ -122,13 +122,13 @@
 					"Y_Alignment":"Increment",
 					"Index":0,			
 					"Width":500,
-					"Height":104,
-					"Content":"{$call_num}",
+					"Height":-1,
+					"Content":"掃碼點單({$order_type_name})",
 					"VerticalContentAlig":"Center",
 					"HorizontalContentAlig":"Center",
-					"ContentSize":40,
+					"ContentSize":13,
 					"ContentBold":"Y",
-					"VerticalSpacing":10,
+					"VerticalSpacing":1,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",							
 					"Rotation":0
@@ -151,17 +151,17 @@
 					"ElementType":"Text",
 					"X":0,
 					"Y":0,
-					"X_Alignment":"X",
+					"X_Alignment":"Center",
 					"Y_Alignment":"Increment",
 					"Index":0,				
 					"Width":500,
-					"Height":8,
-					"Content":"單號({$order_type_name}):{$call_num}",
+					"Height":-1,
+					"Content":"【工作單匯總表】",
 					"VerticalContentAlig":"Center",
-					"HorizontalContentAlig":"Left",
-					"ContentSize":8,
+					"HorizontalContentAlig":"Center",
+					"ContentSize":13,
 					"ContentBold":"N",
-					"VerticalSpacing":20,
+					"VerticalSpacing":1,
 					"IntervalSymbols":"",
 					"AutoWrap":"N",
 					"Rotation":0
@@ -490,7 +490,7 @@
 					"Height":24,
 					"Content":"價格",
 					"VerticalContentAlig":"Center",
-					"HorizontalContentAlig":"Left",
+					"HorizontalContentAlig":"Right",
 					"ContentSize":9,
 					"VerticalSpacing":1,
 					"IntervalSymbols":"",
@@ -1094,12 +1094,710 @@
 			]
 		},
 		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 16,
+			"Width": 640,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":500,
+					"Height":40,
+					"Content":"小計金額: {$subtotal}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":13,
+					"ContentBold":"N",
+					"VerticalSpacing":1,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}
+			]
+		},
+		{
 			"ElementType":"Table",
 			"X":0,
 			"Y":0,
 			"X_Alignment":"X",
 			"Y_Alignment":"Y",
-			"Index":16,				
+			"Index":17,				
+			"Width":640,
+			"Height":-1,
+			"Content":"",
+			"RowSpacing":1,
+			"AlwaysPrint":"N",
+			"ChildElements":[
+				{
+					"ElementType": "Block",
+					"X": 0,
+					"Y": 0,
+					"X_Alignment": "X",
+					"Y_Alignment": "Y",
+					"Index": 0,
+					"Width": 640,
+					"Height": 8,
+					"Content": "",
+					"RootName": "discount_fee",
+					"ChildElements": [
+						{
+							"ElementType":"Text",
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Increment",
+							"Index":0,				
+							"Width":500,
+							"Height":40,
+							"Content":"單項折扣/讓總計: {$discount_fee}",
+							"VerticalContentAlig":"Center",
+							"HorizontalContentAlig":"Left",
+							"ContentSize":13,
+							"ContentBold":"N",
+							"VerticalSpacing":1,
+							"IntervalSymbols":"",
+							"AutoWrap":"N",
+							"Rotation":0
+						}
+					]
+				}			
+			]
+		},			
+		{
+			"ElementType":"Table",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",
+			"Index":18,				
+			"Width":640,
+			"Height":-1,
+			"Content":"",
+			"RowSpacing":1,
+			"AlwaysPrint":"N",
+			"ChildElements":[
+				{
+					"ElementType": "Block",
+					"X": 0,
+					"Y": 0,
+					"X_Alignment": "X",
+					"Y_Alignment": "Y",
+					"Index": 0,
+					"Width": 640,
+					"Height": 8,
+					"Content": "",
+					"RootName": "",
+					"ChildElements": [
+						{
+							"ElementType":"Text",
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Increment",
+							"Index":0,				
+							"Width":500,
+							"Height":8,
+							"Content":"------------------------------------------------------------------------------------------",
+							"VerticalContentAlig":"Center",
+							"HorizontalContentAlig":"Left",
+							"ContentSize":8,
+							"ContentBold":"N",
+							"VerticalSpacing":10,
+							"IntervalSymbols":"",
+							"AutoWrap":"N",
+							"Rotation":0
+						}				
+					]
+				},
+				{
+					"ElementType": "Block",
+					"X": 0,
+					"Y": 0,
+					"X_Alignment": "X",
+					"Y_Alignment": "Y",
+					"Index": 1,
+					"Width": 640,
+					"Height": 8,
+					"Content": "",
+					"RootName": "service_fee",
+					"ChildElements": [
+						{
+							"ElementType":"Text",
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Increment",
+							"Index":0,				
+							"Width":500,
+							"Height":40,
+							"Content":"服務費: ({$service_rate}%) {$service_fee}",
+							"VerticalContentAlig":"Center",
+							"HorizontalContentAlig":"Left",
+							"ContentSize":13,
+							"ContentBold":"N",
+							"VerticalSpacing":1,
+							"IntervalSymbols":"",
+							"AutoWrap":"N",
+							"Rotation":0
+						}			
+					]
+				}			
+			]
+		},
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 19,
+			"Width": 640,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":500,
+					"Height":8,
+					"Content":"------------------------------------------------------------------------------------------",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":8,
+					"ContentBold":"N",
+					"VerticalSpacing":10,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}				
+			]
+		},		
+		{
+			"ElementType":"Table",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",
+			"Index":20,				
+			"Width":640,
+			"Height":-1,
+			"Content":"",
+			"RowSpacing":1,
+			"AlwaysPrint":"N",
+			"ChildElements":[
+				{
+					"ElementType": "Block",
+					"X": 0,
+					"Y": 0,
+					"X_Alignment": "X",
+					"Y_Alignment": "Y",
+					"Index": 0,
+					"Width": 640,
+					"Height": 8,
+					"Content": "",
+					"RootName": "",
+					"ChildElements": [
+						{
+							"ElementType":"Text",
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Increment",
+							"Index":0,				
+							"Width":500,
+							"Height":40,
+							"Content":"【優惠/兌換券】",
+							"VerticalContentAlig":"Center",
+							"HorizontalContentAlig":"Left",
+							"ContentSize":13,
+							"ContentBold":"N",
+							"VerticalSpacing":1,
+							"IntervalSymbols":"",
+							"AutoWrap":"N",
+							"Rotation":0
+						}						
+					]
+				},
+				{
+					"ElementType":"Rows",				
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Y",
+					"Index":1,			
+					"Width":640,
+					"Height":-1,
+					"Content":"",				
+					"RootName":"coupons",
+					"DisplayMode":"Single",
+					"ChildElements":[
+						{
+							"ElementType": "Block",
+							"X": 0,
+							"Y": 0,
+							"X_Alignment": "X",
+							"Y_Alignment": "Y",
+							"Index": 0,
+							"Width": 640,
+							"Height": 8,
+							"Content": "",
+							"RootName": "",
+							"ChildElements": [
+								{
+									"ElementType":"Text",
+									"X":0,
+									"Y":0,
+									"X_Alignment":"X",
+									"Y_Alignment":"Increment",
+									"Index":0,				
+									"Width":500,
+									"Height":40,
+									"Content":"{$name} - {$amount}",
+									"VerticalContentAlig":"Center",
+									"HorizontalContentAlig":"Left",
+									"ContentSize":13,
+									"ContentBold":"N",
+									"VerticalSpacing":1,
+									"IntervalSymbols":"",
+									"AutoWrap":"N",
+									"Rotation":0
+								}								
+							]
+						}
+					]
+				},
+				{
+					"ElementType": "Block",
+					"X": 0,
+					"Y": 0,
+					"X_Alignment": "X",
+					"Y_Alignment": "Y",
+					"Index": 2,
+					"Width": 640,
+					"Height": 8,
+					"Content": "",
+					"RootName": "",
+					"ChildElements": [
+						{
+							"ElementType":"Text",
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Increment",
+							"Index":0,				
+							"Width":500,
+							"Height":8,
+							"Content":"------------------------------------------------------------------------------------------",
+							"VerticalContentAlig":"Center",
+							"HorizontalContentAlig":"Left",
+							"ContentSize":8,
+							"ContentBold":"N",
+							"VerticalSpacing":10,
+							"IntervalSymbols":"",
+							"AutoWrap":"N",
+							"Rotation":0
+						}				
+					]
+				}				
+			]
+		},
+		{
+			"ElementType":"Table",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",
+			"Index":20,				
+			"Width":640,
+			"Height":-1,
+			"Content":"",
+			"RowSpacing":1,
+			"AlwaysPrint":"N",
+			"ChildElements":[
+				{
+					"ElementType": "Block",
+					"X": 0,
+					"Y": 0,
+					"X_Alignment": "X",
+					"Y_Alignment": "Y",
+					"Index": 0,
+					"Width": 640,
+					"Height": 8,
+					"Content": "",
+					"RootName": "point_discount",
+					"Conditional": "!=",
+					"ConditionalValue": "0",
+					"ChildElements": [
+						{
+							"ElementType":"Text",
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Increment",
+							"Index":0,				
+							"Width":500,
+							"Height":40,
+							"Content":"點數折抵金額 : -{$point_discount}",
+							"VerticalContentAlig":"Center",
+							"HorizontalContentAlig":"Left",
+							"ContentSize":13,
+							"ContentBold":"N",
+							"VerticalSpacing":1,
+							"IntervalSymbols":"",
+							"AutoWrap":"N",
+							"Rotation":0
+						}			
+					]
+				},
+				{
+					"ElementType": "Block",
+					"X": 0,
+					"Y": 0,
+					"X_Alignment": "X",
+					"Y_Alignment": "Y",
+					"Index": 1,
+					"Width": 640,
+					"Height": 8,
+					"Content": "",
+					"RootName": "",
+					"ChildElements": [
+						{
+							"ElementType":"Text",
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Increment",
+							"Index":0,				
+							"Width":500,
+							"Height":8,
+							"Content":"------------------------------------------------------------------------------------------",
+							"VerticalContentAlig":"Center",
+							"HorizontalContentAlig":"Left",
+							"ContentSize":8,
+							"ContentBold":"N",
+							"VerticalSpacing":10,
+							"IntervalSymbols":"",
+							"AutoWrap":"N",
+							"Rotation":0
+						}				
+					]
+				}				
+			]
+		},		
+		{
+			"ElementType": "Block",
+			"X": 0,
+			"Y": 0,
+			"X_Alignment": "X",
+			"Y_Alignment": "Y",
+			"Index": 21,
+			"Width": 640,
+			"Height": 8,
+			"Content": "",
+			"RootName": "",
+			"ChildElements": [
+				{
+					"ElementType":"Text",
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Increment",
+					"Index":0,				
+					"Width":500,
+					"Height":40,
+					"Content":"總計: {$amount}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Left",
+					"ContentSize":13,
+					"ContentBold":"N",
+					"VerticalSpacing":1,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",
+					"Rotation":0
+				}				
+			]
+		},
+		{
+			"ElementType":"Table",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",
+			"Index":22,				
+			"Width":640,
+			"Height":-1,
+			"Content":"",
+			"RowSpacing":1,
+			"AlwaysPrint":"N",
+			"ChildElements":[
+				{
+					"ElementType": "Block",
+					"X": 0,
+					"Y": 0,
+					"X_Alignment": "X",
+					"Y_Alignment": "Y",
+					"Index": 0,
+					"Width": 640,
+					"Height": 8,
+					"Content": "",
+					"RootName": "",
+					"ChildElements": [
+						{
+							"ElementType":"Text",
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Increment",
+							"Index":0,				
+							"Width":500,
+							"Height":8,
+							"Content":"------------------------------------------------------------------------------------------",
+							"VerticalContentAlig":"Center",
+							"HorizontalContentAlig":"Left",
+							"ContentSize":8,
+							"ContentBold":"N",
+							"VerticalSpacing":10,
+							"IntervalSymbols":"",
+							"AutoWrap":"N",
+							"Rotation":0
+						}				
+					]
+				},
+				{
+					"ElementType": "Block",
+					"X": 0,
+					"Y": 0,
+					"X_Alignment": "X",
+					"Y_Alignment": "Y",
+					"Index": 1,
+					"Width": 640,
+					"Height": 8,
+					"Content": "",
+					"RootName": "",
+					"ChildElements": [
+						{
+							"ElementType":"Text",
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Increment",
+							"Index":0,				
+							"Width":500,
+							"Height":40,
+							"Content":"【餐具】",
+							"VerticalContentAlig":"Center",
+							"HorizontalContentAlig":"Left",
+							"ContentSize":13,
+							"ContentBold":"N",
+							"VerticalSpacing":1,
+							"IntervalSymbols":"",
+							"AutoWrap":"N",
+							"Rotation":0
+						}				
+					]
+				},
+				{
+					"ElementType":"Rows",				
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Y",
+					"Index":2,			
+					"Width":640,
+					"Height":-1,
+					"Content":"",				
+					"RootName":"tablewares",
+					"DisplayMode":"Single",
+					"ChildElements":[
+						{
+							"ElementType":"Block",				
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Y",
+							"Index":0,			
+							"Width":640,
+							"Height":-1,
+							"Content":"",				
+							"RootName":"",
+							"ChildElements":[
+								{
+									"ElementType":"Text",
+									"X":0,
+									"Y":0,
+									"X_Alignment":"X",
+									"Y_Alignment":"Increment",
+									"Index":0,
+									"Width":500,
+									"Height":40,
+									"Content":"{$name} x {$quantity}",
+									"VerticalContentAlig":"Center",
+									"HorizontalContentAlig":"Left",
+									"ContentSize":13,
+									"ContentBold":"N",
+									"VerticalSpacing":1,
+									"IntervalSymbols":"",
+									"AutoWrap":"N",									
+									"Rotation":0					
+								}
+							]
+						}
+					]
+				}				
+			]
+		},
+		{
+			"ElementType":"Table",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",
+			"Index":23,				
+			"Width":640,
+			"Height":-1,
+			"Content":"",
+			"RowSpacing":1,
+			"AlwaysPrint":"N",
+			"ChildElements":[
+				{
+					"ElementType": "Block",
+					"X": 0,
+					"Y": 0,
+					"X_Alignment": "X",
+					"Y_Alignment": "Y",
+					"Index": 0,
+					"Width": 640,
+					"Height": 8,
+					"Content": "",
+					"RootName": "",
+					"ChildElements": [
+						{
+							"ElementType":"Text",
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Increment",
+							"Index":0,				
+							"Width":500,
+							"Height":8,
+							"Content":"------------------------------------------------------------------------------------------",
+							"VerticalContentAlig":"Center",
+							"HorizontalContentAlig":"Left",
+							"ContentSize":8,
+							"ContentBold":"N",
+							"VerticalSpacing":10,
+							"IntervalSymbols":"",
+							"AutoWrap":"N",
+							"Rotation":0
+						}				
+					]
+				},
+				{
+					"ElementType": "Block",
+					"X": 0,
+					"Y": 0,
+					"X_Alignment": "X",
+					"Y_Alignment": "Y",
+					"Index": 1,
+					"Width": 640,
+					"Height": 8,
+					"Content": "",
+					"RootName": "",
+					"ChildElements": [
+						{
+							"ElementType":"Text",
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Increment",
+							"Index":0,				
+							"Width":500,
+							"Height":40,
+							"Content":"【支付方式】",
+							"VerticalContentAlig":"Center",
+							"HorizontalContentAlig":"Left",
+							"ContentSize":13,
+							"ContentBold":"N",
+							"VerticalSpacing":1,
+							"IntervalSymbols":"",
+							"AutoWrap":"N",
+							"Rotation":0
+						}				
+					]
+				},
+				{
+					"ElementType":"Rows",				
+					"X":0,
+					"Y":0,
+					"X_Alignment":"X",
+					"Y_Alignment":"Y",
+					"Index":2,			
+					"Width":640,
+					"Height":-1,
+					"Content":"",				
+					"RootName":"payments",
+					"DisplayMode":"Single",
+					"ChildElements":[
+						{
+							"ElementType":"Block",				
+							"X":0,
+							"Y":0,
+							"X_Alignment":"X",
+							"Y_Alignment":"Y",
+							"Index":0,			
+							"Width":640,
+							"Height":-1,
+							"Content":"",				
+							"RootName":"",
+							"ChildElements":[
+								{
+									"ElementType":"Text",
+									"X":0,
+									"Y":0,
+									"X_Alignment":"X",
+									"Y_Alignment":"Increment",
+									"Index":0,
+									"Width":500,
+									"Height":40,
+									"Content":"{$payment_name}: {$payment_amount}",
+									"VerticalContentAlig":"Center",
+									"HorizontalContentAlig":"Left",
+									"ContentSize":13,
+									"ContentBold":"N",
+									"VerticalSpacing":1,
+									"IntervalSymbols":"",
+									"AutoWrap":"N",									
+									"Rotation":0					
+								}
+							]
+						}
+					]
+				}				
+			]
+		},
+		{
+			"ElementType":"Table",
+			"X":0,
+			"Y":0,
+			"X_Alignment":"X",
+			"Y_Alignment":"Y",
+			"Index":24,				
 			"Width":640,
 			"Height":-1,
 			"Content":"",
