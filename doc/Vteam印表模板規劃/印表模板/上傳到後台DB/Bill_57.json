@@ -67,39 +67,24 @@
 			"ConditionalValue":"Y",	
 			"ChildElements": [
 				{
-					"ElementType":"Rows",				
+					"ElementType":"Text",
 					"X":0,
 					"Y":0,
-					"X_Alignment":"X",
+					"X_Alignment":"Center",
 					"Y_Alignment":"Y",
 					"Index":0,			
-					"Width":426,
-					"Height":-1,
-					"Content":"",				
-					"RootName":"",
-					"DisplayMode":"Single",
-					"ChildElements":[
-						{
-							"ElementType":"Text",
-							"X":0,
-							"Y":0,
-							"X_Alignment":"Center",
-							"Y_Alignment":"Y",
-							"Index":0,			
-							"Width":378,
-							"Height":104,
-							"Content":"{$store_name}",
-							"VerticalContentAlig":"Center",
-							"HorizontalContentAlig":"Center",
-							"ContentSize":25,
-							"ContentBold":"Y",
-							"VerticalSpacing":1,
-							"IntervalSymbols":"",
-							"AutoWrap":"N",							
-							"Rotation":0
-						}					
-					]
-				}					
+					"Width":378,
+					"Height":104,
+					"Content":"{$store_name}",
+					"VerticalContentAlig":"Center",
+					"HorizontalContentAlig":"Center",
+					"ContentSize":25,
+					"ContentBold":"Y",
+					"VerticalSpacing":1,
+					"IntervalSymbols":"",
+					"AutoWrap":"N",							
+					"Rotation":0
+				}				
 			]
 		},
 		{
