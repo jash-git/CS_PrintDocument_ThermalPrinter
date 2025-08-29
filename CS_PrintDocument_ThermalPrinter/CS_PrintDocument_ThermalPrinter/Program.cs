@@ -659,7 +659,22 @@ public class CS_PrintTemplate
             for (int i = 0; i < m_PT_Page.IncludePages.Count; i++)//依序取出TemplateSID
             {
                 PT_ChildElement PT_ChildElementBuf = m_PT_Page.IncludePages[i];
-                if( (PT_ChildElementBuf.TemplateSID != null) && (PT_ChildElementBuf.TemplateSID.Length>0))
+
+                //---
+                //IncludePages 增加判斷機制
+                if (PT_ChildElementBuf!=null && PT_ChildElementBuf.RootName!=null && PT_ChildElementBuf.RootName.Length>0)
+                {
+                    int intIndex = 0;
+                    int intNum = 0;
+                    m_strDataPath = "";
+                    if (ForLoopVarsSet(PT_ChildElementBuf.RootName, ref intIndex, ref intNum, PT_ChildElementBuf.Conditional, PT_ChildElementBuf.ConditionalValue) <= 0)
+                    {
+                        continue;//此筆嵌入頁面不載入
+                    }
+                }
+                //---IncludePages 增加判斷機制
+
+                if ( (PT_ChildElementBuf.TemplateSID != null) && (PT_ChildElementBuf.TemplateSID.Length>0))
                 {
                     string strEmbedded = "";
                     try
@@ -712,6 +727,9 @@ public class CS_PrintTemplate
             }
         }
 
+        // 就地修改 ChildElements 的順序，依照 Index 遞增排序 //如果你要遞減排序，改成 b.Index.CompareTo(a.Index)
+        m_PT_Page.ChildElements.Sort((a, b) => a.Index.CompareTo(b.Index));//使用Index排序
+
         strResult = JsonSerializer.Serialize(m_PT_Page);
         return strResult;
     }
@@ -739,16 +757,6 @@ public class CS_PrintTemplate
             //json2object
             // m_JsonDocument = JsonDocument.Parse(strPrintTemplate);
             m_PT_Page = JsonSerializer.Deserialize<PT_Page>(strPrintTemplate);
-            if(blnPrinterFound && (m_PT_Page!=null) && (m_PT_Page.ChildElements!=null) && (m_PT_Page.ChildElements.Count>0))
-            {
-                //「預先處理 (Preprocess)
-                SentESCCommand(strPrinterDriverName);
-                PagePreprocess(true);
-
-                // 就地修改 ChildElements 的順序，依照 Index 遞增排序 //如果你要遞減排序，改成 b.Index.CompareTo(a.Index)
-                m_PT_Page.ChildElements.Sort((a, b) => a.Index.CompareTo(b.Index));//使用Index排序
-            }
-
 
             string strOrderPrintData = "";
             string strElectronicInvoicePrinting = "";
@@ -832,6 +840,8 @@ public class CS_PrintTemplate
             }
             else
             {
+                SentESCCommand(strPrinterDriverName);
+
                 //---
                 //補上時間變數字串資料 因為JSON只能存取變數
                 DateTime DateTimeBuf = TimeConvert.UnixTimeStampToDateTime(m_OrderPrintDataAll.order_time);
@@ -883,6 +893,10 @@ public class CS_PrintTemplate
                 {
                     m_OrderPrintData = m_OrderPrintDataAll;
                     ForLoopVarsInit();// m_ForLoopVars變數初始化
+
+                    //「預先處理 (Preprocess)
+                    PagePreprocess(true);
+
                     m_intPages = 1;//一般模式
                 }
 
@@ -2654,6 +2668,12 @@ public class CS_PrintTemplate
 
                 ForLoopVarsInit();// m_ForLoopVars變數初始化
 
+                if (i == 0)//一菜一切頁面元素也只計算一次
+                {
+                    //「預先處理 (Preprocess)
+                    PagePreprocess(true);
+                }
+
                 m_PrintDocument = null;
                 m_PrintDocument = new PrintDocument();//印表畫布
                 m_PrintDocument.PrinterSettings.PrinterName = m_strPrinterDriverName;
@@ -2878,12 +2898,12 @@ class Program
     {
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);//載入.net Big5編解碼函數庫(System.Text.Encoding.CodePages)
 
-        //印表機驅動名稱 ~ string strPrinterDriverName = "POS-80C";//"POS-58C";//"80mm Series Printer";//"58mm Series Printer";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
-        //標籤機~
-        string strPrinterDriverName = "Xprinter XP-236B";//"Godex DT2x";//"DT-2205";//
+        //印表機驅動名稱 ~
+        string strPrinterDriverName = "POS-80C";//"POS-58C";//"80mm Series Printer";//"58mm Series Printer";//"POS80D";//"80mm_TCPMode"; // 替換成你實際的熱感印表機名稱
+        //標籤機~ string strPrinterDriverName = "Xprinter XP-236B";//"Godex DT2x";//"DT-2205";//
 
         //範本
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\Lable_40mm_25mm.json");//EasyCardCHECKOUT_57.json
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Invoice_57.json");//EasyCardCHECKOUT_57.json
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct_57.json");
         //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();
@@ -2905,7 +2925,7 @@ class Program
         StreamReader sr05 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\EasyCardCHECKOUT.json");
         string strEasyCardCheckoutData = sr05.ReadToEnd();
 
-        CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderPrintData); //INVOICE、REPORT、EASYCARDBILL、EASYCARDCHECKOUT
+        CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strElectronicInvoicePrinting, "INVOICE"); //INVOICE、REPORT、EASYCARDBILL、EASYCARDCHECKOUT
         CPT.Printing("3.0.0.0", "VTPOS202000002", "VT-POS-2020-00002", "N");
         Pause();
     }
