@@ -415,6 +415,7 @@ namespace CS_PrintDocument_ThermalPrinter
         public Invoice_Data invoice_data { get; set; }
         public string strQrcodeInfor { get; set; }
         public string PrintLogo { get; set; }//列印LOGO
+        public string PrintInvoice { get; set; }//列印發票=Y / 退貨N
         public string PrintInvReceipt { get; set; }//列印發票交易明細旗標  (print_config.print_inv_receipt=="Y") OR (cust_ein!="") =>Y/N
         public string print_time_year { get; set; }
         public string print_time_month { get; set; }
@@ -459,8 +460,16 @@ namespace CS_PrintDocument_ThermalPrinter
             pos_ver = "";
             strQrcodeInfor = "";
             PrintLogo = "Y";//列印發票LOGO
-            PrintInvReceipt = "Y";//列印發票交易明細旗標  (print_config.print_inv_receipt=="Y") OR (cust_ein!="") =>Y/N
+            PrintInvoice = "Y";//列印發票=Y / 退貨N
+            PrintInvReceipt = "Y";//列印發票交易明細旗標  ((print_config.print_inv_receipt=="Y") OR (cust_ein!="") ) AND (PrintInvoice=="Y") =>Y/N
         }
+        
+        public void SetInvoiceControlVariable(string config_print_inv_receipt)
+        {
+            PrintInvoice = (invoice_print_data != null && invoice_print_data.Invalid_Flag == "N") ? "Y" : "N";//設定發票變數是否為退貨
+            PrintInvReceipt = ( ( (invoice_print_data != null && cust_ein!=null && cust_ein!="") || config_print_inv_receipt=="Y") && PrintInvoice=="Y") ? "Y" : "N";
+        }
+        
         public OrderPrintData order_itemsDeepClone(int index)//深層複製
         {
             OrderPrintData OrderPrintDataBuf = (OrderPrintData)this.MemberwiseClone();//表層屬性複製

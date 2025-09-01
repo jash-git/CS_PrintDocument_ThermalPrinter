@@ -795,6 +795,7 @@ public class CS_PrintTemplate
             {
                 m_OrderPrintDataAll.invoice_print_data = JsonSerializer.Deserialize<InvoicePrintData>(strElectronicInvoicePrinting);
                 m_OrderPrintDataAll.invoice_print_data.SetVariable();
+                m_OrderPrintDataAll.SetInvoiceControlVariable("N");
             }
 
             if ((strReportData != null) && (strReportData.Length>0))  
@@ -2099,7 +2100,14 @@ public class CS_PrintTemplate
                 fltStartY = PT_ChildElementBuf.Y;
                 break;
             case "Increment":
-                fltStartY = m_fltLast_Y + m_fltLast_Height + 1;//[垂直排列 ~ 目前Y = 前一元件的Y + 前一元件的Height + 1]
+                if(PT_ChildElementBuf.Y==0)
+                {
+                    fltStartY = m_fltLast_Y + m_fltLast_Height + 1;//[垂直排列 ~ 目前Y = 前一元件的Y + 前一元件的Height + 1]
+                }
+                else
+                {
+                    fltStartY = m_fltLast_Y + PT_ChildElementBuf.Y + 0;//為了保留IncludePages第一個元件的座標特性
+                }
                 break;
             case "Element":
                 fltStartY = m_fltLast_Y;//[橫向排列 ~ 目前Y = 前一個元件Y]
@@ -2903,7 +2911,7 @@ class Program
         //標籤機~ string strPrinterDriverName = "Xprinter XP-236B";//"Godex DT2x";//"DT-2205";//
 
         //範本
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Invoice_57.json");//EasyCardCHECKOUT_57.json
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Invoice_ALL_57.json");//EasyCardCHECKOUT_57.json
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct_57.json");
         //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();
