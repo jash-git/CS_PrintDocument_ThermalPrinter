@@ -1,0 +1,43 @@
+{
+	"Content": "Invoice_57mm X=88,P_W=57mm,三欄W:240,80,80,一欄W:320",
+	"ElementType": "Page",
+	"X": 0,
+	"Y": 0,
+	"X_Alignment": "X",
+	"Y_Alignment": "Y",
+	"Index": 0,
+	"Width": 456,
+	"Height": -1,
+	"Spacing": 0,
+	"Rotation": 0,
+	"ZoomRatio": 1,
+	"FontName": "新細明體",
+	"StartBuzzer": "N",
+	"ExternalBuzzer": "N",
+	"BuzzerCmd": "",
+	"ExtBuzzerCmd": "",
+	"PrintMode":"",
+	"IncludePages":[	
+		{
+			"Index": 0,
+			"RootName": "PrintInvoice",
+			"Conditional":"==",
+			"ConditionalValue":"Y",
+			"TemplateSID": "9859ab60-8315-11f0-a723-4d530a0d8966"			
+		},
+		{
+			"Index": 1,
+			"RootName": "PrintInvoice",
+			"Conditional":"==",
+			"ConditionalValue":"Y",
+			"TemplateSID": "2a46b1b0-82f3-11f0-af43-578ded228293"
+		},
+		{
+			"Index": 2,
+			"RootName": "PrintInvoice",
+			"Conditional":"!=",
+			"ConditionalValue":"Y",
+			"TemplateSID": "3ae5c5b0-8314-11f0-88c1-9b063b243e68"			
+		}	
+	]		
+}

@@ -16,13 +16,7 @@
 	"ExternalBuzzer": "N",
 	"BuzzerCmd": "",
 	"ExtBuzzerCmd": "",
-	"PrintMode":"",
-	"IncludePages":[	
-		{
-			"Index": 0,
-			"TemplateSID": "2a46b1b0-82f3-11f0-af43-578ded228293"
-		}	
-	],	
+	"PrintMode":"",	
 	"ChildElements": [
 		{
 			"ElementType": "Block",

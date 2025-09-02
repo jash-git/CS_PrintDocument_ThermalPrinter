@@ -1,5 +1,22 @@
 {
-	"ElementType": "Embedded",
+	"Content": "InvoiceDetails_57mm X=88,P_W=57mm,三欄W:240,80,80,一欄W:320",
+	"ElementType": "Page",
+	"X": 0,
+	"Y": 0,
+	"X_Alignment": "X",
+	"Y_Alignment": "Y",
+	"Index": 0,
+	"Width": 456,
+	"Height": -1,
+	"Spacing": 0,
+	"Rotation": 0,
+	"ZoomRatio": 1,
+	"FontName": "新細明體",
+	"StartBuzzer": "N",
+	"ExternalBuzzer": "N",
+	"BuzzerCmd": "",
+	"ExtBuzzerCmd": "",
+	"PrintMode":"",
 	"ChildElements": [	
 		{
 			"ElementType": "Block",
@@ -18,7 +35,7 @@
 				{
 					"ElementType":"Text",
 					"X":0,
-					"Y":666,
+					"Y":0,
 					"X_Alignment":"X",
 					"Y_Alignment":"Y",
 					"Index":0,				
