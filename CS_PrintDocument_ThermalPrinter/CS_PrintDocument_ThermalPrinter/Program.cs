@@ -335,6 +335,7 @@ public class PT_ChildElement
     public string Conditional { get; set; }//Block,Rows
     public string ConditionalValue { get; set; }//Block,Rows
     public List<PT_ChildElement> ChildElements { get; set; }//Block,Rows
+    public List<string> Commands { get; set; }//CommandMode
     public int Rotation { get; set; }//Text,QrCode,BarCode,Image
     public string VerticalContentAlig { get; set; }//Text
     public string HorizontalContentAlig { get; set; }//Text
@@ -520,6 +521,7 @@ public class CS_PrintTemplate
     protected PT_Page m_PT_Page = null;
     protected OrderPrintData m_OrderPrintDataAll = null;
     protected OrderPrintData m_OrderPrintData = null;//實際運算參與運算用
+    protected List<string> m_listCmds = new List<string>();//ESC Commands集合
 
     //---
     //繪圖系統變數
@@ -584,6 +586,73 @@ public class CS_PrintTemplate
         StrAns = System.Text.ASCIIEncoding.ASCII.GetString(data);
         return StrAns;
     }
+
+    private byte[] Hex2ByteArray(string StrData)// \xOO -> byte
+    {
+        MatchCollection matches = Regex.Matches(StrData, @"\\x([0-9A-Fa-f]{2})");
+        byte[] bytes = new byte[matches.Count];
+        for (int i = 0; i < matches.Count; i++)
+        {
+            bytes[i] = Convert.ToByte(matches[i].Groups[1].Value, 16);
+        }
+        return bytes;
+    }
+
+    private string ByteArray2Hex(byte[] bytes)// byte -> \xOO
+    {
+        string strResult = "";
+        foreach (byte b in bytes)
+        {
+            strResult += $"\\x{b:X2}";
+        }
+        return strResult;
+    }
+
+    public void SentESCCommand()//傳送ESC指令
+    {
+        if (m_listCmds.Count > 0)//有指令執行列印
+        {
+            Int32 dwError = 0, dwWritten = 0;
+            IntPtr hPrinter = new IntPtr(0);
+
+            DOCINFOA di = new DOCINFOA();
+            di.pDocName = "My C#.NET RAW Document";
+            di.pDataType = "RAW";
+            if (PrinterAPI.OpenPrinter(m_strPrinterDriverName, out hPrinter, IntPtr.Zero))
+            {
+                // 啟動文檔列印                    
+                if (PrinterAPI.StartDocPrinter(hPrinter, 1, di))
+                {
+                    // 開始列印                        
+                    if (PrinterAPI.StartPagePrinter(hPrinter))
+                    {
+                        for (int i = 0; i < m_listCmds.Count; i++)
+                        {
+                            byte[] bytes = Hex2ByteArray(m_listCmds[i].ToLower());
+                            //驗證用 ~ string strbytes = ByteArray2Hex(bytes);
+
+                            Int32 dwCount = bytes.Length;
+                            // 非託管指針              
+                            IntPtr pBytes = Marshal.AllocHGlobal(dwCount);
+                            // 將託管位元組陣列複製到非託管記憶體指標          
+                            Marshal.Copy(bytes, 0, pBytes, dwCount);
+
+                            // 向印表機輸出位元組  
+                            PrinterAPI.WritePrinter(hPrinter, pBytes, dwCount, out dwWritten);
+                        }
+
+                        PrinterAPI.EndPagePrinter(hPrinter);
+                    }
+
+                    PrinterAPI.EndDocPrinter(hPrinter);
+                }
+
+                PrinterAPI.ClosePrinter(hPrinter);
+            }
+        }
+
+    }
+
     public void SentESCCommand(string strPrinterDriverName)//傳送ESC指令
     {
         List<string> listCmds = new List<string>();
@@ -2422,6 +2491,29 @@ public class CS_PrintTemplate
         m_PrintDocument.Print();//驅動PrintPage
     }
 
+    private void ChildElement_Processing(PT_ChildElement PT_ChildElementBuf,Graphics g)
+    {
+        switch (PT_ChildElementBuf.ElementType)
+        {
+            case "CommandMode":
+                m_listCmds.Clear();
+                if (PT_ChildElementBuf.Commands != null && PT_ChildElementBuf.Commands.Count > 0)
+                {
+                    for (int index = 0; index < PT_ChildElementBuf.Commands.Count; index++)
+                    {
+                        //m_listCmds.Add(Base64_decode(PT_ChildElementBuf.Commands[index]));
+                        m_listCmds.Add(PT_ChildElementBuf.Commands[index]);
+                    }
+                }
+                SentESCCommand();//傳送ESC指令
+                break;
+            default:
+                m_strRealData = Element2Data(PT_ChildElementBuf);//元件轉資料
+                Data2Image(PT_ChildElementBuf, g);
+                break;
+        }
+    }
+
     private void DrawingPage(Graphics g)//畫布實際建立函數
     {
         //---
@@ -2434,7 +2526,7 @@ public class CS_PrintTemplate
         m_strDataPath = "";
         for (int i = 0;i< m_PT_Page.ChildElements.Count;i++)//依序處理Page的內容
         {
-            //*
+            /*
             //---
             //Debug code
             if(i==43)
@@ -2447,8 +2539,7 @@ public class CS_PrintTemplate
             PT_ChildElement PT_ChildElementBuf = GetDataElement(m_PT_Page.ChildElements[i]);
             if (PT_ChildElementBuf != null)
             {
-                m_strRealData = Element2Data(PT_ChildElementBuf);//元件轉資料
-                Data2Image(PT_ChildElementBuf, g);
+                ChildElement_Processing(PT_ChildElementBuf,g);
             }
 
             //清空堆疊迴圈
@@ -2461,8 +2552,7 @@ public class CS_PrintTemplate
                     ContainerElementBuf.m_index++;//改變已處理的子元件編號(旗標)
                     if(PT_ChildElementBuf!=null)
                     {
-                        m_strRealData = Element2Data(PT_ChildElementBuf);//元件轉資料
-                        Data2Image(PT_ChildElementBuf, g);
+                        ChildElement_Processing(PT_ChildElementBuf,g);
                     }
                 }
                 else
@@ -2722,8 +2812,7 @@ public class CS_PrintTemplate
             PT_ChildElement PT_ChildElementBuf = GetDataElement(m_PT_Page.ChildElements[i]);
             if (PT_ChildElementBuf != null)
             {
-                m_strRealData = Element2Data(PT_ChildElementBuf);//元件轉資料
-                Data2Image(PT_ChildElementBuf, g);
+                ChildElement_Processing(PT_ChildElementBuf,g);
             }
 
             //清空堆疊迴圈
@@ -2736,8 +2825,7 @@ public class CS_PrintTemplate
                     ContainerElementBuf.m_index++;//改變已處理的子元件編號(旗標)
                     if (PT_ChildElementBuf != null)
                     {
-                        m_strRealData = Element2Data(PT_ChildElementBuf);//元件轉資料
-                        Data2Image(PT_ChildElementBuf, g);
+                        ChildElement_Processing(PT_ChildElementBuf,g);
                     }
                 }
                 else
@@ -2911,7 +2999,7 @@ class Program
         //標籤機~ string strPrinterDriverName = "Xprinter XP-236B";//"Godex DT2x";//"DT-2205";//
 
         //範本
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Invoice_ALL_57.json");//EasyCardCHECKOUT_57.json
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Cmds_57.json");//EasyCardCHECKOUT_57.json
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct_57.json");
         //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();
@@ -2933,7 +3021,7 @@ class Program
         StreamReader sr05 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\EasyCardCHECKOUT.json");
         string strEasyCardCheckoutData = sr05.ReadToEnd();
 
-        CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strElectronicInvoicePrinting, "INVOICE"); //INVOICE、REPORT、EASYCARDBILL、EASYCARDCHECKOUT
+        CS_PrintTemplate CPT = new CS_PrintTemplate(strPrinterDriverName, strPrintTemplate, strOrderPrintData); //INVOICE、REPORT、EASYCARDBILL、EASYCARDCHECKOUT
         CPT.Printing("3.0.0.0", "VTPOS202000002", "VT-POS-2020-00002", "N");
         Pause();
     }
