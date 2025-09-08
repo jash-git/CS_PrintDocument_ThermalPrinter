@@ -2504,7 +2504,7 @@ public class CS_PrintTemplate
                 int intNum = 0;
                 bool blnResult = true;
                 m_strDataPath = GetStackPath(ref m_intDataPath);//strDataPathBuf = GetStackPath(ref intDataPathBuf);
-                if (PT_ChildElementBuf.RootName.Length > 0)
+                if (PT_ChildElementBuf.RootName!=null && PT_ChildElementBuf.RootName.Length > 0)
                 {
                     strDataPathBuf = m_strDataPath;
                     if (strDataPathBuf.Length > 0)
