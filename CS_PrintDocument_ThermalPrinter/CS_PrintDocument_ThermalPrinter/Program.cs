@@ -331,9 +331,9 @@ public class PT_ChildElement
     public int Height { get; set; }
     public string Content { get; set; }
     public string SecondContent { get; set; }//Text ~ Content長度為0 則抓取該變數
-    public string RootName { get; set; }//Block,Rows
-    public string Conditional { get; set; }//Block,Rows
-    public string ConditionalValue { get; set; }//Block,Rows
+    public string RootName { get; set; }//Block,Rows,CommandMode
+    public string Conditional { get; set; }//Block,Rows,CommandMode
+    public string ConditionalValue { get; set; }//Block,Rows,CommandMode
     public List<PT_ChildElement> ChildElements { get; set; }//Block,Rows
     public List<string> Commands { get; set; }//CommandMode
     public int Rotation { get; set; }//Text,QrCode,BarCode,Image
@@ -536,6 +536,7 @@ public class CS_PrintTemplate
     private float m_fltLast_Y = 0;//最後列印定位點Y座標
     private float m_fltMax_Height = 0;//同列最大列印高度
     private float m_fltLast_Height = 0;//最後列印最大高度
+    private bool m_blnPrintCancel = true;//取消列印旗標
     //---繪圖系統變數
 
     //---
@@ -1840,7 +1841,7 @@ public class CS_PrintTemplate
                     intResult = strData.Length;//不符合資料集就查是否為目前結點下的變數，並將變數長度回傳承回判斷依據
 
                     //---
-                    //增加Rows/Block元件中RootName的數學和邏輯判斷機制
+                    //增加Rows/Block/CommandMode元件中RootName的數學和邏輯判斷機制
                     if (intResult > 0 && strConditional!=null && strConditionalValue!=null && strConditional.Length>0 && strConditionalValue.Length>0)
                     {
                         bool blnResult = false;
@@ -1933,7 +1934,7 @@ public class CS_PrintTemplate
                             intResult = -1;
                         }
                     }
-                    //---增加Rows/Block元件中RootName的數學和邏輯判斷機制
+                    //---增加Rows/Block/CommandMode元件中RootName的數學和邏輯判斷機制
                 }
                 intIndex = -1;
                 intNum = -1;
@@ -2496,20 +2497,52 @@ public class CS_PrintTemplate
         switch (PT_ChildElementBuf.ElementType)
         {
             case "CommandMode":
-                m_listCmds.Clear();
-                if (PT_ChildElementBuf.Commands != null && PT_ChildElementBuf.Commands.Count > 0)
+                //---
+                //解析命命的前置判斷
+                string strDataPathBuf = "";
+                int intIndex = 0;
+                int intNum = 0;
+                bool blnResult = true;
+                m_strDataPath = GetStackPath(ref m_intDataPath);//strDataPathBuf = GetStackPath(ref intDataPathBuf);
+                if (PT_ChildElementBuf.RootName.Length > 0)
                 {
-                    for (int index = 0; index < PT_ChildElementBuf.Commands.Count; index++)
+                    strDataPathBuf = m_strDataPath;
+                    if (strDataPathBuf.Length > 0)
                     {
-                        //m_listCmds.Add(Base64_decode(PT_ChildElementBuf.Commands[index]));
-                        m_listCmds.Add(PT_ChildElementBuf.Commands[index]);
+                        strDataPathBuf += "." + PT_ChildElementBuf.RootName;
+                    }
+                    else
+                    {
+                        strDataPathBuf = PT_ChildElementBuf.RootName;
+                    }
+
+                    if (ForLoopVarsSet(strDataPathBuf, ref intIndex, ref intNum, PT_ChildElementBuf.Conditional, PT_ChildElementBuf.ConditionalValue) <= 0)
+                    {
+                        blnResult = false;
                     }
                 }
-                SentESCCommand();//傳送ESC指令
+                //---解析命命的前置判斷
+                if (blnResult)
+                {
+                    m_listCmds.Clear();
+                    if (PT_ChildElementBuf.Commands != null && PT_ChildElementBuf.Commands.Count > 0)
+                    {
+                        for (int index = 0; index < PT_ChildElementBuf.Commands.Count; index++)
+                        {
+                            //m_listCmds.Add(Base64_decode(PT_ChildElementBuf.Commands[index]));
+                            m_listCmds.Add(PT_ChildElementBuf.Commands[index]);
+                        }
+                    }
+                    SentESCCommand();//傳送ESC指令
+                }
                 break;
             default:
                 m_strRealData = Element2Data(PT_ChildElementBuf);//元件轉資料
                 Data2Image(PT_ChildElementBuf, g);
+                if(m_blnPrintCancel && m_strRealData != null && m_strRealData.Length>0)
+                {
+                    m_blnPrintCancel = false;
+                }             
                 break;
         }
     }
@@ -2699,6 +2732,12 @@ public class CS_PrintTemplate
         {
 
             DrawingPage(g);
+
+            if(m_blnPrintCancel)
+            {
+                e.Cancel = true;  // 取消列印
+                return;
+            }
             m_blnResult = true;
             m_strResult = $"已經將列印頁面產生並傳送到對應的印表機柱列中";
             e.HasMorePages = false;//驅動切紙
