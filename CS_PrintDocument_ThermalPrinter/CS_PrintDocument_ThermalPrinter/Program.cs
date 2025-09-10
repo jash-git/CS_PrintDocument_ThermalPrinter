@@ -350,6 +350,7 @@ public class PT_ChildElement
     public string ErrorCorrection { get; set; }//QrCode
     public string Format { get; set; }//BarCode
     public string TemplateSID { get; set; }//IncludePages
+    public string TemplateName { get; set; }//IncludePages
 }
 public class ContainerElement
 {//存放在堆疊內的原件
@@ -707,6 +708,38 @@ public class CS_PrintTemplate
         }
 
     }
+
+    private string GetEmbeddedContent(string strColumnName,bool blnFileMode, string strType="SID")
+    {
+        string strResult = "";
+        try
+        {
+            if (blnFileMode)
+            {//檔案模式
+                StreamReader sr00 = new StreamReader(strColumnName);
+                strResult = sr00.ReadToEnd();
+            }
+            else
+            {//DB模式 ~
+             //json_Footer ~ SELECT template_name,template_value FROM printer_template WHERE SID = "dea37190-82e4-11f0-8df5-ff3b19ded749";
+             //json_InvoiceDetails_57 ~ SELECT template_name,template_value FROM printer_template WHERE SID = "2a46b1b0-82f3-11f0-af43-578ded228293";
+                if(strType == "SID")
+                {
+
+                }
+                else//Name
+                {
+
+                }
+            }
+        }
+        catch
+        {
+            strResult = "";
+        }
+        return strResult;
+    }
+
     public string PagePreprocess(bool blnFileMode=false)//「預先處理(Preprocess)
     {
         string strResult = "";
@@ -744,32 +777,25 @@ public class CS_PrintTemplate
                 }
                 //---IncludePages 增加判斷機制
 
+                string strEmbedded = "";
                 if ( (PT_ChildElementBuf.TemplateSID != null) && (PT_ChildElementBuf.TemplateSID.Length>0))
                 {
-                    string strEmbedded = "";
+                    strEmbedded = GetEmbeddedContent(PT_ChildElementBuf.TemplateSID, blnFileMode, "SID");
+                }
+                else
+                {
+                    if ((PT_ChildElementBuf.TemplateName != null) && (PT_ChildElementBuf.TemplateName.Length > 0))
+                    {
+                        strEmbedded = GetEmbeddedContent(PT_ChildElementBuf.TemplateName, blnFileMode, "SID");
+                    }
+                }
+
+                if (strEmbedded.Length > 0)
+                {
                     try
                     {
-                        if (blnFileMode)
-                        {//檔案模式
-                            StreamReader sr00 = new StreamReader(PT_ChildElementBuf.TemplateSID);
-                            strEmbedded = sr00.ReadToEnd();
-                        }
-                        else
-                        {//DB模式 ~
-                         //json_Footer ~ SELECT template_name,template_value FROM printer_template WHERE SID = "dea37190-82e4-11f0-8df5-ff3b19ded749";
-                         //json_InvoiceDetails_57 ~ SELECT template_name,template_value FROM printer_template WHERE SID = "2a46b1b0-82f3-11f0-af43-578ded228293";
-
-                        }
-                    }
-                    catch 
-                    {
-                        strEmbedded = "";
-                    }
-
-                    if(strEmbedded.Length>0)
-                    {
                         PT_ChildElement PT_ChildElementTable = JsonSerializer.Deserialize<PT_ChildElement>(strEmbedded);//產生Embedded元件
-                        if ( PT_ChildElementTable != null )
+                        if (PT_ChildElementTable != null)
                         {
                             //---
                             //Embedded轉成Table
@@ -781,7 +807,7 @@ public class CS_PrintTemplate
 
                             //---
                             //將第一個顯示元件的Y_Alignment屬性強制從 Y -> Increment 
-                            if ((PT_ChildElementTable.ChildElements!=null) && (PT_ChildElementTable.ChildElements.Count>0))
+                            if ((PT_ChildElementTable.ChildElements != null) && (PT_ChildElementTable.ChildElements.Count > 0))
                             {
                                 PT_ChildElementTable.ChildElements.Sort((a, b) => a.Index.CompareTo(b.Index));//使用Index排序
                                 PT_ChildElement PT_ChildElementPre = PT_ChildElementTable.ChildElements[0];
@@ -792,7 +818,9 @@ public class CS_PrintTemplate
                             m_PT_Page.ChildElements.Add(PT_ChildElementTable);//賦予新元件
                         }
                     }
-
+                    catch (Exception ex)
+                    {
+                    }
                 }
             }
         }
@@ -3038,7 +3066,7 @@ class Program
         //標籤機~ string strPrinterDriverName = "Xprinter XP-236B";//"Godex DT2x";//"DT-2205";//
 
         //範本
-        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\Cmds_57.json");//EasyCardCHECKOUT_57.json
+        StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\IncludePage實驗\Number_57拆開主體.json");//EasyCardCHECKOUT_57.json
         //一菜一切~ StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\SingleProduct_57.json");
         //標籤~StreamReader sr01 = new StreamReader(@"C:\Users\jashv\OneDrive\桌面\GITHUB\CS_PrintDocument_ThermalPrinter\doc\Vteam印表模板規劃\印表模板\提點落料機_40mm_50mm.json");
         string strPrintTemplate = sr01.ReadToEnd();
