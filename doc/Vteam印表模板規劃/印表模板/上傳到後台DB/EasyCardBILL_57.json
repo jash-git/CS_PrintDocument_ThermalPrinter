@@ -28,7 +28,7 @@
 			"Width": 456,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintLogo",
+			"ConditionalKey": "PrintLogo",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
@@ -56,7 +56,7 @@
 			"Width": 456,
 			"Height": 104,
 			"Content": "",
-			"RootName": "PrintLogo",
+			"ConditionalKey": "PrintLogo",
 			"Conditional":"!=",
 			"ConditionalValue":"Y",	
 			"ChildElements": [

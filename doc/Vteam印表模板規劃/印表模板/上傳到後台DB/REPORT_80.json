@@ -34,7 +34,7 @@
 			"Width": 640,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintLogo",
+			"ConditionalKey": "PrintLogo",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
@@ -62,7 +62,7 @@
 			"Width": 640,
 			"Height": 104,
 			"Content": "",
-			"RootName": "PrintLogo",
+			"ConditionalKey": "PrintLogo",
 			"Conditional":"!=",
 			"ConditionalValue":"Y",	
 			"ChildElements": [
@@ -2399,7 +2399,7 @@
 									"Width": 640,
 									"Height":-1,
 									"Content": "",
-									"RootName": "sale_quantity",
+									"ConditionalKey": "sale_quantity",
 									"Conditional":">",
 									"ConditionalValue":"0",
 									"ChildElements": [
@@ -2434,7 +2434,7 @@
 									"Width": 640,
 									"Height":-1,
 									"Content": "",
-									"RootName": "sale_quantity",
+									"ConditionalKey": "sale_quantity",
 									"Conditional":">",
 									"ConditionalValue":"0",
 									"ChildElements": [
@@ -2469,7 +2469,7 @@
 									"Width": 640,
 									"Height":-1,
 									"Content": "",
-									"RootName": "sale_quantity",
+									"ConditionalKey": "sale_quantity",
 									"Conditional":">",
 									"ConditionalValue":"0",
 									"ChildElements": [
@@ -2552,7 +2552,7 @@
 									"Width": 640,
 									"Height":-1,
 									"Content": "",
-									"RootName": "sale_quantity",
+									"ConditionalKey": "sale_quantity",
 									"Conditional":">",
 									"ConditionalValue":"0",
 									"ChildElements": [
@@ -2587,7 +2587,7 @@
 									"Width": 640,
 									"Height":-1,
 									"Content": "",
-									"RootName": "sale_quantity",
+									"ConditionalKey": "sale_quantity",
 									"Conditional":">",
 									"ConditionalValue":"0",
 									"ChildElements": [
@@ -2622,7 +2622,7 @@
 									"Width": 640,
 									"Height":-1,
 									"Content": "",
-									"RootName": "sale_quantity",
+									"ConditionalKey": "sale_quantity",
 									"Conditional":">",
 									"ConditionalValue":"0",
 									"ChildElements": [
@@ -2657,7 +2657,7 @@
 									"Width": 640,
 									"Height":-1,
 									"Content": "",
-									"RootName": "sale_quantity",
+									"ConditionalKey": "sale_quantity",
 									"Conditional":">",
 									"ConditionalValue":"0",
 									"ChildElements": [

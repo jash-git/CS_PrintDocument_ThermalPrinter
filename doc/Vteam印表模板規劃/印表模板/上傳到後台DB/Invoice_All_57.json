@@ -20,21 +20,21 @@
 	"IncludePages":[	
 		{
 			"Index": 0,
-			"RootName": "PrintInvoice",
+			"ConditionalKey": "PrintInvoice",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"TemplateSID": "9859ab60-8315-11f0-a723-4d530a0d8966"			
 		},
 		{
 			"Index": 1,
-			"RootName": "PrintInvoice",
+			"ConditionalKey": "PrintInvoice",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"TemplateSID": "2a46b1b0-82f3-11f0-af43-578ded228293"
 		},
 		{
 			"Index": 2,
-			"RootName": "PrintInvoice",
+			"ConditionalKey": "PrintInvoice",
 			"Conditional":"!=",
 			"ConditionalValue":"Y",
 			"TemplateSID": "3ae5c5b0-8314-11f0-88c1-9b063b243e68"			

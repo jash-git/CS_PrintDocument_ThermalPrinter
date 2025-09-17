@@ -1,0 +1,25 @@
+bill_print_count 列印份數
+new_bill_no_print 新單不列印
+conn_cash_box 連接錢箱
+print_inv_receipt 列印發票交易明細
+merge_product 商品合併列印
+===================================
+start_buzzer 開啟提示音
+external_buzzer 外接蜂鳴器
+print_logo 企業Logo
+big_callnum 取餐號加大
+big_order_type 訂單類型加大
+big_takeaways_no 外賣單號加大
+big_table 桌號加大
+label_bottom_info 底部列印資訊
+print_product_price 列印商品金額
+print_pickup_time 列印取餐時間
+product_big_gap 商品間距加大
+single_report 只印簡表
+no_print_price 不印價格
+print_ticket_memo 列印備註
+big_memo_font 備註加大
+product_single_cut 一菜一切
+print_barcode 列印條碼
+print_set_attribute 列印套餐元素
+print_takeaways_info 列印外買訂單資訊

@@ -28,7 +28,7 @@
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintInvReceipt",
+			"ConditionalKey": "PrintInvReceipt",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
@@ -64,7 +64,7 @@
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintInvReceipt",
+			"ConditionalKey": "PrintInvReceipt",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
@@ -100,7 +100,7 @@
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintInvReceipt",
+			"ConditionalKey": "PrintInvReceipt",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
@@ -151,7 +151,7 @@
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintInvReceipt",
+			"ConditionalKey": "PrintInvReceipt",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
@@ -202,7 +202,7 @@
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintInvReceipt",
+			"ConditionalKey": "PrintInvReceipt",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
@@ -253,7 +253,7 @@
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintInvReceipt",
+			"ConditionalKey": "PrintInvReceipt",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
@@ -359,7 +359,7 @@
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintInvReceipt",
+			"ConditionalKey": "PrintInvReceipt",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
@@ -395,7 +395,7 @@
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintInvReceipt",
+			"ConditionalKey": "PrintInvReceipt",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
@@ -466,7 +466,7 @@
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintInvReceipt",
+			"ConditionalKey": "PrintInvReceipt",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
@@ -502,7 +502,7 @@
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintInvReceipt",
+			"ConditionalKey": "PrintInvReceipt",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
@@ -598,7 +598,7 @@
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintInvReceipt",
+			"ConditionalKey": "PrintInvReceipt",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
@@ -709,7 +709,7 @@
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintInvReceipt",
+			"ConditionalKey": "PrintInvReceipt",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
@@ -745,7 +745,7 @@
 			"Width": 426,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintInvReceipt",
+			"ConditionalKey": "PrintInvReceipt",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [

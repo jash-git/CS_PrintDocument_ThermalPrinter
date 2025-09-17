@@ -34,7 +34,7 @@
 			"Width": 640,
 			"Height": 100,
 			"Content": "",
-			"RootName": "PrintLogo",
+			"ConditionalKey": "PrintLogo",
 			"Conditional":"==",
 			"ConditionalValue":"Y",
 			"ChildElements": [
@@ -62,7 +62,7 @@
 			"Width": 640,
 			"Height": 104,
 			"Content": "",
-			"RootName": "PrintLogo",
+			"ConditionalKey": "PrintLogo",
 			"Conditional":"!=",
 			"ConditionalValue":"Y",	
 			"ChildElements": [
@@ -1425,7 +1425,7 @@
 					"Width": 640,
 					"Height": 8,
 					"Content": "",
-					"RootName": "point_discount",
+					"ConditionalKey": "point_discount",
 					"Conditional": "!=",
 					"ConditionalValue": "0",
 					"ChildElements": [
